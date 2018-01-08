@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     public GameObject blockPrefab;
     private GameObject foundationObject;
     private Vector3 blockOffset = new Vector3(0.5f,0.5f,0.5f);
-    private Vector3 foundationCenter = new Vector3(4.0f, 0, 4.0f);
+    private Vector3 foundationCenter = new Vector3(0, 0, 0);
 
 	void Start () {
         foundationObject = GameObject.Find("Foundation");
@@ -28,8 +28,9 @@ public class GameManager : MonoBehaviour {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 int x = (int)index.x, y=(int)index.y, z = (int)index.z;
-                if (blocks[x, y, z] == null)
+                if (blocks[x, y, z] == null && blocks[x, y, z-1] == null)
                 {
+                    if(x <= 12 && z < 12){
                     GameObject go = Instantiate(blockPrefab) as GameObject;
                     go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                     PositionBlock(go.transform, index);
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour {
                     {
                         blockTransform = go.transform
                     };
-                   
+                    }
                 }
                 else {
                     Debug.Log("Error:postion" + index.ToString());
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviour {
     }
     public void PositionBlock(Transform t, Vector3 index)
     {
-        t.position = ((index * blockSize) + blockOffset) + (foundationObject.transform.position - foundationCenter);
+        t.position = ((index * blockSize) + blockOffset)/* + (foundationObject.transform.position - foundationCenter)*/;
     }
 
 }
