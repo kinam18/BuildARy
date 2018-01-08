@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Block{
     public Transform blockTransform;
+    public Vector3 height;
 }
 
 public class GameManager : MonoBehaviour {
@@ -36,16 +37,33 @@ public class GameManager : MonoBehaviour {
                     PositionBlock(go.transform, index);
                     blocks[x, y, z] = new Block
                     {
-                        blockTransform = go.transform
+                        blockTransform = go.transform,height=new Vector3(0,1,0)
                     };
                     blocks[x, y, z-1] = new Block
                     {
-                        blockTransform = go.transform
+                        blockTransform = go.transform,height=new Vector3(0,1,0)
                     };
                     }
                 }
                 else {
-                    Debug.Log("Error:postion" + index.ToString());
+                    Vector3 newIndex = BlockPosition(hit.point + (blocks[x, y, z].height * blockSize));
+                    Debug.Log(newIndex.ToString());
+                    if (blocks[x, (int)newIndex.y, z] == null && blocks[x, (int)newIndex.y, z-1] == null){
+                    if(x <= 12 && z < 12){
+                        GameObject go = Instantiate(blockPrefab) as GameObject;
+                        go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
+                        PositionBlock(go.transform, newIndex);
+                        blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
+                        {
+                            blockTransform = go.transform,height=blocks[x, y, z].height+new Vector3(0,1,0)
+                        };
+                        blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z-1] = new Block
+                        {
+                            blockTransform = go.transform,height=blocks[x, y, z-1].height+new Vector3(0,1,0)
+                        };
+                        blocks[x, y, z].height+=new Vector3(0,1,0);
+                    }
+                    }
                 }
             }
         }
