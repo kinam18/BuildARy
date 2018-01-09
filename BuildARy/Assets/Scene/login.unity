@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 684287080}
   - component: {fileID: 684287079}
   - component: {fileID: 684287078}
+  - component: {fileID: 684287081}
   m_Layer: 5
   m_Name: Login
   m_TagString: Untagged
@@ -250,7 +251,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 684287079}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &684287079
@@ -286,6 +298,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 684287076}
+--- !u!114 &684287081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 684287076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc4ce72d7835852478b53411b192420a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loginButton: {fileID: 684287078}
+  label: 0
 --- !u!1 &934545435
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,7 +391,7 @@ GameObject:
   - component: {fileID: 1077189783}
   - component: {fileID: 1077189782}
   m_Layer: 5
-  m_Name: InputField
+  m_Name: EmailInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -430,13 +455,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1077189783}
   m_TextComponent: {fileID: 1172398532}
   m_Placeholder: {fileID: 2044008272}
-  m_ContentType: 0
+  m_ContentType: 6
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 7
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 5
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -629,7 +654,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: Password
 --- !u!222 &1312708313
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -780,8 +805,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1413332159}
   m_TextComponent: {fileID: 1428480121}
   m_Placeholder: {fileID: 1312708312}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
