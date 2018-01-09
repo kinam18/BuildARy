@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Block{
     public Transform blockTransform;
@@ -14,10 +15,12 @@ public class GameManager : MonoBehaviour {
     private GameObject foundationObject;
     private Vector3 blockOffset = new Vector3(0.5f,0.5f,0.5f);
     private Vector3 foundationCenter = new Vector3(0, 0, 0);
+	public Button button1;
 
 	void Start () {
         foundationObject = GameObject.Find("Foundation");
-
+		/*Button rotateButton = button1.GetComponents<Button>();
+		rotateButton.onClick.AddListener (rotate);*/
 	}
 	
 	void Update () {
@@ -80,5 +83,10 @@ public class GameManager : MonoBehaviour {
     {
         t.position = ((index * blockSize) + blockOffset)/* + (foundationObject.transform.position - foundationCenter)*/;
     }
+
+	void rotate()
+	{
+		Debug.Log ("Clicked");
+	}
 
 }
