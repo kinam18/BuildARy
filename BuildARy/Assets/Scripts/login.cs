@@ -47,6 +47,6 @@ public class login : MonoBehaviour {
     void OnGUI()
     {
         if (label)
-        GUI.Label(new Rect(640, 350, 300, 40), "error password");
+        GUI.Label(new Rect(640, 350, 150, 20), "error password");
     }
 }
