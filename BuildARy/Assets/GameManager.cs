@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
     private float blockSize = 0.5f;
     public Block[,,] blocks = new Block[20,20,20];
     public GameObject blockPrefab;
-    private bool isRotated = true;
+    private bool isRotated = false;
     private GameObject foundationObject;
     private Vector3 blockOffset = new Vector3(0.5f,0.5f,0.5f);
     private Vector3 foundationCenter = new Vector3(0, 0, 0);
@@ -60,8 +60,11 @@ public class GameManager : MonoBehaviour {
                             GameObject go = Instantiate(blockPrefab) as GameObject;
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                             PositionBlock(go.transform, index);
+<<<<<<< HEAD
                             Debug.Log("Height:"  + go.transform.position);
 							Debug.Log ("1" + isRotated);
+=======
+>>>>>>> 920577fe753821de6bdabc93b9854fe9d6929f9b
                             blocks[x, y, z] = new Block
                             {
                                 blockTransform = go.transform,
@@ -76,10 +79,23 @@ public class GameManager : MonoBehaviour {
                     }
                     else
                     {
-                        if (blocks[x, y, z] == null){
-                            blocks[x, y, z] = new Block { height = blocks[x, y, z - 1].height };
+                        Vector3 newHeight;
+                        if (blocks[x, y, z] != null)
+                        {
+                            if (blocks[x, y, z + 1] != null)
+                            {
+                                newHeight = blocks[x, y, z].height.y > blocks[x, y, z + 1].height.y ? blocks[x, y, z].height : blocks[x, y, z + 1].height;
+                            }
+                            else
+                            {
+                                newHeight = blocks[x, y, z].height;
+                            }
                         }
-                        Vector3 newIndex = BlockPosition(hit.point + (blocks[x, y, z].height * blockSize));
+                        else
+                        {
+                            newHeight = blocks[x, y, z + 1].height;
+                        }
+                        Vector3 newIndex = BlockPosition(hit.point + (newHeight* blockSize));
                         if (blocks[x, (int)newIndex.y, z] == null && blocks[x, (int)newIndex.y, z + 1] == null)
                         {
                             if (x <= 12 && z < 12)
@@ -87,8 +103,27 @@ public class GameManager : MonoBehaviour {
                                 GameObject go = Instantiate(blockPrefab) as GameObject;
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                                 PositionBlock(go.transform, newIndex);
+<<<<<<< HEAD
                                 Debug.Log("Height2:" + go.transform.position);
 								Debug.Log ("2" + isRotated);
+=======
+                                if (blocks[x, y, z] == null)
+                                {
+                                    blocks[x, y, z] = new Block { height = newHeight + new Vector3(0, 1, 0) };
+                                }
+                                else
+                                {
+                                    blocks[x, y, z].height = newHeight + new Vector3(0, 1, 0);
+                                }
+                                if (blocks[x, y, z + 1] == null)
+                                {
+                                    blocks[x, y, z + 1] = new Block { height = blocks[x, y, z].height };
+                                }
+                                else
+                                {
+                                    blocks[x, y, z + 1].height = blocks[x, y, z].height;
+                                }
+>>>>>>> 920577fe753821de6bdabc93b9854fe9d6929f9b
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
@@ -97,16 +132,24 @@ public class GameManager : MonoBehaviour {
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z + 1] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x, y, z + 1].height + new Vector3(0, 1, 0)
+                                    height = (blocks[x, y, z+1].height!=null? blocks[x, y, z+1].height:new Vector3(0,1,0)) + new Vector3(0, 1, 0)
                                 };
-                                blocks[x, y, z].height += new Vector3(0, 1, 0);
-                                blocks[x, y, z + 1] = new Block { height = blocks[x, y, z].height };
+                                
                             }
                         }
                     }
                 }
+<<<<<<< HEAD
 				else
 				{
+=======
+<<<<<<< HEAD
+                else {
+                    index.z -= 1;
+=======
+				if(isRotated) {
+>>>>>>> ea43f5a09995a67a8f660354a8bfd3e9e859f538
+>>>>>>> 920577fe753821de6bdabc93b9854fe9d6929f9b
                     if (blocks[x, y, z] == null && blocks[x+1, y, z] == null)
                     {
                         if (x < 12 && z <= 12)
@@ -114,10 +157,13 @@ public class GameManager : MonoBehaviour {
                             GameObject go = Instantiate(blockPrefab) as GameObject;
 							go.transform.Rotate(0, 0, 90.0f);
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
-                            index.z -= 1;
+                            
                             PositionBlock(go.transform, index);
+<<<<<<< HEAD
                             Debug.Log("hit:" + go.transform.position);
 							Debug.Log ("3" + isRotated);
+=======
+>>>>>>> 920577fe753821de6bdabc93b9854fe9d6929f9b
                             blocks[x, y, z] = new Block
                             {
                                 blockTransform = go.transform,
@@ -132,12 +178,27 @@ public class GameManager : MonoBehaviour {
                     }
                     else
                     {
-                        if (blocks[x, y, z] == null)
+                        Vector3 newHeight;
+                        if (blocks[x, y, z] != null)
                         {
-                            blocks[x, y, z] = new Block { height = blocks[x-1, y, z].height };
+                            if (blocks[x + 1, y, z] != null)
+                            {
+                                newHeight = blocks[x, y, z].height.y > blocks[x + 1, y, z].height.y ? blocks[x, y, z].height : blocks[x + 1, y, z].height;
+                            }
+                            else {
+                                newHeight = blocks[x, y, z].height;
+                            }
+                            }
+                        else {
+                            newHeight = blocks[x+1, y, z].height;
                         }
+<<<<<<< HEAD
 						Debug.Log ("4" + isRotated);
                         Vector3 newIndex = BlockPosition(hit.point + (blocks[x, y, z].height * blockSize));
+=======
+                        Vector3 newIndex = BlockPosition(hit.point + (newHeight * blockSize));
+                        newIndex.z -= 1;
+>>>>>>> 920577fe753821de6bdabc93b9854fe9d6929f9b
                         if (blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] == null && blocks[(int)newIndex.x + 1, (int)newIndex.y, (int)newIndex.z] == null)
                         {
                             if (x < 12 && z <= 12)
@@ -145,8 +206,24 @@ public class GameManager : MonoBehaviour {
                                 GameObject go = Instantiate(blockPrefab) as GameObject;
                                 go.transform.Rotate(0, 0, 90);
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
-                                newIndex.z -= 1;
+                                
                                 PositionBlock(go.transform, newIndex);
+                                if (blocks[x, y, z] == null)
+                                {
+                                    blocks[x, y, z] = new Block { height = newHeight + new Vector3(0, 1, 0) };
+                                }
+                                else
+                                {
+                                    blocks[x, y, z].height = newHeight + new Vector3(0, 1, 0);
+                                }
+                                if (blocks[x + 1, y, z] == null)
+                                {
+                                    blocks[x + 1, y, z] = new Block { height = blocks[x, y, z].height };
+                                }
+                                else
+                                {
+                                    blocks[x + 1, y, z].height = blocks[x, y, z].height;
+                                }
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
@@ -155,10 +232,9 @@ public class GameManager : MonoBehaviour {
                                 blocks[(int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x+1, y, z].height + new Vector3(0, 1, 0)
+                                    height = (blocks[x+1, y, z].height!=null? blocks[x + 1, y, z].height:new Vector3(0,1,0)) + new Vector3(0, 1, 0)
                                 };
-                                blocks[x, y, z].height += new Vector3(0, 1, 0);
-                                blocks[x+1, y, z] = new Block { height = blocks[x, y, z].height };
+                                
                             }
                         }
                     }
@@ -194,5 +270,9 @@ public class GameManager : MonoBehaviour {
 		go.transform.Rotate(0, 0, 90);
 		go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);*/
 	}
+<<<<<<< HEAD
+
+=======
 		
+>>>>>>> 373c4130937e129472e08d3b22db4fb59b0e6856
 }
