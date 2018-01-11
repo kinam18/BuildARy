@@ -16,12 +16,25 @@ public class GameManager : MonoBehaviour {
     private GameObject foundationObject;
     private Vector3 blockOffset = new Vector3(0.5f,0.5f,0.5f);
     private Vector3 foundationCenter = new Vector3(0, 0, 0);
-	public Button button1;
+	//public Button[] button1;
+	//public int numOfMenu = 3;
+	public Button btn1;
+	public int count = 0;
 
 	void Start () {
         foundationObject = GameObject.Find("Foundation");
-		/*Button rotateButton = button1.GetComponents<Button>();
-		rotateButton.onClick.AddListener (rotate);*/
+		btn1 = GetComponent<Button> ();
+		btn1.onClick.AddListener (rotate);
+		/*button1 = new Button[numOfMenu];
+		for (var i = 1; i <= numOfMenu; i++) 
+		{
+			Button btn = GameObject.Find ("btn" + i).GetComponent<Button> ();
+			button1 [i] = btn;
+			button1 [i].interactable = true;
+		}
+		button1 [1].onClick.AddListener (rotate);*/
+		//Button rotateButton = button1.GetComponents<Button>();
+		//rotateButton.onClick.AddListener (rotate);
 	}
 	
 	void Update () {
@@ -85,7 +98,7 @@ public class GameManager : MonoBehaviour {
                         }
                     }
                 }
-                else {
+				if(isRotated) {
                     if (blocks[x, y, z] == null && blocks[x+1, y, z] == null)
                     {
                         if (x < 12 && z <= 12)
@@ -159,6 +172,21 @@ public class GameManager : MonoBehaviour {
 	void rotate()
 	{
 		Debug.Log ("Clicked");
+		/*count++;
+		if (count % 2 == 0) {
+			isRotated = true;
+		}
+		else {
+			isRotated = false;
+		}*/
+		isRotated = !isRotated;
+		/*GameObject go = Instantiate(blockPrefab) as GameObject;
+		go.transform.Rotate(0, 0, 90);
+		go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);*/
 	}
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> 373c4130937e129472e08d3b22db4fb59b0e6856
 }
