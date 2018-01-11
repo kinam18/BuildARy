@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Block{
     public Transform blockTransform;
@@ -20,11 +21,13 @@ public class GameManager : MonoBehaviour {
 	//public int numOfMenu = 3;
 	public Button btn1;
 	public int count = 0;
+	private EventSystem es;
 
 	void Start () {
         foundationObject = GameObject.Find("Foundation");
 		btn1 = GetComponent<Button> ();
 		btn1.onClick.AddListener (rotate);
+		es = FindObjectOfType<EventSystem> ();
 		/*button1 = new Button[numOfMenu];
 		for (var i = 1; i <= numOfMenu; i++) 
 		{
@@ -40,6 +43,8 @@ public class GameManager : MonoBehaviour {
 	void Update () {
         if (Input.GetMouseButtonDown(0))
         {
+			if (es.IsPointerOverGameObject ())
+				return;
             RaycastHit hit;
             if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
@@ -56,6 +61,7 @@ public class GameManager : MonoBehaviour {
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                             PositionBlock(go.transform, index);
                             Debug.Log("Height:"  + go.transform.position);
+							Debug.Log ("1" + isRotated);
                             blocks[x, y, z] = new Block
                             {
                                 blockTransform = go.transform,
@@ -82,6 +88,7 @@ public class GameManager : MonoBehaviour {
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                                 PositionBlock(go.transform, newIndex);
                                 Debug.Log("Height2:" + go.transform.position);
+								Debug.Log ("2" + isRotated);
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
@@ -98,17 +105,19 @@ public class GameManager : MonoBehaviour {
                         }
                     }
                 }
-				if(isRotated) {
+				else
+				{
                     if (blocks[x, y, z] == null && blocks[x+1, y, z] == null)
                     {
                         if (x < 12 && z <= 12)
                         {
                             GameObject go = Instantiate(blockPrefab) as GameObject;
-                            go.transform.Rotate(0, 0, 90);
+							go.transform.Rotate(0, 0, 90.0f);
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                             index.z -= 1;
                             PositionBlock(go.transform, index);
                             Debug.Log("hit:" + go.transform.position);
+							Debug.Log ("3" + isRotated);
                             blocks[x, y, z] = new Block
                             {
                                 blockTransform = go.transform,
@@ -127,6 +136,7 @@ public class GameManager : MonoBehaviour {
                         {
                             blocks[x, y, z] = new Block { height = blocks[x-1, y, z].height };
                         }
+						Debug.Log ("4" + isRotated);
                         Vector3 newIndex = BlockPosition(hit.point + (blocks[x, y, z].height * blockSize));
                         if (blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] == null && blocks[(int)newIndex.x + 1, (int)newIndex.y, (int)newIndex.z] == null)
                         {
