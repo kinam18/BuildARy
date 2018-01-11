@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+
+
 
 public class login : MonoBehaviour {
 
@@ -12,7 +16,7 @@ public class login : MonoBehaviour {
     int time_int=5;
     void Start () {
         loginButton = GetComponent<Button> ();
-        loginButton.onClick.AddListener(() =>  onclik());
+        loginButton.onClick.AddListener(onclik);
     }
 	
 	// Update is called once per frame
@@ -31,6 +35,7 @@ public class login : MonoBehaviour {
             label = true;
         }
         else {
+            SceneManager.LoadScene("menu");
         }
 
     }
