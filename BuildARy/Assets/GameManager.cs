@@ -155,13 +155,10 @@ public class GameManager : MonoBehaviour {
     {
         t.position = ((index * blockSize) + blockOffset)/* + (foundationObject.transform.position - foundationCenter)*/;
     }
-<<<<<<< HEAD
 
 	void rotate()
 	{
 		Debug.Log ("Clicked");
 	}
 
-=======
->>>>>>> 580f3eede73780b2132d5be43823206c6e6db513
 }
