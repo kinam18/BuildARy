@@ -20,16 +20,18 @@ public class GameManager : MonoBehaviour {
     private Vector3 foundationCenter = new Vector3(0, 0, 0);
 	//public Button[] button1;
 	//public int numOfMenu = 3;
-	public Button btn1;
-	public int count = 0;
-	private EventSystem es;
-
-	void Start () {
+	public Button btnro;
+    public Button btnun;
+    public int count = 0;
+    public GameObject go;
+    public Vector3[] undovec = new Vector3[2];
+    void Start () {
         foundationObject = GameObject.Find("Foundation");
-		btn1 = GetComponent<Button> ();
+		Button btn1 = btnro.GetComponent<Button> ();
 		btn1.onClick.AddListener (rotate);
-		es = FindObjectOfType<EventSystem> ();
-		/*button1 = new Button[numOfMenu];
+        Button btn2 = btnun.GetComponent<Button>();
+        btn2.onClick.AddListener(undo);
+        /*button1 = new Button[numOfMenu];
 		for (var i = 1; i <= numOfMenu; i++) 
 		{
 			Button btn = GameObject.Find ("btn" + i).GetComponent<Button> ();
@@ -37,15 +39,14 @@ public class GameManager : MonoBehaviour {
 			button1 [i].interactable = true;
 		}
 		button1 [1].onClick.AddListener (rotate);*/
-		//Button rotateButton = button1.GetComponents<Button>();
-		//rotateButton.onClick.AddListener (rotate);
-	}
+        //Button rotateButton = button1.GetComponents<Button>();
+        //rotateButton.onClick.AddListener (rotate);
+    }
 	
 	void Update () {
         if (Input.GetMouseButtonDown(0))
         {
-			if (es.IsPointerOverGameObject ())
-				return;
+			
             RaycastHit hit;
             if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour {
                     {
                         if (x <= 12 && z < 12)
                         {
-                            GameObject go = Instantiate(blockPrefab) as GameObject;
+                            go = Instantiate(blockPrefab) as GameObject;
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                             PositionBlock(go.transform, index);
                             Debug.Log("Height:"  + go.transform.position);
@@ -73,6 +74,8 @@ public class GameManager : MonoBehaviour {
                                 blockTransform = go.transform,
                                 height = new Vector3(0, 1, 0)
                             };
+                            undovec[0] = new Vector3(x, y, z);
+                            undovec[1] = new Vector3(x, y, z+1);
                         }
                     }
                     else
@@ -98,7 +101,7 @@ public class GameManager : MonoBehaviour {
                         {
                             if (x <= 12 && z < 12)
                             {
-                                GameObject go = Instantiate(blockPrefab) as GameObject;
+                                go = Instantiate(blockPrefab) as GameObject;
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                                 PositionBlock(go.transform, newIndex);
                                 Debug.Log("Height2:" + go.transform.position);
@@ -129,18 +132,22 @@ public class GameManager : MonoBehaviour {
                                     blockTransform = go.transform,
                                     height = (blocks[x, y, z+1].height!=null? blocks[x, y, z+1].height:new Vector3(0,1,0)) + new Vector3(0, 1, 0)
                                 };
-                                
+                                Debug.Log("Base:"+y);
+                                undovec[0] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z);
+                                undovec[1] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z + 1);
+                                Debug.Log("put1:" + (int)newIndex.x+" "+ (int)newIndex.y + " " + (int)newIndex.z);
+                                Debug.Log("put2:" + (int)newIndex.x + " " + (int)newIndex.y + " " + (int)newIndex.z+1);
                             }
                         }
                     }
                 }
                 else {
-                    index.z -= 1;
+                    //index.z -= 1;
                     if (blocks[x, y, z] == null && blocks[x+1, y, z] == null)
                     {
                         if (x < 12 && z <= 12)
                         {
-                            GameObject go = Instantiate(blockPrefab) as GameObject;
+                            go = Instantiate(blockPrefab) as GameObject;
 							go.transform.Rotate(0, 0, 90.0f);
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);    
                             PositionBlock(go.transform, index);
@@ -156,6 +163,8 @@ public class GameManager : MonoBehaviour {
                                 blockTransform = go.transform,
                                 height = new Vector3(0, 1, 0)
                             };
+                            undovec[0] = new Vector3(x, y, z);
+                            undovec[1] = new Vector3(x+1, y, z);
                         }
                     }
                     else
@@ -176,12 +185,12 @@ public class GameManager : MonoBehaviour {
                         }
 						Debug.Log ("4" + isRotated);
                         Vector3 newIndex = BlockPosition(hit.point + (newHeight * blockSize));
-                        newIndex.z -= 1;
+                        //newIndex.z -= 1;
                         if (blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] == null && blocks[(int)newIndex.x + 1, (int)newIndex.y, (int)newIndex.z] == null)
                         {
                             if (x < 12 && z <= 12)
                             {
-                                GameObject go = Instantiate(blockPrefab) as GameObject;
+                                go = Instantiate(blockPrefab) as GameObject;
                                 go.transform.Rotate(0, 0, 90);
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                                 
@@ -210,9 +219,11 @@ public class GameManager : MonoBehaviour {
                                 blocks[(int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = (blocks[x+1, y, z].height!=null? blocks[x + 1, y, z].height:new Vector3(0,1,0)) + new Vector3(0, 1, 0)
+                                    height = blocks[x+1, y, z].height + new Vector3(0, 1, 0)
                                 };
-                                
+                                undovec[0] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z);
+                                undovec[1] = new Vector3((int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z);
+                                Debug.Log("put1:" + (int)newIndex.x + " " + (int)newIndex.y + " " + (int)newIndex.z);
                             }
                         }
                     }
@@ -230,6 +241,7 @@ public class GameManager : MonoBehaviour {
     }
     public void PositionBlock(Transform t, Vector3 index)
     {
+        if (isRotated) { index -= new Vector3(0, 0, 1); }
         t.position = ((index * blockSize) + blockOffset)/* + (foundationObject.transform.position - foundationCenter)*/;
     }
 
@@ -248,4 +260,21 @@ public class GameManager : MonoBehaviour {
 		go.transform.Rotate(0, 0, 90);
 		go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);*/
 	}
+    void undo()
+    {
+        if (go != null)
+        {
+            Destroy(go);
+            Debug.Log("GO:"+go);
+            for (int i = 0; i < 2; i++)
+            {
+                blocks[(int)undovec[i].x, (int)undovec[i].y, (int)undovec[i].z] = null;
+                blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height -= new Vector3(0, 1, 0);
+                if (blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height.y == 1) {
+                    blocks[(int)undovec[i].x, 0, (int)undovec[i].z] = null;
+                }
+                Debug.Log("af" + (int)undovec[i].x + (int)undovec[i].y + (int)undovec[i].z);
+            }
+        }
+    }
 }
