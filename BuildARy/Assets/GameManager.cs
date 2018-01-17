@@ -52,7 +52,13 @@ public class GameManager : MonoBehaviour {
             {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
+                Debug.Log("object:"+hit.transform.gameObject);
+                if (hit.transform.gameObject.name != "Foundation")
+                {
+                    index.y -= 1;
+                }
                 int x = (int)index.x, y=(int)index.y, z = (int)index.z;
+                Debug.Log("Y is :" + y);
                 if (!isRotated)
                 {
                     if (blocks[x, y, z] == null && blocks[x, y, z + 1] == null)
@@ -60,6 +66,9 @@ public class GameManager : MonoBehaviour {
                         if (x <= 12 && z < 12)
                         {
                             go = Instantiate(blockPrefab) as GameObject;
+                            go.AddComponent<BoxCollider>();
+                            BoxCollider collider = go.GetComponent<BoxCollider>();
+                            collider.size = new Vector3(0.5f, 0.5f, 0.5f);
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                             PositionBlock(go.transform, index);
                             Debug.Log("Height:"  + go.transform.position);
@@ -96,12 +105,15 @@ public class GameManager : MonoBehaviour {
                         {
                             newHeight = blocks[x, y, z + 1].height;
                         }
-                        Vector3 newIndex = BlockPosition(hit.point + (newHeight* blockSize));
+                        Vector3 newIndex = BlockPosition(hit.point + (hit.normal* blockSize));
                         if (blocks[x, (int)newIndex.y, z] == null && blocks[x, (int)newIndex.y, z + 1] == null)
                         {
                             if (x <= 12 && z < 12)
                             {
                                 go = Instantiate(blockPrefab) as GameObject;
+                                go.AddComponent<BoxCollider>();
+                                BoxCollider collider = go.GetComponent<BoxCollider>();
+                                collider.size = new Vector3(0.5f,0.5f,0.5f);
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                                 PositionBlock(go.transform, newIndex);
                                 Debug.Log("Height2:" + go.transform.position);
@@ -132,11 +144,8 @@ public class GameManager : MonoBehaviour {
                                     blockTransform = go.transform,
                                     height = (blocks[x, y, z+1].height!=null? blocks[x, y, z+1].height:new Vector3(0,1,0)) + new Vector3(0, 1, 0)
                                 };
-                                Debug.Log("Base:"+y);
                                 undovec[0] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z);
                                 undovec[1] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z + 1);
-                                Debug.Log("put1:" + (int)newIndex.x+" "+ (int)newIndex.y + " " + (int)newIndex.z);
-                                Debug.Log("put2:" + (int)newIndex.x + " " + (int)newIndex.y + " " + (int)newIndex.z+1);
                             }
                         }
                     }
@@ -148,7 +157,10 @@ public class GameManager : MonoBehaviour {
                         if (x < 12 && z <= 12)
                         {
                             go = Instantiate(blockPrefab) as GameObject;
-							go.transform.Rotate(0, 0, 90.0f);
+                            go.AddComponent<BoxCollider>();
+                            BoxCollider collider = go.GetComponent<BoxCollider>();
+                            collider.size = new Vector3(0.5f,0.5f,0.5f);
+                            go.transform.Rotate(0, 0, 90.0f);
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);    
                             PositionBlock(go.transform, index);
                             Debug.Log("hit:" + go.transform.position);
@@ -170,56 +182,59 @@ public class GameManager : MonoBehaviour {
                     else
                     {
                         Vector3 newHeight;
-                        if (blocks[x, y, z] != null)
+                        if (blocks[x, 0, z] != null)
                         {
-                            if (blocks[x + 1, y, z] != null)
+                            if (blocks[x + 1, 0, z] != null)
                             {
-                                newHeight = blocks[x, y, z].height.y > blocks[x + 1, y, z].height.y ? blocks[x, y, z].height : blocks[x + 1, y, z].height;
+                                newHeight = blocks[x, 0, z].height.y > blocks[x + 1, 0, z].height.y ? blocks[x, 0, z].height : blocks[x + 1, 0, z].height;
                             }
                             else {
-                                newHeight = blocks[x, y, z].height;
+                                newHeight = blocks[x, 0, z].height;
                             }
                             }
                         else {
-                            newHeight = blocks[x+1, y, z].height;
+                            newHeight = blocks[x+1, 0, z].height;
                         }
 						Debug.Log ("4" + isRotated);
-                        Vector3 newIndex = BlockPosition(hit.point + (newHeight * blockSize));
+                        //Vector3 newIndex = BlockPosition(hit.point + (hit.normal * blockSize));
+                        Vector3 newIndex = index + newHeight * 0.5f;
                         //newIndex.z -= 1;
                         if (blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] == null && blocks[(int)newIndex.x + 1, (int)newIndex.y, (int)newIndex.z] == null)
                         {
                             if (x < 12 && z <= 12)
                             {
                                 go = Instantiate(blockPrefab) as GameObject;
+                                go.AddComponent<BoxCollider>();
+                                BoxCollider collider = go.GetComponent<BoxCollider>();
+                                collider.size = new Vector3(1, 0.5f, 1);
                                 go.transform.Rotate(0, 0, 90);
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
-                                
                                 PositionBlock(go.transform, newIndex);
-                                if (blocks[x, y, z] == null)
+                                if (blocks[x, 0, z] == null)
                                 {
-                                    blocks[x, y, z] = new Block { height = newHeight + new Vector3(0, 1, 0) };
+                                    blocks[x, 0, z] = new Block { height = newHeight + new Vector3(0, 1, 0) };
                                 }
                                 else
                                 {
-                                    blocks[x, y, z].height = newHeight + new Vector3(0, 1, 0);
+                                    blocks[x, 0, z].height = newHeight + new Vector3(0, 1, 0);
                                 }
-                                if (blocks[x + 1, y, z] == null)
+                                if (blocks[x + 1, 0, z] == null)
                                 {
-                                    blocks[x + 1, y, z] = new Block { height = blocks[x, y, z].height };
+                                    blocks[x + 1, 0, z] = new Block { height = blocks[x, 0, z].height };
                                 }
                                 else
                                 {
-                                    blocks[x + 1, y, z].height = blocks[x, y, z].height;
+                                    blocks[x + 1, 0, z].height = blocks[x, 0, z].height;
                                 }
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x, y, z].height + new Vector3(0, 1, 0)
+                                    height = blocks[x, 0, z].height + new Vector3(0, 1, 0)
                                 };
                                 blocks[(int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x+1, y, z].height + new Vector3(0, 1, 0)
+                                    height = blocks[x+1, 0, z].height + new Vector3(0, 1, 0)
                                 };
                                 undovec[0] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z);
                                 undovec[1] = new Vector3((int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z);
