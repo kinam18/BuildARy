@@ -25,12 +25,16 @@ public class GameManager : MonoBehaviour {
     public int count = 0;
     public GameObject go;
     public Vector3[] undovec = new Vector3[2];
+    Hashtable arguments;
     void Start () {
         foundationObject = GameObject.Find("Foundation");
 		Button btn1 = btnro.GetComponent<Button> ();
+        BoxCollider2D btn1co = btn1.GetComponent<BoxCollider2D>();
 		btn1.onClick.AddListener (rotate);
         Button btn2 = btnun.GetComponent<Button>();
         btn2.onClick.AddListener(undo);
+        arguments = SceneManager.GetSceneArguments();
+        Debug.Log("Arguments: " + arguments["key"] );
         /*button1 = new Button[numOfMenu];
 		for (var i = 1; i <= numOfMenu; i++) 
 		{
@@ -48,8 +52,10 @@ public class GameManager : MonoBehaviour {
         {
 			
             RaycastHit hit;
-            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
+
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
+                if (!EventSystem.current.IsPointerOverGameObject()) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -245,7 +251,8 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-	}
+        }
+    }
     private Vector3 BlockPosition(Vector3 hit)
     {
         int x = (int)(hit.x / blockSize);
@@ -257,7 +264,7 @@ public class GameManager : MonoBehaviour {
     public void PositionBlock(Transform t, Vector3 index)
     {
         if (isRotated) { index -= new Vector3(0, 0, 1); }
-        t.position = ((index * blockSize) + blockOffset)/* + (foundationObject.transform.position - foundationCenter)*/;
+        t.position = ((index * blockSize) + blockOffset)/*+ (foundationObject.transform.position - foundationCenter)*/;
     }
 
 	void rotate()
@@ -292,4 +299,6 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
+  
+
 }
