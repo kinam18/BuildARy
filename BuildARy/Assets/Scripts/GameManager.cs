@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
 	//public int numOfMenu = 3;
 	public Button btnro;
     public Button btnun;
+    public Button btnbak;
     public int count = 0;
     public GameObject go;
     public Vector3[] undovec = new Vector3[2];
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour {
 		btn1.onClick.AddListener (rotate);
         Button btn2 = btnun.GetComponent<Button>();
         btn2.onClick.AddListener(undo);
+        Button btn3 = btnun.GetComponent<Button>();
+        btn3.onClick.AddListener(back);
         arguments = SceneManager.GetSceneArguments();
         Debug.Log("Arguments: " + arguments["key"] );
         /*button1 = new Button[numOfMenu];
@@ -55,7 +58,7 @@ public class GameManager : MonoBehaviour {
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
-                if (!EventSystem.current.IsPointerOverGameObject()) {
+                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -296,12 +299,16 @@ public class GameManager : MonoBehaviour {
             {
                 blocks[(int)undovec[i].x, (int)undovec[i].y, (int)undovec[i].z] = null;
                 blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height -= new Vector3(0, 1, 0);
-                if (blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height.y == 1) {
+                if (blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height.y == 0) {
                     blocks[(int)undovec[i].x, 0, (int)undovec[i].z] = null;
                 }
                 Debug.Log("af" + (int)undovec[i].x + (int)undovec[i].y + (int)undovec[i].z);
             }
         }
+    }
+    void back()
+    {
+        SceneManager.LoadScene("menu", arguments);
     }
   
 

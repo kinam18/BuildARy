@@ -9,9 +9,9 @@ public class genWord : MonoBehaviour {
     public Button dif;
     public Button med;
     public Button eas;
-    public string[] difw = { "dif", "fic", "ult" };
-    public string[] medw = { "me", "di", "um" };
-    public string[] easw = { "e", "a", "s", "y" };
+    public string[] difw = { "cabbage", "cucumber", "ingredients" };
+    public string[] medw = { "coconut", "peach", "garlic" };
+    public string[] easw = { "juice", "meat", "cola", "curry" };
     public int randomdif;
     public int randommed;
     public int randomeas;
