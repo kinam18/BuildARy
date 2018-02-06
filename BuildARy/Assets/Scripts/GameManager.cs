@@ -163,6 +163,7 @@ public class GameManager : MonoBehaviour {
                 }
                 else {
                         //index.z -= 1;
+                        
                         if (blocks[x, 0, z] == null && blocks[x+1, 0, z] == null)
                     {
                         if (x < 12 && z <= 12)
@@ -194,7 +195,7 @@ public class GameManager : MonoBehaviour {
                     }
                     else
                     {
-                        Vector3 newHeight;
+                            Vector3 newHeight;
                         if (blocks[x, 0, z] != null)
                         {
                             if (blocks[x + 1, 0, z] != null)
