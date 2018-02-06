@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour {
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
-                if (!EventSystem.current.IsPointerOverGameObject(/*Input.GetTouch(0).fingerId*/)) {
+                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -304,13 +304,14 @@ public class GameManager : MonoBehaviour {
     void undo()
     {
         Debug.Log(undoGo.Count);
-        if (undoGo.Count >= 0)
+        if (undoGo.Count > 0)
         {
                 Destroy(undoGo[undoGo.Count-1]);
                 undoGo.RemoveAt(undoGo.Count-1);
                 Debug.Log("GO:" + go);
                 for (int i = blockPosition.Count-1; i >= blockPosition.Count-2; i--)
             {
+                Debug.Log("I:" + i);
                 blocks[(int)blockPosition[i].x, (int)blockPosition[i].y, (int)blockPosition[i].z] = null;
                 if (blockPosition[i].y != 0)
                 {
@@ -337,10 +338,10 @@ public class GameManager : MonoBehaviour {
                     }
                 }
                 Debug.Log("af" + (int)blockPosition[i].x + (int)blockPosition[i].y + (int)blockPosition[i].z);
-                    blockPosition.RemoveAt(i);
             }
-           
-            
+            blockPosition.RemoveAt(blockPosition.Count - 1);
+            blockPosition.RemoveAt(blockPosition.Count - 1);
+
         }
     }
     void back()
