@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour {
 		btn1.onClick.AddListener (rotate);
         Button btn2 = btnun.GetComponent<Button>();
         btn2.onClick.AddListener(undo);
-        Button btn3 = btnun.GetComponent<Button>();
+        Button btn3 = btnbak.GetComponent<Button>();
         btn3.onClick.AddListener(back);
         arguments = SceneManager.GetSceneArguments();
         Debug.Log("Arguments: " + arguments["key"] );
@@ -298,9 +298,12 @@ public class GameManager : MonoBehaviour {
             for (int i = 0; i < 2; i++)
             {
                 blocks[(int)undovec[i].x, (int)undovec[i].y, (int)undovec[i].z] = null;
-                blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height -= new Vector3(0, 1, 0);
-                if (blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height.y == 0) {
-                    blocks[(int)undovec[i].x, 0, (int)undovec[i].z] = null;
+                if (undovec[i].y != 0)
+                {
+                    blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height -= new Vector3(0, 1, 0);
+                    if (blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height.y == 0) {
+                        blocks[(int)undovec[i].x, 0, (int)undovec[i].z] = null;
+                    }
                 }
                 Debug.Log("af" + (int)undovec[i].x + (int)undovec[i].y + (int)undovec[i].z);
             }
@@ -308,7 +311,7 @@ public class GameManager : MonoBehaviour {
     }
     void back()
     {
-        SceneManager.LoadScene("menu", arguments);
+        SceneManager.LoadScene("menu");
     }
   
 
