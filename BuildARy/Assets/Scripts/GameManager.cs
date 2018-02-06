@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour {
     private bool isRotated = true;
 	private bool isUndo = false;
     private GameObject foundationObject;
+    private List<GameObject> undoGo = new List<GameObject>();
+    private List<Vector3> blockPosition = new List<Vector3>();
     private Vector3 blockOffset = new Vector3(0.5f,0.5f,0.5f);
     private Vector3 foundationCenter = new Vector3(0, 0, 0);
 	//public Button[] button1;
@@ -25,7 +27,6 @@ public class GameManager : MonoBehaviour {
     public Button btnbak;
     public int count = 0;
     public GameObject go;
-    public Vector3[] undovec = new Vector3[2];
     Hashtable arguments;
     void Start () {
         foundationObject = GameObject.Find("Foundation");
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour {
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
-                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
+                if (!EventSystem.current.IsPointerOverGameObject(/*Input.GetTouch(0).fingerId*/)) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -82,6 +83,7 @@ public class GameManager : MonoBehaviour {
                             collider.size = new Vector3(0.5f, 0.5f, 0.5f);
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                             PositionBlock(go.transform, index);
+                                undoGo.Add(go);
                             Debug.Log("Height:"  + go.transform.position);
 							Debug.Log ("1" + isRotated);
                             blocks[x, y, z] = new Block
@@ -94,8 +96,8 @@ public class GameManager : MonoBehaviour {
                                 blockTransform = go.transform,
                                 height = new Vector3(0, 1, 0)
                             };
-                            undovec[0] = new Vector3(x, y, z);
-                            undovec[1] = new Vector3(x, y, z+1);
+                            blockPosition.Add(new Vector3(x, y, z));
+                            blockPosition.Add(new Vector3(x, y, z+1));
                         }
                     }
                     else
@@ -127,11 +129,15 @@ public class GameManager : MonoBehaviour {
                                 collider.size = new Vector3(0.5f,0.5f,0.5f);
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                                 PositionBlock(go.transform, newIndex);
+                                    undoGo.Add(go);
                                 Debug.Log("Height2:" + go.transform.position);
 								Debug.Log ("2" + isRotated);
                                 if (blocks[x, 0, z] == null)
                                 {
-                                    blocks[x, 0, z] = new Block { height = newHeight + new Vector3(0, 1, 0) };
+                                    blocks[x, 0, z] = new Block {
+                                        blockTransform =null,
+                                        height = newHeight + new Vector3(0, 1, 0)
+                                    };
                                 }
                                 else
                                 {
@@ -139,7 +145,7 @@ public class GameManager : MonoBehaviour {
                                 }
                                 if (blocks[x, 0, z + 1] == null)
                                 {
-                                    blocks[x, 0, z + 1] = new Block { height = blocks[x, 0, z].height };
+                                    blocks[x, 0, z + 1] = new Block { blockTransform = null, height = blocks[x, 0, z].height };
                                 }
                                 else
                                 {
@@ -155,8 +161,8 @@ public class GameManager : MonoBehaviour {
                                     blockTransform = go.transform,
                                     height = (blocks[x, 0, z+1].height!=null? blocks[x, 0, z+1].height:new Vector3(0,1,0)) + new Vector3(0, 1, 0)
                                 };
-                                undovec[0] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z);
-                                undovec[1] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z + 1);
+                                    blockPosition.Add(new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z));
+                                    blockPosition.Add(new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z + 1));
                             }
                         }
                     }
@@ -177,9 +183,11 @@ public class GameManager : MonoBehaviour {
                             go.transform.Rotate(0, 0, 90.0f);
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);    
                             PositionBlock(go.transform, index);
+                                undoGo.Add(go);
                             Debug.Log("hit:" + go.transform.position);
 							Debug.Log ("3" + isRotated);
-                            blocks[x, y, z] = new Block
+                           
+                                blocks[x, y, z] = new Block
                             {
                                 blockTransform = go.transform,
                                 height = new Vector3(0, 1, 0)
@@ -189,8 +197,9 @@ public class GameManager : MonoBehaviour {
                                 blockTransform = go.transform,
                                 height = new Vector3(0, 1, 0)
                             };
-                            undovec[0] = new Vector3(x, y, z);
-                            undovec[1] = new Vector3(x+1, y, z);
+                                blockPosition.Add(new Vector3(x, y, z));
+                                blockPosition.Add(new Vector3(x+1, y, z));
+                                
                         }
                     }
                     else
@@ -224,9 +233,11 @@ public class GameManager : MonoBehaviour {
                                 go.transform.Rotate(0, 0, 90);
                                 go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                                 PositionBlock(go.transform, newIndex);
-                                if (blocks[x, 0, z] == null)
+                                    undoGo.Add(go);
+                                    
+                                    if (blocks[x, 0, z] == null)
                                 {
-                                    blocks[x, 0, z] = new Block { height = newHeight + new Vector3(0, 1, 0) };
+                                    blocks[x, 0, z] = new Block { blockTransform = null, height = newHeight + new Vector3(0, 1, 0) };
                                 }
                                 else
                                 {
@@ -234,7 +245,7 @@ public class GameManager : MonoBehaviour {
                                 }
                                 if (blocks[x + 1, 0, z] == null)
                                 {
-                                    blocks[x + 1, 0, z] = new Block { height = blocks[x, 0, z].height };
+                                    blocks[x + 1, 0, z] = new Block { blockTransform = null, height = blocks[x, 0, z].height };
                                 }
                                 else
                                 {
@@ -243,15 +254,15 @@ public class GameManager : MonoBehaviour {
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x, 0, z].height + new Vector3(0, 1, 0)
+                                    height = blocks[x, 0, z].height
                                 };
                                 blocks[(int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x+1, 0, z].height + new Vector3(0, 1, 0)
+                                    height = blocks[x+1, 0, z].height
                                 };
-                                undovec[0] = new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z);
-                                undovec[1] = new Vector3((int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z);
+                                    blockPosition.Add(new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z));
+                                    blockPosition.Add(new Vector3((int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z));
                                 Debug.Log("put1:" + (int)newIndex.x + " " + (int)newIndex.y + " " + (int)newIndex.z);
                             }
                         }
@@ -292,22 +303,44 @@ public class GameManager : MonoBehaviour {
 	}
     void undo()
     {
-        if (go != null)
+        Debug.Log(undoGo.Count);
+        if (undoGo.Count >= 0)
         {
-            Destroy(go);
-            Debug.Log("GO:"+go);
-            for (int i = 0; i < 2; i++)
+                Destroy(undoGo[undoGo.Count-1]);
+                undoGo.RemoveAt(undoGo.Count-1);
+                Debug.Log("GO:" + go);
+                for (int i = blockPosition.Count-1; i >= blockPosition.Count-2; i--)
             {
-                blocks[(int)undovec[i].x, (int)undovec[i].y, (int)undovec[i].z] = null;
-                if (undovec[i].y != 0)
+                blocks[(int)blockPosition[i].x, (int)blockPosition[i].y, (int)blockPosition[i].z] = null;
+                if (blockPosition[i].y != 0)
                 {
-                    blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height -= new Vector3(0, 1, 0);
-                    if (blocks[(int)undovec[i].x, 0, (int)undovec[i].z].height.y == 0) {
-                        blocks[(int)undovec[i].x, 0, (int)undovec[i].z] = null;
+                    Debug.Log("Undo not base now");
+                    //blocks[(int)blockPosition[i].x, 0, (int)blockPosition[i].z].height -= new Vector3(0, 1, 0);
+                    Debug.Log("base height:" + blocks[(int)blockPosition[i].x, 0, (int)blockPosition[i].z].height);
+                    for (int count = (int)blockPosition[i].y; count >= 0; count--) {
+                        if (blocks[(int)blockPosition[i].x, count, (int)blockPosition[i].z] != null) {
+                            if (blocks[(int)blockPosition[i].x, count, (int)blockPosition[i].z].blockTransform!=null)
+                            {
+                                Debug.Log("exist block break");
+                                break;
+                            }
+                        }
+                        blocks[(int)blockPosition[i].x, 0, (int)blockPosition[i].z].height -= new Vector3(0, 1, 0);
+                        if (blocks[(int)blockPosition[i].x, 0, (int)blockPosition[i].z].height.y==0)
+                        {
+                            blocks[(int)blockPosition[i].x, 0, (int)blockPosition[i].z] = null;
+                            Debug.Log("null block now");
+                            break;
+                        }
+
+                        Debug.Log("base height in loop:" + blocks[(int)blockPosition[i].x, 0, (int)blockPosition[i].z].height);
                     }
                 }
-                Debug.Log("af" + (int)undovec[i].x + (int)undovec[i].y + (int)undovec[i].z);
+                Debug.Log("af" + (int)blockPosition[i].x + (int)blockPosition[i].y + (int)blockPosition[i].z);
+                    blockPosition.RemoveAt(i);
             }
+           
+            
         }
     }
     void back()
