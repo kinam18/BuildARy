@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Facebook.Unity;
+using SocketIO;
 
 
 
@@ -12,6 +13,7 @@ using Facebook.Unity;
 public class login : MonoBehaviour {
 
     // Use this for initialization
+    public SocketIOComponent socket;
     public Button loginButton;
     public Boolean label=false;
     int time_int=5;
@@ -19,8 +21,23 @@ public class login : MonoBehaviour {
         loginButton = GetComponent<Button> ();
         loginButton.onClick.AddListener(onclik);
         Awake();
+        StartCoroutine(ConnectToServer());
+        socket.On("USER_CONNECTED", OnUserConnected);
     }
-	
+
+    IEnumerator ConnectToServer() {
+        yield return new WaitForSeconds(0.5f);
+        socket.Emit("USER_CONNECT");
+        yield return new WaitForSeconds(1f);
+        Dictionary<string, string> data = new Dictionary<string, string>();
+        data["category"] = "food";
+        socket.Emit("GENERATOR",new JSONObject(data));
+    }
+
+    private void OnUserConnected(SocketIOEvent evt) {
+        Debug.Log("Get the message from server is :" + evt.data);
+    }
+
 	// Update is called once per frame
 	void Update () {
         
