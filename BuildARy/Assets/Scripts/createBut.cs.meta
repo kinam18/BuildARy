@@ -1,11 +1,17 @@
 fileFormatVersion: 2
 guid: 2ac4f099a7abc4f46ac866f55654f0f1
-timeCreated: 1516172871
+timeCreated: 1519629281
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - socket: {fileID: 11400000, guid: 010d39cbd03ee4c99a746c1f8ecdc0d8, type: 2}
+  - CreateButton: {instanceID: 0}
+  - LogoutButton: {instanceID: 0}
+  - rend: {instanceID: 0}
+  - name: {instanceID: 0}
+  - propic: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
