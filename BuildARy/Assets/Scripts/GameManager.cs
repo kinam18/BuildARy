@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     private bool isRotated = true;
 	private bool isUndo = false;
     private GameObject foundationObject;
+    public GameObject scrollView;
     private List<GameObject> undoGo = new List<GameObject>();
     private List<Vector3> blockPosition = new List<Vector3>();
     private Vector3 blockOffset = new Vector3(0.5f,0.5f,0.5f);
@@ -25,20 +26,32 @@ public class GameManager : MonoBehaviour {
 	public Button btnro;
     public Button btnun;
     public Button btnbak;
+    public Button menu;
+    public Button hidemenu;
+    public Button showColour;
+    public Button hideColour;
+    public GameObject colour;
     public int count = 0;
     public GameObject go;
+    private bool showGUI=false;
+    RectTransform rectTransform;
     Hashtable arguments;
     void Start () {
+        colour.gameObject.SetActive(false);
+        scrollView.gameObject.SetActive(false);
+        hidemenu.GetComponent<Button>().onClick.AddListener(hidem);
+        hidemenu.gameObject.SetActive(false);
+        hideColour.GetComponent<Button>().onClick.AddListener(hideC); 
+        hideColour.gameObject.SetActive(false);
+        showColour.GetComponent<Button>().onClick.AddListener(showC); 
         foundationObject = GameObject.Find("Foundation");
-		Button btn1 = btnro.GetComponent<Button> ();
-        BoxCollider2D btn1co = btn1.GetComponent<BoxCollider2D>();
-		btn1.onClick.AddListener (rotate);
-        Button btn2 = btnun.GetComponent<Button>();
-        btn2.onClick.AddListener(undo);
-        Button btn3 = btnbak.GetComponent<Button>();
-        btn3.onClick.AddListener(back);
+		btnro.GetComponent<Button> ().onClick.AddListener(rotate);
+        btnun.GetComponent<Button>().onClick.AddListener(undo); ;
+        btnbak.GetComponent<Button>().onClick.AddListener(back);
+        menu.GetComponent<Button>().onClick.AddListener(showmenu);
         arguments = SceneManager.GetSceneArguments();
         Debug.Log("Arguments: " + arguments["key"] );
+        
         /*button1 = new Button[numOfMenu];
 		for (var i = 1; i <= numOfMenu; i++) 
 		{
@@ -59,7 +72,7 @@ public class GameManager : MonoBehaviour {
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
-                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
+                if (!EventSystem.current.IsPointerOverGameObject(/*Input.GetTouch(0).fingerId*/)) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -348,6 +361,34 @@ public class GameManager : MonoBehaviour {
     {
         SceneManager.LoadScene("menu");
     }
-  
+    void showmenu() {
+        menu.gameObject.SetActive(false);
+        scrollView.gameObject.SetActive(true);
+        btnro.gameObject.SetActive(false);
+        btnun.gameObject.SetActive(false);
+        hidemenu.gameObject.SetActive(true);
+    }
+    void hidem()
+    {
+        hidemenu.gameObject.SetActive(false);
+        menu.gameObject.SetActive(true);
+        scrollView.gameObject.SetActive(false);
+        btnro.gameObject.SetActive(true);
+        btnun.gameObject.SetActive(true);
+
+    }
+    void showC()
+    {
+        hideColour.gameObject.SetActive(true);
+        showColour.gameObject.SetActive(false);
+        colour.gameObject.SetActive(true);
+    }
+    void hideC()
+    {
+        hideColour.gameObject.SetActive(false);
+        showColour.gameObject.SetActive(true);
+        colour.gameObject.SetActive(false);
+    }
+
 
 }
