@@ -4,6 +4,7 @@ var server = require('http').createServer(app);
 var io=require('socket.io').listen(server);
 var MongoClient = require('mongodb').MongoClient; 
 var assert = require('assert');
+var async = require('async');
 var mongourl = 'mongodb://s1141002:159753@ds123658.mlab.com:23658/buildary';
 
 app.set('port',process.env.PORT || 8099);
@@ -53,28 +54,39 @@ io.on("connection", function(socket){
 			assert.equal(err,null);
 			console.log('Connected to MongoDB\n');
 			new_data={};
-			db.collection('vocabulary').aggregate([
-				{$match:{"category":category.category,"difficulty":"easy"}},
-				{ $sample: { size: 1 } }],function(err,doc) {
-					console.log("random easy success:"+doc[0].vocabulary);
-					new_data['easy']=doc[0].vocabulary;
-				});
-			db.collection('vocabulary').aggregate([
+			async.parallel([
+				function(finish){
+					db.collection('vocabulary').aggregate([
+					{$match:{"category":category.category,"difficulty":"easy"}},
+					{ $sample: { size: 1 } }],function(err,doc) {
+						console.log("random easy success:"+doc[0].vocabulary);
+						finish(null,doc[0].vocabulary);
+					});
+				},
+				function(finish){
+					db.collection('vocabulary').aggregate([
 					{$match:{"category":category.category,"difficulty":"medium"}},
 					{ $sample: { size: 1 } }],function(err,doc) {
-						console.log("random medium success:"+doc[0].vocabulary);
-						new_data['medium']=doc[0].vocabulary;
+						console.log("random normal success:"+doc[0].vocabulary);
+						finish(null,doc[0].vocabulary);
 					});
-			db.collection('vocabulary').aggregate([
-						{$match:{"category":category.category,"difficulty":"difficult"}},
-						{ $sample: { size: 1 } }],function(err,doc) {
-							console.log("random difficult success:"+doc[0].vocabulary);
-							new_data['difficult']=doc[0].vocabulary;
-						});
-			setTimeout(function () {
-			console.log(new_data);
-			socket.emit("GENERATOR",new_data);
-			},2000)
+				},
+				function(finish){
+					db.collection('vocabulary').aggregate([
+					{$match:{"category":category.category,"difficulty":"difficult"}},
+					{ $sample: { size: 1 } }],function(err,doc) {
+						console.log("random difficult success:"+doc[0].vocabulary);
+						finish(null,doc[0].vocabulary);
+					});
+				}
+			],function(err, results){
+				console.log(results);
+				new_data['easy']=results[0];
+				new_data['medium']=results[1];
+				new_data['difficult']=results[2];
+				console.log(new_data);
+				socket.emit("GENERATOR",new_data);
+			})
 		});
 	});
 });
