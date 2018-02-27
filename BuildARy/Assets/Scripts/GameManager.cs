@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour {
         btnbak.GetComponent<Button>().onClick.AddListener(back);
         menu.GetComponent<Button>().onClick.AddListener(showmenu);
         arguments = SceneManager.GetSceneArguments();
-        Debug.Log("Arguments: " + arguments["key"] );
+        Debug.Log("Arguments: " + arguments["vocab"] );
         
         /*button1 = new Button[numOfMenu];
 		for (var i = 1; i <= numOfMenu; i++) 

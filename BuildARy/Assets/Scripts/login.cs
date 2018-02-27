@@ -23,6 +23,7 @@ public class login : MonoBehaviour {
         Awake();
         StartCoroutine(ConnectToServer());
         socket.On("USER_CONNECTED", OnUserConnected);
+        
     }
 
     IEnumerator ConnectToServer() {
@@ -37,9 +38,10 @@ public class login : MonoBehaviour {
     private void OnUserConnected(SocketIOEvent evt) {
         Debug.Log("Get the message from server is :" + evt.data);
     }
+   
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
         
     }
     void onclik()

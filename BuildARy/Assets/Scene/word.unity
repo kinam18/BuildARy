@@ -281,7 +281,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Loading
 --- !u!222 &338811379
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -318,22 +318,7 @@ MonoBehaviour:
   dif: {fileID: 1965863514}
   med: {fileID: 679346102}
   eas: {fileID: 1778169629}
-  difw:
-  - cabbage
-  - cucumber
-  - ingredients
-  medw:
-  - coconut
-  - peach
-  - garlic
-  easw:
-  - juice
-  - meat
-  - cola
-  - curry
-  randomdif: 0
-  randommed: 0
-  randomeas: 0
+  socket: {fileID: 0}
 --- !u!4 &341746586
 Transform:
   m_ObjectHideFlags: 0
@@ -414,7 +399,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Loading
 --- !u!222 &365839650
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -488,7 +473,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 'Loading
+
+'
 --- !u!222 &440014225
 CanvasRenderer:
   m_ObjectHideFlags: 0
