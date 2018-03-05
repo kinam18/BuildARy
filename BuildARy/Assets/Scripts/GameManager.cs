@@ -7,11 +7,15 @@ using UnityEngine.EventSystems;
 public class Block{
     public Transform blockTransform;
     public Vector3 height = new Vector3(0,1,0);
+    public string color;
+    public string types;
+    public bool rotate;
 }
 
 public class GameManager : MonoBehaviour {
     private float blockSize = 0.5f;
     public Block[,,] blocks = new Block[20,20,20];
+    public static GameManager Instance { set; get; }
     public GameObject blockPrefab;
     private bool isRotated = true;
 	private bool isUndo = false;
@@ -30,6 +34,7 @@ public class GameManager : MonoBehaviour {
     public Button hidemenu;
     public Button showColour;
     public Button hideColour;
+    public Button save;
     public GameObject colour;
     public int count = 0;
     public GameObject go;
@@ -37,6 +42,7 @@ public class GameManager : MonoBehaviour {
     RectTransform rectTransform;
     Hashtable arguments;
     void Start () {
+        Instance = this;
         colour.gameObject.SetActive(false);
         scrollView.gameObject.SetActive(false);
         hidemenu.GetComponent<Button>().onClick.AddListener(hidem);
@@ -49,6 +55,7 @@ public class GameManager : MonoBehaviour {
         btnun.GetComponent<Button>().onClick.AddListener(undo); ;
         btnbak.GetComponent<Button>().onClick.AddListener(back);
         menu.GetComponent<Button>().onClick.AddListener(showmenu);
+        save.GetComponent<Button>().onClick.AddListener(saveGame);
         arguments = SceneManager.GetSceneArguments();
         Debug.Log("Arguments: " + arguments["vocab"] );
         
@@ -93,21 +100,26 @@ public class GameManager : MonoBehaviour {
                             go = Instantiate(blockPrefab) as GameObject;
                             go.AddComponent<BoxCollider>();
                             BoxCollider collider = go.GetComponent<BoxCollider>();
-                            collider.size = new Vector3(0.5f, 0.5f, 0.5f);
+                                collider.size = new Vector3(0.5f, 0.5f, 0.5f);
                             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                             PositionBlock(go.transform, index);
                                 undoGo.Add(go);
                             Debug.Log("Height:"  + go.transform.position);
 							Debug.Log ("1" + isRotated);
-                            blocks[x, y, z] = new Block
-                            {
-                                blockTransform = go.transform,
-                                height = new Vector3(0, 1, 0)
-                            };
+                                blocks[x, y, z] = new Block
+                                {
+                                    blockTransform = go.transform,
+                                    height = new Vector3(0, 1, 0),
+                                    rotate = false,
+                                    color= go.transform.GetComponent<Renderer>().material.color.ToString()
+
+                                };
                             blocks[x, y, z + 1] = new Block
                             {
                                 blockTransform = go.transform,
-                                height = new Vector3(0, 1, 0)
+                                height = new Vector3(0, 1, 0),
+                                rotate = false,
+                                color = go.transform.GetComponent<Renderer>().material.color.ToString()
                             };
                             blockPosition.Add(new Vector3(x, y, z));
                             blockPosition.Add(new Vector3(x, y, z+1));
@@ -149,7 +161,9 @@ public class GameManager : MonoBehaviour {
                                 {
                                     blocks[x, 0, z] = new Block {
                                         blockTransform =null,
-                                        height = newHeight + new Vector3(0, 1, 0)
+                                        height = newHeight + new Vector3(0, 1, 0),
+                                        rotate = false,
+                                        color = go.transform.GetComponent<Renderer>().material.color.ToString()
                                     };
                                 }
                                 else
@@ -158,7 +172,7 @@ public class GameManager : MonoBehaviour {
                                 }
                                 if (blocks[x, 0, z + 1] == null)
                                 {
-                                    blocks[x, 0, z + 1] = new Block { blockTransform = null, height = blocks[x, 0, z].height };
+                                    blocks[x, 0, z + 1] = new Block { blockTransform = null, height = blocks[x, 0, z].height, rotate = false, color = go.transform.GetComponent<Renderer>().material.color.ToString() };
                                 }
                                 else
                                 {
@@ -167,12 +181,16 @@ public class GameManager : MonoBehaviour {
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x, 0, z].height + new Vector3(0, 1, 0)
+                                    height = blocks[x, 0, z].height + new Vector3(0, 1, 0),
+                                    rotate = false,
+                                    color = go.transform.GetComponent<Renderer>().material.color.ToString()
                                 };
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z + 1] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = (blocks[x, 0, z+1].height!=null? blocks[x, 0, z+1].height:new Vector3(0,1,0)) + new Vector3(0, 1, 0)
+                                    height = (blocks[x, 0, z+1].height!=null? blocks[x, 0, z+1].height:new Vector3(0,1,0)) + new Vector3(0, 1, 0),
+                                    rotate = false,
+                                    color = go.transform.GetComponent<Renderer>().material.color.ToString()
                                 };
                                     blockPosition.Add(new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z));
                                     blockPosition.Add(new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z + 1));
@@ -203,12 +221,16 @@ public class GameManager : MonoBehaviour {
                                 blocks[x, y, z] = new Block
                             {
                                 blockTransform = go.transform,
-                                height = new Vector3(0, 1, 0)
-                            };
+                                height = new Vector3(0, 1, 0),
+                                rotate = true,
+                                    color = go.transform.GetComponent<Renderer>().material.color.ToString()
+                                };
                             blocks[x+1, y, z] = new Block
                             {
                                 blockTransform = go.transform,
-                                height = new Vector3(0, 1, 0)
+                                height = new Vector3(0, 1, 0),
+                                rotate = true,
+                                color = go.transform.GetComponent<Renderer>().material.color.ToString()
                             };
                                 blockPosition.Add(new Vector3(x, y, z));
                                 blockPosition.Add(new Vector3(x+1, y, z));
@@ -250,7 +272,7 @@ public class GameManager : MonoBehaviour {
                                     
                                     if (blocks[x, 0, z] == null)
                                 {
-                                    blocks[x, 0, z] = new Block { blockTransform = null, height = newHeight + new Vector3(0, 1, 0) };
+                                    blocks[x, 0, z] = new Block { blockTransform = null, height = newHeight + new Vector3(0, 1, 0), rotate = true, color = go.transform.GetComponent<Renderer>().material.color.ToString() };
                                 }
                                 else
                                 {
@@ -258,7 +280,7 @@ public class GameManager : MonoBehaviour {
                                 }
                                 if (blocks[x + 1, 0, z] == null)
                                 {
-                                    blocks[x + 1, 0, z] = new Block { blockTransform = null, height = blocks[x, 0, z].height };
+                                    blocks[x + 1, 0, z] = new Block { blockTransform = null, height = blocks[x, 0, z].height, rotate = true, color = go.transform.GetComponent<Renderer>().material.color.ToString() };
                                 }
                                 else
                                 {
@@ -267,12 +289,16 @@ public class GameManager : MonoBehaviour {
                                 blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x, 0, z].height
+                                    height = blocks[x, 0, z].height,
+                                    rotate = true,
+                                    color = go.transform.GetComponent<Renderer>().material.color.ToString()
                                 };
                                 blocks[(int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z] = new Block
                                 {
                                     blockTransform = go.transform,
-                                    height = blocks[x+1, 0, z].height
+                                    height = blocks[x+1, 0, z].height,
+                                    rotate = true,
+                                    color = go.transform.GetComponent<Renderer>().material.color.ToString()
                                 };
                                     blockPosition.Add(new Vector3((int)newIndex.x, (int)newIndex.y, (int)newIndex.z));
                                     blockPosition.Add(new Vector3((int)newIndex.x+1, (int)newIndex.y, (int)newIndex.z));
@@ -388,6 +414,37 @@ public class GameManager : MonoBehaviour {
         hideColour.gameObject.SetActive(false);
         showColour.gameObject.SetActive(true);
         colour.gameObject.SetActive(false);
+    }
+    void saveGame() {
+        string saveData="";
+        JSONObject saveData2 = new JSONObject(JSONObject.Type.ARRAY);
+        Block[,,] b= GameManager.Instance.blocks;
+        for (int x = 0; x < 20; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
+                for (int z = 0; z < 20; z++)
+                {
+                    JSONObject saveData1 = new JSONObject(JSONObject.Type.OBJECT);
+                    Block currentBlock = b[x, y, z];
+                    if (currentBlock == null||currentBlock.blockTransform==null)
+                        continue;
+
+
+                    /* saveData += "position:"+currentBlock.blockTransform.position+","+
+                                 "color:"+currentBlock.color + "," +
+                                 "type:"+"2*1" +"," + 
+                                 "rotate:"+currentBlock.rotate+"&";*/
+                    Debug.Log(currentBlock.blockTransform.position);
+                    saveData1.AddField("position:", currentBlock.blockTransform.position.ToString());
+                    saveData1.AddField("color:", currentBlock.color);
+                    saveData1.AddField("type:", "2*1");
+                    saveData1.AddField("rotate:", currentBlock.rotate);
+                    saveData2.Add(saveData1);
+                }
+            }
+        }
+        Debug.Log(saveData2);
     }
 
 
