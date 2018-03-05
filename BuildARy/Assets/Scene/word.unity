@@ -318,7 +318,6 @@ MonoBehaviour:
   dif: {fileID: 1965863514}
   med: {fileID: 679346102}
   eas: {fileID: 1778169629}
-  socket: {fileID: 0}
 --- !u!4 &341746586
 Transform:
   m_ObjectHideFlags: 0

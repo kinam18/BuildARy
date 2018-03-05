@@ -22,39 +22,17 @@ public class login : MonoBehaviour {
         loginButton.onClick.AddListener(onclik);
         Awake();
         StartCoroutine(ConnectToServer());
-        socket.On("USER_CONNECTED", OnUserConnected);
-<<<<<<< HEAD
-        
-=======
-        socket.On("GENERATOR", OnWordGen);
->>>>>>> 369dd2c75f454bda0d3d2912ec5a1549cc090b18
+       
     }
 
     IEnumerator ConnectToServer() {
         yield return new WaitForSeconds(0.5f);
         socket.Emit("USER_CONNECT");
         yield return new WaitForSeconds(1f);
-        Dictionary<string, string> data = new Dictionary<string, string>();
-        data["category"] = "food";
-        socket.Emit("GENERATOR",new JSONObject(data));
+        
     }
 
-    private void OnUserConnected(SocketIOEvent evt) {
-        Debug.Log("Get the message from server is :" + evt.data);
-    }
-   
 
-<<<<<<< HEAD
-=======
-    private void OnWordGen(SocketIOEvent evt)
-    {
-        Debug.Log("Get the message from server is :" + evt.data);
-        string json = JsonUtility.ToJson(evt.data);
-        word s= JsonUtility.FromJson<word>(json);
-        Debug.Log("string:" + s.getEasy());
-    }
-
->>>>>>> 369dd2c75f454bda0d3d2912ec5a1549cc090b18
     // Update is called once per frame
     void Update () {
         
