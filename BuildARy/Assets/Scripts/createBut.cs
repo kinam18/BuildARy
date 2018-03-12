@@ -35,7 +35,7 @@ public class createBut : MonoBehaviour
     }
     void onclik()
     {
-        SceneManager.LoadScene("word");
+        SceneManager.LoadScene("category");
     }
         private void OnUserLogin(SocketIOEvent evt)
     {

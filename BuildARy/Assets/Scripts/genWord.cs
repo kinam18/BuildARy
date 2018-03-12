@@ -5,39 +5,31 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
 
+
 public class genWord : MonoBehaviour {
     public Button dif;
     public Button med;
     public Button eas;
-    public string[] difw = { "cabbage", "cucumber", "ingredients" };
-    public string[] medw = { "coconut", "peach", "garlic" };
-    public string[] easw = { "juice", "meat", "cola", "curry" };
-    public int randomdif;
-    public int randommed;
-    public int randomeas;
-    Hashtable arguments = new Hashtable();
-    
+    Hashtable arguments;
+    Hashtable arguments2 = new Hashtable();
     // Use this for initialization
     void Start() {
-        arguments.Add("key","value");
-        System.Random random = new System.Random();
-        randomdif = random.Next(0, 3);
-        randommed = random.Next(0, 3);
-        randomeas = random.Next(0, 4);
-        GameObject.Find("difButton").GetComponentInChildren<Text>().text = difw[randomdif];
-        GameObject.Find("medButton").GetComponentInChildren<Text>().text = medw[randommed];
-        GameObject.Find("easButton").GetComponentInChildren<Text>().text = easw[randomeas];
-        dif.GetComponent<Button>().onClick.AddListener(delegate { onclick(difw[randomdif]); });
-        med.GetComponent<Button>().onClick.AddListener(delegate { onclick(medw[randommed]); });
-        eas.GetComponent<Button>().onClick.AddListener(delegate { onclick(easw[randomeas]); });
+        arguments = SceneManager.GetSceneArguments();
+        GameObject.Find("difButton").GetComponentInChildren<Text>().text = ((String)arguments["dif"]);
+        GameObject.Find("medButton").GetComponentInChildren<Text>().text = ((String)arguments["med"]);
+        GameObject.Find("easButton").GetComponentInChildren<Text>().text = ((String)arguments["easy"]);
+        dif.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["dif"]); });
+        med.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["med"]); });
+        eas.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["easy"]); });
     }
-
     // Update is called once per frame
     void Update() {
 
     }
     void onclick(String word) {
-        SceneManager.LoadScene("game", arguments);
+        arguments2.Add("vocab", word);
+        SceneManager.LoadScene("game", arguments2);
         Debug.Log(word);
     }
+  
 }

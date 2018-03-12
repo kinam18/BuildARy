@@ -68,12 +68,7 @@ namespace ReuseScroller
 			scrollRect.onValueChanged.AddListener(OnScrolled);
 		}
 
-		protected override void OnValidate() {
-			base.OnValidate();
-			if (cellObject && !cellObject.GetComponent<BaseCell<T>>()) {
-				cellObject = null;
-			}
-		}
+		
 
 		private void OnScrolled(Vector2 pos) {
 			ReuseCells(pos - scrollPosition);
