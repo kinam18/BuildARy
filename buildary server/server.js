@@ -89,6 +89,28 @@ io.on("connection", function(socket){
 			})
 		});
 	});
+	socket.on("SAVE",function(blocks){
+		console.log("Save blocks");
+		MongoClient.connect(mongourl, function(err, db) {
+			assert.equal(err,null);
+			console.log('Connected to MongoDB\n');
+			var new_blocks={};
+			new_blocks['createtime']=blocks.createtime;
+			new_blocks['email']=blocks.email;
+			new_blocks['block']=blocks.block;
+			db.collection('block').
+				update({'createtime': blocks.createtime,'email':blocks.email},new_blocks,{upsert:true},function(err,doc) {
+					assert.equal(err,null);
+					db.close();
+					console.log('success');
+					console.log('Disconnected from MongoDB\n');
+					socket.emit("SAVE",new_blocks);
+			});
+		});
+	});
+	socket.on("SHARE",function(blocks){
+		console.log("Share blocks");
+	});
 });
 
 server.listen(app.get('port'),function(){
