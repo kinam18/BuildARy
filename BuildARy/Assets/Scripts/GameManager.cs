@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Facebook.Unity;
+using SocketIO;
 
 public class Block{
     public Transform blockTransform;
@@ -13,10 +15,12 @@ public class Block{
 }
 
 public class GameManager : MonoBehaviour {
+	public SocketIOComponent socket;
+	private string email;
     private float blockSize = 0.5f;
     public Block[,,] blocks = new Block[20,20,20];
     public static GameManager Instance { set; get; }
-    public GameObject blockPrefab;
+    private GameObject blockPrefab;
     private bool isRotated = true;
 	private bool isUndo = false;
     private GameObject foundationObject;
@@ -35,14 +39,17 @@ public class GameManager : MonoBehaviour {
     public Button showColour;
     public Button hideColour;
     public Button save;
+	public Button load;
     public GameObject colour;
     public int count = 0;
     public GameObject go;
     private bool showGUI=false;
+	private JSONObject saveData2;
     RectTransform rectTransform;
     Hashtable arguments;
     void Start () {
         Instance = this;
+        blockPrefab = Instantiate(Resources.Load("Part_2X1", typeof(GameObject))) as GameObject;
         colour.gameObject.SetActive(false);
         scrollView.gameObject.SetActive(false);
         hidemenu.GetComponent<Button>().onClick.AddListener(hidem);
@@ -56,6 +63,8 @@ public class GameManager : MonoBehaviour {
         btnbak.GetComponent<Button>().onClick.AddListener(back);
         menu.GetComponent<Button>().onClick.AddListener(showmenu);
         save.GetComponent<Button>().onClick.AddListener(saveGame);
+		load.GetComponent<Button>().onClick.AddListener(loadGame);
+		FB.API("me?fields=email", Facebook.Unity.HttpMethod.GET, GetEmail);
         arguments = SceneManager.GetSceneArguments();
         Debug.Log("Arguments: " + arguments["vocab"] );
         
@@ -70,7 +79,11 @@ public class GameManager : MonoBehaviour {
         //Button rotateButton = button1.GetComponents<Button>();
         //rotateButton.onClick.AddListener (rotate);
     }
-	
+	void GetEmail(Facebook.Unity.IGraphResult result)
+	{
+		email = result.ResultDictionary["email"].ToString();
+		Debug.Log("email: " + email);
+	}
 	void Update () {
         if (Input.GetMouseButtonDown(0))
         {
@@ -416,8 +429,8 @@ public class GameManager : MonoBehaviour {
         colour.gameObject.SetActive(false);
     }
     void saveGame() {
+		saveData2 = new JSONObject(JSONObject.Type.ARRAY);
         string saveData="";
-        JSONObject saveData2 = new JSONObject(JSONObject.Type.ARRAY);
         Block[,,] b= GameManager.Instance.blocks;
         for (int x = 0; x < 20; x++)
         {
@@ -426,6 +439,7 @@ public class GameManager : MonoBehaviour {
                 for (int z = 0; z < 20; z++)
                 {
                     JSONObject saveData1 = new JSONObject(JSONObject.Type.OBJECT);
+					JSONObject xyz = new JSONObject(JSONObject.Type.OBJECT);
                     Block currentBlock = b[x, y, z];
                     if (currentBlock == null||currentBlock.blockTransform==null)
                         continue;
@@ -436,16 +450,43 @@ public class GameManager : MonoBehaviour {
                                  "type:"+"2*1" +"," + 
                                  "rotate:"+currentBlock.rotate+"&";*/
                     Debug.Log(currentBlock.blockTransform.position);
-                    saveData1.AddField("position:", currentBlock.blockTransform.position.ToString());
-                    saveData1.AddField("color:", currentBlock.color);
-                    saveData1.AddField("type:", "2*1");
-                    saveData1.AddField("rotate:", currentBlock.rotate);
+					xyz.AddField ("x", currentBlock.blockTransform.position.x);
+					xyz.AddField ("y", currentBlock.blockTransform.position.y);
+					xyz.AddField ("z", currentBlock.blockTransform.position.z);
+					saveData1.AddField("position",xyz);
+                    saveData1.AddField("color", currentBlock.color);
+                    saveData1.AddField("type", "2*1");
+                    saveData1.AddField("rotate", currentBlock.rotate);
                     saveData2.Add(saveData1);
                 }
             }
         }
+		Debug.Log("array0:"+saveData2 [1].GetField("position"));
         Debug.Log(saveData2);
+		JSONObject finalData = new JSONObject(JSONObject.Type.OBJECT);
+		finalData.AddField("email",email);
+		finalData.AddField("createtime",System.DateTime.Now.ToString());
+		finalData.AddField("block",saveData2);
+		socket.Emit ("SAVE", finalData);
     }
+	void loadGame(){
+		for (int i = 0; i < saveData2.Count;i++)
+		{
 
+			string x = saveData2[i].GetField("position").GetField("x")+"";
+			string y = saveData2[i].GetField("position").GetField("y")+"";
+			string z = saveData2[i].GetField("position").GetField("z")+"";
+			Debug.Log ("xyz:"+float.Parse(x)+y+z);
+			Vector3 index =new Vector3(float.Parse(x),float.Parse(y),float.Parse(z));
+			go = Instantiate(blockPrefab) as GameObject;
+			go.AddComponent<BoxCollider>();
+			BoxCollider collider = go.GetComponent<BoxCollider>();
+			collider.size = new Vector3(0.5f, 0.5f, 0.5f);
+			go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
+			go.transform.position=index;
+		}
+
+
+	}
 
 }

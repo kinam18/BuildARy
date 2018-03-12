@@ -49,6 +49,7 @@ MonoBehaviour:
     - VuforiaMars_Images
     - VuforiaMars_VuMark
     dataSetsToActivate:
+    - VuforiaMars_Object_OT
     - BuildARy_Database
     - VuforiaMars_Images
     - VuforiaMars_VuMark
