@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour {
 	private bool isUndo = false;
     private GameObject foundationObject;
     public GameObject scrollView;
-    public GameObject scrollBar;
     private List<GameObject> undoGo = new List<GameObject>();
     private List<Vector3> blockPosition = new List<Vector3>();
     private Vector3 blockOffset = new Vector3(0.5f,0.5f,0.5f);
@@ -50,12 +49,15 @@ public class GameManager : MonoBehaviour {
     Hashtable arguments;
     void Start () {
         Instance = this;
+<<<<<<< HEAD
         blockPrefab = Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
 
         blockPrefab =Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
+=======
+        blockPrefab = Instantiate(Resources.Load("Part_2X1", typeof(GameObject))) as GameObject;
+>>>>>>> parent of 047e468... menu
         colour.gameObject.SetActive(false);
-        scrollView.SetActive(false);
-        scrollBar.SetActive(false);
+        scrollView.gameObject.SetActive(false);
         hidemenu.GetComponent<Button>().onClick.AddListener(hidem);
         hidemenu.gameObject.SetActive(false);
         hideColour.GetComponent<Button>().onClick.AddListener(hideC); 
@@ -538,20 +540,19 @@ public class GameManager : MonoBehaviour {
     }
     void showmenu() {
         menu.gameObject.SetActive(false);
+        scrollView.gameObject.SetActive(true);
         btnro.gameObject.SetActive(false);
         btnun.gameObject.SetActive(false);
         hidemenu.gameObject.SetActive(true);
-        scrollView.SetActive(true);
-        scrollBar.SetActive(true);
     }
     void hidem()
     {
         hidemenu.gameObject.SetActive(false);
         menu.gameObject.SetActive(true);
+        scrollView.gameObject.SetActive(false);
         btnro.gameObject.SetActive(true);
         btnun.gameObject.SetActive(true);
-        scrollView.SetActive(false);
-        scrollBar.SetActive(false);
+
     }
     void showC()
     {
