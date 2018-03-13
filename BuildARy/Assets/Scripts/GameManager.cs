@@ -50,11 +50,9 @@ public class GameManager : MonoBehaviour {
     Hashtable arguments;
     void Start () {
         Instance = this;
-<<<<<<< HEAD
         blockPrefab = Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
-=======
+
         blockPrefab =Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
->>>>>>> 794bfdc25488350b34e95b08f1d4d7ae0a64a2d0
         colour.gameObject.SetActive(false);
         scrollView.SetActive(false);
         scrollBar.SetActive(false);
