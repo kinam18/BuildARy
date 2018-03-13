@@ -74,10 +74,14 @@ Material:
     m_Colors:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     - _Color: {r: 1, g: 0.03676468, b: 0.03676468, a: 1}
 =======
     - _Color: {r: 1, g: 0, b: 0, a: 1}
 >>>>>>> 794bfdc25488350b34e95b08f1d4d7ae0a64a2d0
+=======
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
+>>>>>>> parent of 047e468... menu
 =======
     - _Color: {r: 0, g: 0, b: 0, a: 1}
 >>>>>>> parent of 047e468... menu

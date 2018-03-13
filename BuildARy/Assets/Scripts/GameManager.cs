@@ -50,9 +50,13 @@ public class GameManager : MonoBehaviour {
     void Start () {
         Instance = this;
 <<<<<<< HEAD
+<<<<<<< HEAD
         blockPrefab = Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
 
         blockPrefab =Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
+=======
+        blockPrefab = Instantiate(Resources.Load("Part_2X1", typeof(GameObject))) as GameObject;
+>>>>>>> parent of 047e468... menu
 =======
         blockPrefab = Instantiate(Resources.Load("Part_2X1", typeof(GameObject))) as GameObject;
 >>>>>>> parent of 047e468... menu
