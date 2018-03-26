@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
 	private bool isUndo = false;
     private GameObject foundationObject;
     public GameObject scrollView;
+    public GameObject scrollBar;
     private List<GameObject> undoGo = new List<GameObject>();
     private List<Vector3> blockPosition = new List<Vector3>();
     private Vector3 blockOffset = new Vector3(0.5f,0.5f,0.5f);
@@ -40,28 +41,32 @@ public class GameManager : MonoBehaviour {
     public Button hideColour;
     public Button save;
 	public Button load;
+    public Button twoone;
+    public Button twotwo;
+    public Button twofour;
+    public Button twosix;
+    public Button twoeight;
     public GameObject colour;
     public int count = 0;
     public GameObject go;
     private bool showGUI=false;
 	private JSONObject saveData2;
+    private string blocktype;
     RectTransform rectTransform;
     Hashtable arguments;
     void Start () {
         Instance = this;
-<<<<<<< HEAD
-<<<<<<< HEAD
         blockPrefab = Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
-
-        blockPrefab =Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
-=======
-        blockPrefab = Instantiate(Resources.Load("Part_2X1", typeof(GameObject))) as GameObject;
->>>>>>> parent of 047e468... menu
-=======
-        blockPrefab = Instantiate(Resources.Load("Part_2X1", typeof(GameObject))) as GameObject;
->>>>>>> parent of 047e468... menu
         colour.gameObject.SetActive(false);
         scrollView.gameObject.SetActive(false);
+        scrollBar.gameObject.SetActive(false);
+        hidemenu.gameObject.SetActive(false);
+        twoone.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X1"); });
+        twotwo.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X2"); });
+        twofour.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X4"); });
+        twosix.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X6"); });
+        twoeight.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X8"); });
+        Debug.Log("fsdfsd：" + twoone.GetComponent<Button>());
         hidemenu.GetComponent<Button>().onClick.AddListener(hidem);
         hidemenu.gameObject.SetActive(false);
         hideColour.GetComponent<Button>().onClick.AddListener(hideC); 
@@ -74,7 +79,9 @@ public class GameManager : MonoBehaviour {
         menu.GetComponent<Button>().onClick.AddListener(showmenu);
         save.GetComponent<Button>().onClick.AddListener(saveGame);
 		load.GetComponent<Button>().onClick.AddListener(loadGame);
-		FB.API("me?fields=email", Facebook.Unity.HttpMethod.GET, GetEmail);
+        
+       
+        FB.API("me?fields=email", Facebook.Unity.HttpMethod.GET, GetEmail);
         arguments = SceneManager.GetSceneArguments();
         Debug.Log("Arguments: " + arguments["vocab"] );
         
@@ -548,6 +555,7 @@ public class GameManager : MonoBehaviour {
         btnro.gameObject.SetActive(false);
         btnun.gameObject.SetActive(false);
         hidemenu.gameObject.SetActive(true);
+        scrollBar.gameObject.SetActive(true);
     }
     void hidem()
     {
@@ -556,6 +564,7 @@ public class GameManager : MonoBehaviour {
         scrollView.gameObject.SetActive(false);
         btnro.gameObject.SetActive(true);
         btnun.gameObject.SetActive(true);
+        scrollBar.gameObject.SetActive(false);
 
     }
     void showC()
@@ -630,5 +639,11 @@ public class GameManager : MonoBehaviour {
 
 
 	}
+    void setBlockType(string type)
+    {
+        blocktype = type;
+        Debug.Log("type:" + type);
+        blockPrefab = Resources.Load(type, typeof(GameObject)) as GameObject;
+    }
 
 }
