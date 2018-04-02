@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour {
     public Button blue;
     public Button indigo;
     public Button violet;
+    public Button white;
     public GameObject colour;
     public int count = 0;
     public GameObject go;
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour {
     void Start () {
         Instance = this;
         blockPrefab = Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
-        mat= Resources.Load("Black", typeof(Material)) as Material;
+        mat= Resources.Load("White", typeof(Material)) as Material;
         colour.gameObject.SetActive(false);
         scrollView.gameObject.SetActive(false);
         scrollBar.gameObject.SetActive(false);
@@ -92,6 +93,7 @@ public class GameManager : MonoBehaviour {
         blue.GetComponent<Button>().onClick.AddListener(delegate { setColor("Blue"); });
         indigo.GetComponent<Button>().onClick.AddListener(delegate { setColor("Indigo"); });
         violet.GetComponent<Button>().onClick.AddListener(delegate { setColor("Violet"); });
+        white.GetComponent<Button>().onClick.AddListener(delegate { setColor("White"); });
         Debug.Log("fsdfsd：" + twoone.GetComponent<Button>());
         hidemenu.GetComponent<Button>().onClick.AddListener(hidem);
         hidemenu.gameObject.SetActive(false);
