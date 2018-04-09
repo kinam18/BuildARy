@@ -31,7 +31,7 @@ public class createBut : MonoBehaviour
         LogoutButton.GetComponent<Button>().onClick.AddListener(CallFBLogout);
         joinGame.GetComponent<Button>().onClick.AddListener(joinG);
         FB.API("me?fields=first_name", Facebook.Unity.HttpMethod.GET, GetFacebookData);
-        FB.API("me?fields=email", Facebook.Unity.HttpMethod.GET, GetEmail);
+        FB.API("me?fields=id", Facebook.Unity.HttpMethod.GET, GetEmail);
         FB.API("me/picture", Facebook.Unity.HttpMethod.GET, GetPicture);
         socket.On("LOGIN", OnUserLogin);
 		ScoreCalculation ();
@@ -74,7 +74,7 @@ public class createBut : MonoBehaviour
 
     void onclik()
     {
-        SceneManager.LoadScene("game");
+        SceneManager.LoadScene("category");
     }
         private void OnUserLogin(SocketIOEvent evt)
     {
@@ -88,10 +88,10 @@ public class createBut : MonoBehaviour
     }
     void GetEmail(Facebook.Unity.IGraphResult result)
     {
-        email = result.ResultDictionary["email"].ToString();
+        email = result.ResultDictionary["id"].ToString();
         Debug.Log("email: " + email);
         Dictionary<string, string> data = new Dictionary<string, string>();
-        data["email"] = email;
+        data["id"] = email;
         socket.Emit("LOGIN", new JSONObject(data));
     }
     private void GetPicture(IGraphResult result)

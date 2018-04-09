@@ -688,10 +688,10 @@ public class GameManager : MonoBehaviour {
         finalData.AddField("createtime",System.DateTime.Now.ToString());
 		finalData.AddField("block",saveData2);
         finalData.AddField("invite", id);
-        /*if (finalData != null)
+        if (finalData != null)
         {
             FB.AppRequest(
-            "ALan,Here is a fre e gift!",
+            "ALan,Here is a free gift!",
             null,
             new List<object>() { "app_users" },
             null, null, null, "ALan title",
@@ -701,7 +701,7 @@ public class GameManager : MonoBehaviour {
                 SceneManager.LoadScene("menu");
             }
         );
-        }*/
+        }
         socket.Emit("SAVE", finalData);
     }
 	void loadGame(){
