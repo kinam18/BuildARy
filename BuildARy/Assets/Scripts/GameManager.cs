@@ -17,7 +17,7 @@ public class Block{
 
 public class GameManager : MonoBehaviour {
 	public SocketIOComponent socket;
-	private string email;
+	private string id;
     private float blockSize = 0.5f;
     public Block[,,] blocks = new Block[20,20,20];
     public static GameManager Instance { set; get; }
@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour {
 		load.GetComponent<Button>().onClick.AddListener(loadGame);
        
        
-        FB.API("me?fields=email", Facebook.Unity.HttpMethod.GET, GetEmail);
+        FB.API("me?fields=id", Facebook.Unity.HttpMethod.GET, GetId);
         arguments = SceneManager.GetSceneArguments();
         Debug.Log("Arguments: " + arguments["vocab"] );
         
@@ -125,10 +125,10 @@ public class GameManager : MonoBehaviour {
         //Button rotateButton = button1.GetComponents<Button>();
         //rotateButton.onClick.AddListener (rotate);
     }
-	void GetEmail(Facebook.Unity.IGraphResult result)
+	void GetId(Facebook.Unity.IGraphResult result)
 	{
-		email = result.ResultDictionary["email"].ToString();
-		Debug.Log("email: " + email);
+		id = result.ResultDictionary["id"].ToString();
+		Debug.Log("id: " + id);
 	}
 	void Update () {
         if (Input.GetMouseButtonDown(0))
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour {
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
-                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
+                if (!EventSystem.current.IsPointerOverGameObject(/*Input.GetTouch(0).fingerId*/)) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -683,10 +683,26 @@ public class GameManager : MonoBehaviour {
 		Debug.Log("array0:"+saveData2 [1].GetField("position"));
         Debug.Log(saveData2);
 		JSONObject finalData = new JSONObject(JSONObject.Type.OBJECT);
-		finalData.AddField("email",email);
-		finalData.AddField("createtime",System.DateTime.Now.ToString());
+		finalData.AddField("id",id);
+        finalData.AddField("vocab", "alan");
+        finalData.AddField("createtime",System.DateTime.Now.ToString());
 		finalData.AddField("block",saveData2);
-		socket.Emit ("SAVE", finalData);
+        finalData.AddField("invite", id);
+        /*if (finalData != null)
+        {
+            FB.AppRequest(
+            "ALan,Here is a fre e gift!",
+            null,
+            new List<object>() { "app_users" },
+            null, null, null, "ALan title",
+            delegate (IAppRequestResult result) {
+                Debug.Log(result.RawResult);
+                socket.Emit("SAVE", finalData);
+                SceneManager.LoadScene("menu");
+            }
+        );
+        }*/
+        socket.Emit("SAVE", finalData);
     }
 	void loadGame(){
 		for (int i = 0; i < saveData2.Count;i++)
