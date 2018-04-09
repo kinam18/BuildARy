@@ -16,16 +16,16 @@ io.on("connection", function(socket){
 		socket.emit("USER_CONNECTED",{message:'test'});
 	});
 	socket.on("LOGIN",function(email){
-		console.log("User login email:"+email.email);
+		console.log("User login email:"+email.id);
 		MongoClient.connect(mongourl, function(err, db) {
 			assert.equal(err,null);
 			console.log('Connected to MongoDB\n');
 			db.collection('users').
-				findOne({email: email.email},function(err,doc) {
+				findOne({id: email.id},function(err,doc) {
 					assert.equal(err,null);
 					if(doc==null){
 						var new_user={};
-						new_user['email']=email.email;
+						new_user['id']=email.id;
 						new_user['rank_score']=0;
 						new_user['previous_work']=[];
 						db.collection('users').insertOne(new_user,function(err,result) {
@@ -123,7 +123,7 @@ io.on("connection", function(socket){
 			new_blocks['share'] = false;
 			new_blocks['invited']=[];
 			db.collection('block').
-				update({'createtime': blocks.createtime,'email':blocks.email},new_blocks,{upsert:true},function(err,doc) {
+				update({'createtime': blocks.createtime,'id':blocks.id},new_blocks,{upsert:true},function(err,doc) {
 					assert.equal(err,null);
 					db.close();
 					console.log('success');
@@ -144,7 +144,7 @@ io.on("connection", function(socket){
 			}
 			new_blocks['share'] = true;
 			db.collection('block').
-				update({'createtime': blocks.createtime,'email':blocks.email},new_blocks,{upsert:true},function(err,doc) {
+				update({'createtime': blocks.createtime,'id':blocks.id},new_blocks,{upsert:true},function(err,doc) {
 					assert.equal(err,null);
 					db.close();
 					console.log('success');
