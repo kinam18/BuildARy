@@ -29,3 +29,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scene/guess.unity
     guid: e272bee495123d4438115f1def7316ad
+  - enabled: 1
+    path: Assets/Scene/join.unity
+    guid: 38e72ab8af6d43d409c6b19cf06eeb92

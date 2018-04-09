@@ -84,6 +84,6 @@ public class createBut : MonoBehaviour
         }
     void joinG()
     {
-        SceneManager.LoadScene("invite");
+        SceneManager.LoadScene("join");
     }
 }
