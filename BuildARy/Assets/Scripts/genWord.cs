@@ -12,8 +12,9 @@ public class genWord : MonoBehaviour {
     public Button eas;
     Hashtable arguments;
     Hashtable arguments2 = new Hashtable();
-    // Use this for initialization
+      // Use this for initialization
     void Start() {
+       
         arguments = SceneManager.GetSceneArguments();
         GameObject.Find("difButton").GetComponentInChildren<Text>().text = ((String)arguments["dif"]);
         GameObject.Find("medButton").GetComponentInChildren<Text>().text = ((String)arguments["med"]);
@@ -31,5 +32,6 @@ public class genWord : MonoBehaviour {
         SceneManager.LoadScene("game", arguments2);
         Debug.Log(word);
     }
-  
+    
+
 }

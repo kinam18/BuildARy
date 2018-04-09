@@ -14,6 +14,7 @@ public class createBut : MonoBehaviour
     public Button CreateButton;
     public Button LogoutButton;
     public Renderer rend;
+    public Button joinGame;
     public Text name;
     public GameObject propic;
     private string fbName;
@@ -24,6 +25,7 @@ public class createBut : MonoBehaviour
     {
         CreateButton.GetComponent<Button>().onClick.AddListener(onclik);
         LogoutButton.GetComponent<Button>().onClick.AddListener(CallFBLogout);
+        joinGame.GetComponent<Button>().onClick.AddListener(joinG);
         FB.API("me?fields=first_name", Facebook.Unity.HttpMethod.GET, GetFacebookData);
         FB.API("me?fields=email", Facebook.Unity.HttpMethod.GET, GetEmail);
         FB.API("me/picture", Facebook.Unity.HttpMethod.GET, GetPicture);
@@ -80,4 +82,8 @@ public class createBut : MonoBehaviour
             SceneManager.LoadScene("login");
         }
         }
+    void joinG()
+    {
+        SceneManager.LoadScene("join");
+    }
 }

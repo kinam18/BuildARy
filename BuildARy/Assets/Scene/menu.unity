@@ -144,6 +144,7 @@ MonoBehaviour:
   CreateButton: {fileID: 144988850}
   LogoutButton: {fileID: 205353519}
   rend: {fileID: 0}
+  joinGame: {fileID: 1566184590}
   name: {fileID: 1639584229}
   propic: {fileID: 1024820681}
 --- !u!4 &27453771
@@ -645,7 +646,7 @@ RectTransform:
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 2042303419}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1153,7 +1154,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2042303419}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1512,8 +1513,8 @@ RectTransform:
   - {fileID: 1566184589}
   - {fileID: 1079531334}
   - {fileID: 205353518}
-  - {fileID: 1024820684}
   - {fileID: 1639584231}
+  - {fileID: 1024820684}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
