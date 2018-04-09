@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -68,7 +69,7 @@ public class GameManager : MonoBehaviour {
 	private JSONObject saveData2;
     private string blocktype;
     private Material mat;
-    private string blockColor;
+    private string blockColor="White";
     RectTransform rectTransform;
     Hashtable arguments;
 
@@ -141,10 +142,10 @@ public class GameManager : MonoBehaviour {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
-                if (hit.transform.gameObject.name != "Foundation")
+                /*if (hit.transform.gameObject.name != "Foundation")
                 {
                     index.y -= 1;
-                }
+                }*/
                 int x = (int)index.x, y=(int)index.y, z = (int)index.z;
                 Debug.Log("Y is :" + y);
                 if (isRotated)
@@ -158,6 +159,14 @@ public class GameManager : MonoBehaviour {
                             length = 1;
                         }
                         bool isBase = true;
+                        if (width != 2)
+                        {
+                            x = x - width / 2 +1;
+                        }
+                        if (length > 1)
+                        {
+                            z -= length / 2;
+                        }
                         for (int i = 0; i < length; i++)
                         {
                             for (int j = 0; j < width; j++)
@@ -165,13 +174,14 @@ public class GameManager : MonoBehaviour {
                                 if (blocks[x + j, 0, z + i] != null)
                                 {
                                     isBase = false;
+                                    Debug.Log("isBase is false");
                                     break;
                                 }
                             }
                         }
                         if (isBase)
                         {
-                            if (x + width / 2 <= 12 && z - length / 2 > 2 && z + length / 2 <= 13 && x - width / 2 >= 2)
+                            if (x + width <= 13  && z + length <= 13 && x>2 &&z>2)
                             {
                                 index.y = 0;
                                 y = 0;
@@ -186,6 +196,7 @@ public class GameManager : MonoBehaviour {
                                 undoGo.Add(go);
                             Debug.Log("Height:"  + go.transform.position);
 							Debug.Log ("1" + isRotated);
+
                                 /*blocks[x, y, z] = new Block
                                 {
                                     blockTransform = go.transform,
@@ -211,7 +222,7 @@ public class GameManager : MonoBehaviour {
                                         {
                                             blockTransform = go.transform,
                                             height = new Vector3(0, 1, 0),
-                                            rotate = false,
+                                            rotate = true,
                                             color = blockColor,
                                             type = blockPrefab.transform.name.ToString().Replace("(Clone)","")
                                         };
@@ -255,7 +266,7 @@ public class GameManager : MonoBehaviour {
                             Vector3 newIndex = new Vector3(index.x, newHeight.y, index.z);
                             if (!isBase)
                         {
-                                if (x + width / 2 <= 12 && z - length / 2 > 2 && z + length / 2 <= 13 && x - width / 2 >= 2)
+                                if (x + width <= 13 && z + length <= 13 && x > 2 && z > 2)
                                 {
                                     go = Instantiate(blockPrefab) as GameObject;
                                 go.GetComponent<Renderer>().material = mat;
@@ -317,15 +328,15 @@ public class GameManager : MonoBehaviour {
                                             {
                                                 blocks[x + j, 0, z + i].height = newHeight + new Vector3(0, 1, 0);
                                             }
-                                            blocks[x + j, y, z + i] = new Block
+                                            blocks[x + j,(int) newIndex.y, z + i] = new Block
                                             {
                                                 blockTransform = go.transform,
                                                 height = blocks[x + j, 0, z + i].height,
-                                                rotate = false,
+                                                rotate = true,
                                                 color = blockColor,
                                                 type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                                             };
-                                            blockPosition.Add(new Vector3(x + j, y, z + i));
+                                            blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
                                         }
                                     }
                                 }
@@ -342,6 +353,14 @@ public class GameManager : MonoBehaviour {
                             width = 1;
                             length = 2;
                         }
+                        if (width >1)
+                        {
+                            x = x - width / 2 +1;
+                        }
+                        if (length !=2)
+                        {
+                            z = z-length / 2+1;
+                        }
                         Debug.Log("Width:" + width + "Length:" + length);
                         bool isBase = true;
                         for (int i = 0; i < length; i++)
@@ -356,7 +375,7 @@ public class GameManager : MonoBehaviour {
                         }
                                 if (isBase)
                     {
-                            if (x + width / 2 <= 12 && z - length / 2 >= 2 && z + length / 2 < 13 && x - width / 2 >= 2)
+                            if (x + width <= 13 && z + length <= 13 && x > 2 && z > 2)
                             {
                                 index.y = 0;
                                 y = 0;
@@ -394,7 +413,7 @@ public class GameManager : MonoBehaviour {
                                         {
                                             blockTransform = go.transform,
                                             height = new Vector3(0, 1, 0),
-                                            rotate = true,
+                                            rotate = false,
                                             color = blockColor,
                                             type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                                         };
@@ -432,12 +451,12 @@ public class GameManager : MonoBehaviour {
                             newHeight = blocks[x+1, 0, z].height;
                         }*/
 						Debug.Log ("4" + isRotated);
-                        //Vector3 newIndex = BlockPosition(hit.point + (hit.normal * blockSize));
-                        Vector3 newIndex = new Vector3(index.x, newHeight.y,index.z);
+                            //Vector3 newIndex = BlockPosition(hit.point + (hit.normal * blockSize));
+                            Vector3 newIndex = new Vector3(index.x, newHeight.y,index.z);
                         //newIndex.z -= 1;
                         if (!isBase)
                         {
-                                if (x + width / 2 <= 12 && z - length / 2 >= 2 && z + length / 2 < 13 && x - width / 2 >= 2)
+                                if (x + width <= 13 && z + length <= 13 && x > 2 && z > 2)
                                 {
                                     go = Instantiate(blockPrefab) as GameObject;
                                     go.GetComponent<Renderer>().material = mat;
@@ -494,15 +513,15 @@ public class GameManager : MonoBehaviour {
                                             {
                                                 blocks[x + j, 0, z + i].height = newHeight + new Vector3(0, 1, 0);
                                             }
-                                            blocks[x + j, y, z + i] = new Block
+                                            blocks[x + j, (int)newIndex.y, z + i] = new Block
                                             {
                                                 blockTransform = go.transform,
                                                 height = blocks[x + j, 0, z + i].height,
-                                                rotate = true,
+                                                rotate = false,
                                                 color = blockColor,
                                                 type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                                             };
-                                            blockPosition.Add(new Vector3(x + j, y, z + i));
+                                            blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
                                         }
                                     }
                                     Debug.Log("put1:" + (int)newIndex.x + " " + (int)newIndex.y + " " + (int)newIndex.z);
@@ -528,6 +547,7 @@ public class GameManager : MonoBehaviour {
         t.position = ((index * blockSize) + blockOffset)/*+ (foundationObject.transform.position - foundationCenter)*/;
     }
 
+
 	void rotate()
 	{
 		Debug.Log ("Clicked");
@@ -548,12 +568,16 @@ public class GameManager : MonoBehaviour {
         Debug.Log(undoGo.Count);
         if (undoGo.Count > 0)
         {
-                Destroy(undoGo[undoGo.Count-1]);
+            int stringIndex = undoGo[undoGo.Count - 1].transform.name.ToString().IndexOf('X');
+            int length = (int)System.Char.GetNumericValue(undoGo[undoGo.Count - 1].transform.name.ToString()[stringIndex - 1]);
+            int width = (int)System.Char.GetNumericValue(undoGo[undoGo.Count - 1].transform.name.ToString()[stringIndex + 1]);
+            int size = length * width;
+            Debug.Log("size:" + size);
+            Destroy(undoGo[undoGo.Count-1]);
                 undoGo.RemoveAt(undoGo.Count-1);
-                Debug.Log("GO:" + go);
-                for (int i = blockPosition.Count-1; i >= blockPosition.Count-2; i--)
+                for (int i = blockPosition.Count-1; i >= blockPosition.Count-size; i--)
             {
-                Debug.Log("I:" + i);
+                Debug.Log("block pos y:" + blockPosition[i].y);
                 blocks[(int)blockPosition[i].x, (int)blockPosition[i].y, (int)blockPosition[i].z] = null;
                 if (blockPosition[i].y != 0)
                 {
@@ -581,8 +605,9 @@ public class GameManager : MonoBehaviour {
                 }
                 Debug.Log("af" + (int)blockPosition[i].x + (int)blockPosition[i].y + (int)blockPosition[i].z);
             }
-            blockPosition.RemoveAt(blockPosition.Count - 1);
-            blockPosition.RemoveAt(blockPosition.Count - 1);
+                for(int i = 0; i < size; i++) {
+                Debug.Log("position remove:" + blockPosition[blockPosition.Count - 1]);
+                blockPosition.RemoveAt(blockPosition.Count - 1); }
 
         }
     }
@@ -624,9 +649,9 @@ public class GameManager : MonoBehaviour {
 		saveData2 = new JSONObject(JSONObject.Type.ARRAY);
         string saveData="";
         Block[,,] b= GameManager.Instance.blocks;
-        for (int x = 0; x < 20; x++)
+        for (int y = 0; y < 20; y++)
         {
-            for (int y = 0; y < 20; y++)
+            for (int x = 0; x < 20; x++)
             {
                 for (int z = 0; z < 20; z++)
                 {
@@ -645,7 +670,9 @@ public class GameManager : MonoBehaviour {
 					xyz.AddField ("x", currentBlock.blockTransform.position.x);
 					xyz.AddField ("y", currentBlock.blockTransform.position.y);
 					xyz.AddField ("z", currentBlock.blockTransform.position.z);
-					saveData1.AddField("position",xyz);
+                    saveData1.AddField("arrayindex", x+""+y+ ""+z);
+                    saveData1.AddField("position",xyz);
+                    saveData1.AddField("height", currentBlock.height.y);
                     saveData1.AddField("color", currentBlock.color);
                     saveData1.AddField("type", currentBlock.type);
                     saveData1.AddField("rotate", currentBlock.rotate);
@@ -669,22 +696,68 @@ public class GameManager : MonoBehaviour {
 			string y = saveData2[i].GetField("position").GetField("y")+"";
 			string z = saveData2[i].GetField("position").GetField("z")+"";
 			Debug.Log ("xyz:"+float.Parse(x)+y+z);
+            string arrayindex=saveData2[i].GetField("arrayindex").ToString();
 			Vector3 index =new Vector3(float.Parse(x),float.Parse(y),float.Parse(z));
+            string heightstring = saveData2[i].GetField("height").ToString().Replace("\"", "");
+            Vector3 newheight = new Vector3(0, (float)Char.GetNumericValue(heightstring[0]), 0);
+            Debug.Log("height:" + newheight);
             blockPrefab = Resources.Load((saveData2[i].GetField("type")+"").Replace("\"",""), typeof(GameObject)) as GameObject;
             go = Instantiate(blockPrefab) as GameObject;
             go.GetComponent<Renderer>().material = Resources.Load((saveData2[i].GetField("color") + "").Substring(1, (saveData2[i].GetField("color") + "").Length-2), typeof(Material)) as Material; 
             go.AddComponent<BoxCollider>();
-            if (saveData2[i].GetField("rotate").ToString().Equals("true")){
-            go.transform.Rotate(0, 0, 90);
-        }
-			BoxCollider collider = go.GetComponent<BoxCollider>();
-			collider.size = new Vector3(0.5f, 0.5f, 0.5f);
-			go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
-			go.transform.position=index;
+            Vector3 blockIndex = new Vector3((float)Char.GetNumericValue(arrayindex[1]), (float)Char.GetNumericValue(arrayindex[2]), (float)Char.GetNumericValue(arrayindex[3]));
+            Debug.Log("Array Index:" + blockIndex);
+            BoxCollider collider = go.GetComponent<BoxCollider>();
+            collider.size = new Vector3(0.5f, 0.5f, 0.5f);
+            go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
+            go.transform.position = index;
+            if (saveData2[i].GetField("rotate").ToString().Equals("true"))
+            {
+                int stringIndex = blockPrefab.transform.name.ToString().IndexOf('X');
+                int length = (int)System.Char.GetNumericValue(blockPrefab.transform.name.ToString()[stringIndex - 1]);
+                int width = (int)System.Char.GetNumericValue(blockPrefab.transform.name.ToString()[stringIndex + 1]);
+                if (length == 2 && width == 1)
+                {
+                    width = 2;
+                    length = 1;
+                }
+                if (length == 1 && width == 2) { go.transform.Rotate(0, 0, 90.0f); }
+                blocks[(int)blockIndex.x, (int)blockIndex.y, (int)blockIndex.z] = new Block
+                {
+                    blockTransform = go.transform,
+                    height = newheight,
+                    rotate = true,
+                    color = blockColor,
+                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                };
+            }
+            else
+            {
+                int stringIndex = blockPrefab.transform.name.ToString().IndexOf('X');
+                int width = (int)System.Char.GetNumericValue(blockPrefab.transform.name.ToString()[stringIndex - 1]);
+                int length = (int)System.Char.GetNumericValue(blockPrefab.transform.name.ToString()[stringIndex + 1]);
+                if (length == 1 && width == 2)
+                {
+                    width = 1;
+                    length = 2;
+                }
+                go.transform.Rotate(0, 0, 90.0f);
+                if (length == 2 && width == 1) { go.transform.Rotate(0, 0, 270.0f); }
+                blocks[(int)blockIndex.x, (int)blockIndex.y, (int)blockIndex.z] = new Block
+                {
+                    blockTransform = go.transform,
+                    height = newheight,
+                    rotate = false,
+                    color = blockColor,
+                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                };
+            }
+            }
+			
 		}
 
 
-	}
+	
     void setBlockType(string type)
     {
         blocktype = type;
