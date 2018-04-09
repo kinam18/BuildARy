@@ -20,6 +20,10 @@ public class createBut : MonoBehaviour
     private string fbName;
     private string email;
     private Texture2D profilePic;
+	private double score = 77;
+	public Slider scoreBar;
+	public Text scoreText;
+	public Text levelText;
     // Use this for inisstialization
     void Start()
     {
@@ -30,11 +34,44 @@ public class createBut : MonoBehaviour
         FB.API("me?fields=email", Facebook.Unity.HttpMethod.GET, GetEmail);
         FB.API("me/picture", Facebook.Unity.HttpMethod.GET, GetPicture);
         socket.On("LOGIN", OnUserLogin);
+		ScoreCalculation ();
+		//scoreBarLen = Screen.width / 2;
     }
     void Update()
     {
-
+		//ScoreCalculation (0);
     }
+
+	/*void OnGUI()
+	{
+		GUI.Box (new Rect (50, 50, scoreBarLen, 20),score + "/" + maxScore);
+	}*/
+	public void ScoreCalculation(){
+		if (score >= 10 && score < 30) {
+			levelText.text = "Level 2";
+			scoreBar.GetComponentInChildren<Text> ().text = score + "/" + "30";
+			scoreBar.value = ((float)score/30.0f) * 100.0f;
+		} else if (score >= 30 && score < 60) {
+			levelText.text = "Level 3";
+			scoreBar.GetComponentInChildren<Text> ().text = score + "/" + "60";
+			scoreBar.value = ((float)score/60.0f) * 100.0f;
+		} else if (score >= 60 && score < 100) {
+			levelText.text = "Level 4";
+			scoreBar.GetComponentInChildren<Text> ().text = score + "/" + "100";
+			scoreBar.value = ((float)score/100.0f) * 100.0f;
+		} else if (score >= 100) {
+			levelText.text = "Level 5";
+			scoreBar.GetComponentInChildren<Text> ().text = score + "/" + "200";
+			scoreBar.value = ((float)score/200.0f) * 100.0f;
+		} else {
+			levelText.text = "Level 1";
+			scoreBar.GetComponentInChildren<Text> ().text = score + "/" + "10";
+			scoreBar.value = ((float)score/10.0f) * 100.0f;
+		}
+
+		Debug.Log (scoreBar.value.ToString());
+	}
+
     void onclik()
     {
         SceneManager.LoadScene("category");
