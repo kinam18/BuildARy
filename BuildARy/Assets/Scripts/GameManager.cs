@@ -65,6 +65,14 @@ public class GameManager : MonoBehaviour {
     public GameObject colour;
     public int count = 0;
     public GameObject go;
+    public RectTransform popupSave;
+    public RectTransform popupBack;
+    public Button closeSave;
+    public Button closeBack;
+    public Button backYes;
+    public Button backNo;
+    public Button saveonly;
+    public Button saveShare;
     private bool showGUI=false;
 	private JSONObject saveData2;
     private string blocktype;
@@ -78,6 +86,8 @@ public class GameManager : MonoBehaviour {
         blockPrefab = Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
         mat= Resources.Load("White", typeof(Material)) as Material;
         colour.gameObject.SetActive(false);
+        popupBack.gameObject.SetActive(false);
+        popupSave.gameObject.SetActive(false);
         scrollView.gameObject.SetActive(false);
         scrollBar.gameObject.SetActive(false);
         hidemenu.gameObject.SetActive(false);
@@ -95,6 +105,12 @@ public class GameManager : MonoBehaviour {
         indigo.GetComponent<Button>().onClick.AddListener(delegate { setColor("Indigo"); });
         violet.GetComponent<Button>().onClick.AddListener(delegate { setColor("Violet"); });
         white.GetComponent<Button>().onClick.AddListener(delegate { setColor("White"); });
+        closeBack.GetComponent<Button>().onClick.AddListener(delegate { closeB(); });
+        backNo.GetComponent<Button>().onClick.AddListener(delegate { closeB(); });
+        closeSave.GetComponent<Button>().onClick.AddListener(closeS);
+        backYes.GetComponent<Button>().onClick.AddListener(backmenu);
+        saveonly.GetComponent<Button>().onClick.AddListener(sendOnly);
+        saveShare.GetComponent<Button>().onClick.AddListener(sendShare);
         Debug.Log("fsdfsd：" + twoone.GetComponent<Button>());
         hidemenu.GetComponent<Button>().onClick.AddListener(hidem);
         hidemenu.gameObject.SetActive(false);
@@ -613,7 +629,16 @@ public class GameManager : MonoBehaviour {
     }
     void back()
     {
-        SceneManager.LoadScene("menu");
+        popupBack.gameObject.SetActive(true);
+        hidemenu.gameObject.SetActive(false);
+        menu.gameObject.SetActive(true);
+        scrollView.gameObject.SetActive(false);
+        btnro.gameObject.SetActive(true);
+        btnun.gameObject.SetActive(true);
+        scrollBar.gameObject.SetActive(false);
+        hideColour.gameObject.SetActive(false);
+        showColour.gameObject.SetActive(true);
+        colour.gameObject.SetActive(false);
     }
     void showmenu() {
         menu.gameObject.SetActive(false);
@@ -646,63 +671,16 @@ public class GameManager : MonoBehaviour {
         colour.gameObject.SetActive(false);
     }
     void saveGame() {
-		saveData2 = new JSONObject(JSONObject.Type.ARRAY);
-        string saveData="";
-        Block[,,] b= GameManager.Instance.blocks;
-        for (int y = 0; y < 20; y++)
-        {
-            for (int x = 0; x < 20; x++)
-            {
-                for (int z = 0; z < 20; z++)
-                {
-                    JSONObject saveData1 = new JSONObject(JSONObject.Type.OBJECT);
-					JSONObject xyz = new JSONObject(JSONObject.Type.OBJECT);
-                    Block currentBlock = b[x, y, z];
-                    if (currentBlock == null||currentBlock.blockTransform==null)
-                        continue;
-
-
-                    /* saveData += "position:"+currentBlock.blockTransform.position+","+
-                                 "color:"+currentBlock.color + "," +
-                                 "type:"+"2*1" +"," + 
-                                 "rotate:"+currentBlock.rotate+"&";*/
-                    Debug.Log(currentBlock.blockTransform.position);
-					xyz.AddField ("x", currentBlock.blockTransform.position.x);
-					xyz.AddField ("y", currentBlock.blockTransform.position.y);
-					xyz.AddField ("z", currentBlock.blockTransform.position.z);
-                    saveData1.AddField("arrayindex", x+""+y+ ""+z);
-                    saveData1.AddField("position",xyz);
-                    saveData1.AddField("height", currentBlock.height.y);
-                    saveData1.AddField("color", currentBlock.color);
-                    saveData1.AddField("type", currentBlock.type);
-                    saveData1.AddField("rotate", currentBlock.rotate);
-                    saveData2.Add(saveData1);
-                }
-            }
-        }
-		Debug.Log("array0:"+saveData2 [1].GetField("position"));
-        Debug.Log(saveData2);
-		JSONObject finalData = new JSONObject(JSONObject.Type.OBJECT);
-		finalData.AddField("id",id);
-        finalData.AddField("vocab", "alan");
-        finalData.AddField("createtime",System.DateTime.Now.ToString());
-		finalData.AddField("block",saveData2);
-        finalData.AddField("invite", id);
-        if (finalData != null)
-        {
-            FB.AppRequest(
-            "ALan,Here is a free gift!",
-            null,
-            new List<object>() { "app_users" },
-            null, null, null, "ALan title",
-            delegate (IAppRequestResult result) {
-                Debug.Log(result.RawResult);
-                socket.Emit("SAVE", finalData);
-                SceneManager.LoadScene("menu");
-            }
-        );
-        }
-        socket.Emit("SAVE", finalData);
+        popupSave.gameObject.SetActive(true);
+        hidemenu.gameObject.SetActive(false);
+        menu.gameObject.SetActive(true);
+        scrollView.gameObject.SetActive(false);
+        btnro.gameObject.SetActive(true);
+        btnun.gameObject.SetActive(true);
+        scrollBar.gameObject.SetActive(false);
+        hideColour.gameObject.SetActive(false);
+        showColour.gameObject.SetActive(true);
+        colour.gameObject.SetActive(false);
     }
 	void loadGame(){
 		for (int i = 0; i < saveData2.Count;i++)
@@ -790,5 +768,82 @@ public class GameManager : MonoBehaviour {
         twot8.GetComponent<Renderer>().material = mat;
         blockColor = color;
     }
+    void closeS()
+    {
+        popupSave.gameObject.SetActive(false);
+        
+    }
+    void closeB()
+    {
+        popupBack.gameObject.SetActive(false);
 
+    }
+    void sendOnly()
+    {
+        saveData2 = new JSONObject(JSONObject.Type.ARRAY);
+        string saveData = "";
+        Block[,,] b = GameManager.Instance.blocks;
+        for (int y = 0; y < 20; y++)
+        {
+            for (int x = 0; x < 20; x++)
+            {
+                for (int z = 0; z < 20; z++)
+                {
+                    JSONObject saveData1 = new JSONObject(JSONObject.Type.OBJECT);
+                    JSONObject xyz = new JSONObject(JSONObject.Type.OBJECT);
+                    Block currentBlock = b[x, y, z];
+                    if (currentBlock == null || currentBlock.blockTransform == null)
+                        continue;
+
+
+                    /* saveData += "position:"+currentBlock.blockTransform.position+","+
+                                 "color:"+currentBlock.color + "," +
+                                 "type:"+"2*1" +"," + 
+                                 "rotate:"+currentBlock.rotate+"&";*/
+                    Debug.Log(currentBlock.blockTransform.position);
+                    xyz.AddField("x", currentBlock.blockTransform.position.x);
+                    xyz.AddField("y", currentBlock.blockTransform.position.y);
+                    xyz.AddField("z", currentBlock.blockTransform.position.z);
+                    saveData1.AddField("arrayindex", x + "" + y + "" + z);
+                    saveData1.AddField("position", xyz);
+                    saveData1.AddField("height", currentBlock.height.y);
+                    saveData1.AddField("color", currentBlock.color);
+                    saveData1.AddField("type", currentBlock.type);
+                    saveData1.AddField("rotate", currentBlock.rotate);
+                    saveData2.Add(saveData1);
+                }
+            }
+        }
+        Debug.Log("array0:" + saveData2[1].GetField("position"));
+        Debug.Log(saveData2);
+        JSONObject finalData = new JSONObject(JSONObject.Type.OBJECT);
+        finalData.AddField("id", id);
+        finalData.AddField("vocab", "alan");
+        finalData.AddField("createtime", System.DateTime.Now.ToString());
+        finalData.AddField("block", saveData2);
+        finalData.AddField("invite", id);
+        if (finalData != null)
+        {
+            FB.AppRequest(
+            "ALan,Here is a free gift!",
+            null,
+            new List<object>() { "app_users" },
+            null, null, null, "ALan title",
+            delegate (IAppRequestResult result) {
+                Debug.Log(result.RawResult);
+                socket.Emit("SAVE", finalData);
+                SceneManager.LoadScene("menu");
+            }
+        );
+        }
+        socket.Emit("SAVE", finalData);
+    }
+    void sendShare()
+    {
+
+    }
+    void backmenu()
+    {
+        SceneManager.LoadScene("menu");
+    }
 }
