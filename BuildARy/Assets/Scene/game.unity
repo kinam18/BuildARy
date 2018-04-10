@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 39561776}
   - component: {fileID: 39561775}
   m_Layer: 8
-  m_Name: Load
+  m_Name: rotate2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,8 +210,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: a454050719005b444b59a84eaafba779, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -311,7 +311,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1641674713}
   m_HandleRect: {fileID: 1641674712}
   m_Direction: 0
-  m_Value: 0.49998283
+  m_Value: 0.50000244
   m_Size: 0.9872308
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -377,7 +377,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 126511203}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 191273556}
@@ -386,7 +386,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -819, y: 177}
+  m_AnchoredPosition: {x: 755, y: 410}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &126511205
@@ -2913,15 +2913,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 61ecd361f81c28f438ac35b56704dabe, type: 3}
       propertyPath: m_LocalScale.x
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 61ecd361f81c28f438ac35b56704dabe, type: 3}
       propertyPath: m_LocalScale.y
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 61ecd361f81c28f438ac35b56704dabe, type: 3}
       propertyPath: m_LocalScale.z
-      value: 25
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 61ecd361f81c28f438ac35b56704dabe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -3163,15 +3163,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 43f85c046ce68d5498b63c521c151a85, type: 3}
       propertyPath: m_LocalScale.x
-      value: 40
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 43f85c046ce68d5498b63c521c151a85, type: 3}
       propertyPath: m_LocalScale.y
-      value: 40
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 43f85c046ce68d5498b63c521c151a85, type: 3}
       propertyPath: m_LocalScale.z
-      value: 30
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 43f85c046ce68d5498b63c521c151a85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -3363,7 +3363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 0.82093424, b: 0.4705882, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3615,7 +3615,7 @@ MonoBehaviour:
   showColour: {fileID: 985662469}
   hideColour: {fileID: 1126914006}
   save: {fileID: 126511205}
-  load: {fileID: 39561775}
+  rotate2: {fileID: 39561775}
   twoone: {fileID: 1427785862}
   twotwo: {fileID: 542449152}
   twofour: {fileID: 1146909469}
@@ -4206,7 +4206,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 962.55023, y: 14.799999}
+  m_AnchoredPosition: {x: 962.5502, y: 14.799999}
   m_SizeDelta: {x: 0, y: 321.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1350517907
@@ -4879,7 +4879,7 @@ GameObject:
   - component: {fileID: 1669072298}
   - component: {fileID: 1669072297}
   m_Layer: 8
-  m_Name: btn2
+  m_Name: undo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4964,8 +4964,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: a454050719005b444b59a84eaafba779, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5034,10 +5034,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 70
+    m_FontSize: 60
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 7
+    m_MinSize: 6
     m_MaxSize: 70
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -5045,7 +5045,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Load
+  m_Text: 'Rotate
 
 '
 --- !u!222 &1735259034
@@ -5152,7 +5152,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5308333}
-  m_AnchoredPosition: {x: 0, y: -192.45}
+  m_AnchoredPosition: {x: 0, y: -192.45001}
   m_SizeDelta: {x: 1920, y: -6.0999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1772613161
@@ -6139,7 +6139,7 @@ GameObject:
   - component: {fileID: 2010446961}
   - component: {fileID: 2010446960}
   m_Layer: 8
-  m_Name: btn3
+  m_Name: back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6551,15 +6551,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4a21be438dc9f5847b4a013d00eb6c65, type: 3}
       propertyPath: m_LocalScale.x
-      value: 75
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4a21be438dc9f5847b4a013d00eb6c65, type: 3}
       propertyPath: m_LocalScale.y
-      value: 75
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4a21be438dc9f5847b4a013d00eb6c65, type: 3}
       propertyPath: m_LocalScale.z
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4a21be438dc9f5847b4a013d00eb6c65, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -6593,7 +6593,7 @@ GameObject:
   - component: {fileID: 2070021562}
   - component: {fileID: 2070021565}
   m_Layer: 8
-  m_Name: btn1
+  m_Name: rotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6678,8 +6678,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: a454050719005b444b59a84eaafba779, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

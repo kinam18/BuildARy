@@ -18,12 +18,13 @@ public class createBut : MonoBehaviour
     public Text name;
     public GameObject propic;
     private string fbName;
-    private string email;
+    private string id;
     private Texture2D profilePic;
 	private double score = 77;
 	public Slider scoreBar;
 	public Text scoreText;
 	public Text levelText;
+    public Hashtable arguments=new Hashtable();
     // Use this for inisstialization
     void Start()
     {
@@ -31,7 +32,7 @@ public class createBut : MonoBehaviour
         LogoutButton.GetComponent<Button>().onClick.AddListener(CallFBLogout);
         joinGame.GetComponent<Button>().onClick.AddListener(joinG);
         FB.API("me?fields=first_name", Facebook.Unity.HttpMethod.GET, GetFacebookData);
-        FB.API("me?fields=id", Facebook.Unity.HttpMethod.GET, GetEmail);
+        FB.API("me?fields=id", Facebook.Unity.HttpMethod.GET, GetId);
         FB.API("me/picture", Facebook.Unity.HttpMethod.GET, GetPicture);
         socket.On("LOGIN", OnUserLogin);
 		ScoreCalculation ();
@@ -86,12 +87,12 @@ public class createBut : MonoBehaviour
         name.text = "Hello!" + fbName;
         Debug.Log("fbName: " + fbName);
     }
-    void GetEmail(Facebook.Unity.IGraphResult result)
+    void GetId(Facebook.Unity.IGraphResult result)
     {
-        email = result.ResultDictionary["id"].ToString();
-        Debug.Log("email: " + email);
+        id = result.ResultDictionary["id"].ToString();
+        Debug.Log("email: " + id);
         Dictionary<string, string> data = new Dictionary<string, string>();
-        data["id"] = email;
+        data["id"] = id;
         socket.Emit("LOGIN", new JSONObject(data));
     }
     private void GetPicture(IGraphResult result)
@@ -121,6 +122,7 @@ public class createBut : MonoBehaviour
         }
     void joinG()
     {
-        SceneManager.LoadScene("join");
+        arguments.Add("userId", id);
+        SceneManager.LoadScene("join",arguments);
     }
 }

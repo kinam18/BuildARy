@@ -10,8 +10,7 @@ public class genWord : MonoBehaviour {
     public Button dif;
     public Button med;
     public Button eas;
-    Hashtable arguments;
-    Hashtable arguments2 = new Hashtable();
+    Hashtable arguments=new Hashtable();
       // Use this for initialization
     void Start() {
        
@@ -19,17 +18,18 @@ public class genWord : MonoBehaviour {
         GameObject.Find("difButton").GetComponentInChildren<Text>().text = ((String)arguments["dif"]);
         GameObject.Find("medButton").GetComponentInChildren<Text>().text = ((String)arguments["med"]);
         GameObject.Find("easButton").GetComponentInChildren<Text>().text = ((String)arguments["easy"]);
-        dif.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["dif"]); });
-        med.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["med"]); });
-        eas.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["easy"]); });
+        dif.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["dif"],"difficult"); });
+        med.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["med"], "medium"); });
+        eas.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["easy"],"easy"); });
     }
     // Update is called once per frame
     void Update() {
 
     }
-    void onclick(String word) {
-        arguments2.Add("vocab", word);
-        SceneManager.LoadScene("game", arguments2);
+    void onclick(String word,String difty) {
+        arguments.Add("vocab", word);
+        arguments.Add("diff", difty);
+        SceneManager.LoadScene("game", arguments);
         Debug.Log(word);
     }
     

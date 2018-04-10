@@ -18,6 +18,7 @@ public class Block{
 public class GameManager : MonoBehaviour {
 	public SocketIOComponent socket;
 	private string id;
+    private string fbname;
     private float blockSize = 0.5f;
     public Block[,,] blocks = new Block[20,20,20];
     public static GameManager Instance { set; get; }
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour {
     public Button showColour;
     public Button hideColour;
     public Button save;
-	public Button load;
+	public Button rotate2;
     public Button twoone;
     public Button twotwo;
     public Button twofour;
@@ -78,6 +79,7 @@ public class GameManager : MonoBehaviour {
     private string blocktype;
     private Material mat;
     private string blockColor="White";
+    private string[] inviteUsers = new string[30];
     RectTransform rectTransform;
     Hashtable arguments;
 
@@ -109,8 +111,8 @@ public class GameManager : MonoBehaviour {
         backNo.GetComponent<Button>().onClick.AddListener(delegate { closeB(); });
         closeSave.GetComponent<Button>().onClick.AddListener(closeS);
         backYes.GetComponent<Button>().onClick.AddListener(backmenu);
-        saveonly.GetComponent<Button>().onClick.AddListener(sendOnly);
-        saveShare.GetComponent<Button>().onClick.AddListener(sendShare);
+        saveonly.GetComponent<Button>().onClick.AddListener(delegate { send(false); });
+        saveShare.GetComponent<Button>().onClick.AddListener(delegate { send(true); });
         Debug.Log("fsdfsd：" + twoone.GetComponent<Button>());
         hidemenu.GetComponent<Button>().onClick.AddListener(hidem);
         hidemenu.gameObject.SetActive(false);
@@ -123,10 +125,10 @@ public class GameManager : MonoBehaviour {
         btnbak.GetComponent<Button>().onClick.AddListener(back);
         menu.GetComponent<Button>().onClick.AddListener(showmenu);
         save.GetComponent<Button>().onClick.AddListener(saveGame);
-		load.GetComponent<Button>().onClick.AddListener(loadGame);
+		rotate2.GetComponent<Button>().onClick.AddListener(rotate);
        
        
-        FB.API("me?fields=id", Facebook.Unity.HttpMethod.GET, GetId);
+        FB.API("me?fields=id,name", Facebook.Unity.HttpMethod.GET, GetId);
         arguments = SceneManager.GetSceneArguments();
         Debug.Log("Arguments: " + arguments["vocab"] );
         
@@ -144,7 +146,8 @@ public class GameManager : MonoBehaviour {
 	void GetId(Facebook.Unity.IGraphResult result)
 	{
 		id = result.ResultDictionary["id"].ToString();
-		Debug.Log("id: " + id);
+        fbname= result.ResultDictionary["name"].ToString();
+        Debug.Log("id: " + id);
 	}
 	void Update () {
         if (Input.GetMouseButtonDown(0))
@@ -567,14 +570,27 @@ public class GameManager : MonoBehaviour {
 	void rotate()
 	{
 		Debug.Log ("Clicked");
-		/*count++;
+        if (isRotated)
+        {
+            twot1.transform.Rotate(0, 0, 90.0f);
+        }
+        else
+        {
+            twot1.transform.Rotate(0, 0, 270.0f);
+        }
+        twot2.transform.Rotate(0, 0, 90.0f);
+        twot6.transform.Rotate(0, 0, 90.0f);
+        twot4.transform.Rotate(0, 0, 90.0f);
+        twot8.transform.Rotate(0, 0, 90.0f);
+
+        /*count++;
 		if (count % 2 == 0) {
 			isRotated = true;
 		}
 		else {
 			isRotated = false;
 		}*/
-		isRotated = !isRotated;
+        isRotated = !isRotated;
 		/*GameObject go = Instantiate(blockPrefab) as GameObject;
 		go.transform.Rotate(0, 0, 90);
 		go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);*/
@@ -639,6 +655,7 @@ public class GameManager : MonoBehaviour {
         hideColour.gameObject.SetActive(false);
         showColour.gameObject.SetActive(true);
         colour.gameObject.SetActive(false);
+        save.interactable=false;
     }
     void showmenu() {
         menu.gameObject.SetActive(false);
@@ -647,6 +664,7 @@ public class GameManager : MonoBehaviour {
         btnun.gameObject.SetActive(false);
         hidemenu.gameObject.SetActive(true);
         scrollBar.gameObject.SetActive(true);
+        
     }
     void hidem()
     {
@@ -776,9 +794,10 @@ public class GameManager : MonoBehaviour {
     void closeB()
     {
         popupBack.gameObject.SetActive(false);
+        save.interactable = true;
 
     }
-    void sendOnly()
+    void send(bool check)
     {
         saveData2 = new JSONObject(JSONObject.Type.ARRAY);
         string saveData = "";
@@ -818,25 +837,38 @@ public class GameManager : MonoBehaviour {
         Debug.Log(saveData2);
         JSONObject finalData = new JSONObject(JSONObject.Type.OBJECT);
         finalData.AddField("id", id);
-        finalData.AddField("vocab", "alan");
+        finalData.AddField("name", fbname);
+        finalData.AddField("vocab", arguments["vocab"].ToString());
+        finalData.AddField("category", arguments["category"].ToString());
+        finalData.AddField("diff", arguments["diff"].ToString());
         finalData.AddField("createtime", System.DateTime.Now.ToString());
         finalData.AddField("block", saveData2);
-        finalData.AddField("invite", id);
+        
         if (finalData != null)
         {
-            FB.AppRequest(
-            "ALan,Here is a free gift!",
-            null,
-            new List<object>() { "app_users" },
-            null, null, null, "ALan title",
-            delegate (IAppRequestResult result) {
-                Debug.Log(result.RawResult);
-                socket.Emit("SAVE", finalData);
-                SceneManager.LoadScene("menu");
+            if (check)
+            {
+                FB.AppRequest(
+                "ALan,Here is a free gift!",
+                null,
+                new List<object>() { "app_users" },
+                null, null, null, "ALan title",
+                delegate (IAppRequestResult result)
+                {
+                    Debug.Log(result.RawResult);
+                    finalData.AddField("invite", result.ResultDictionary["to"].ToString());
+                    socket.Emit("SHARE", finalData);
+                    SceneManager.LoadScene("menu");
+                }
+            );
             }
-        );
+            else
+            {
+                socket.Emit("SAVE", finalData);
+            }
         }
-        socket.Emit("SAVE", finalData);
+        
+        
     }
     void sendShare()
     {
