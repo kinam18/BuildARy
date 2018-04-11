@@ -220,15 +220,16 @@ public class guessWord : MonoBehaviour {
     {
         if (checkedans)
         {
-            if (finalData["Answered"] = null)
+            string ID = arguments["userId"].ToString();
+            if (finalData["Answered"] == null)
             {
-                finalData.AddField("Answered", arguments["userid"].ToString());
+                finalData.AddField("Answered", ID);
             }
             else
             {
-                finalData.AddField("Answered", finalData["Answered"].ToString().Replace("\"","")+arguments["userid"].ToString());
+                finalData.AddField("Answered", finalData["Answered"].ToString().Replace("\"","")+","+ ID);
             }
-            string finalNotAnswered = finalData["notAnswered"].ToString().Replace("," + (arguments["userid"].ToString()), "").Replace((arguments["userid"].ToString()), "");
+            string finalNotAnswered = finalData["notAnswered"].ToString().Replace("," + (ID), "").Replace((ID), "");
             finalData.AddField("notAnswered", finalNotAnswered);
             socket.Emit("SHARE", finalData);
             SceneManager.LoadScene("menu");
