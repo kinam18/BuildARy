@@ -25,9 +25,11 @@ public class joinGame : MonoBehaviour {
     {
         
     }
-    void onclick(string gameId)
+    void onclick(string gameId,string vocab,string userid)
     {
         arguments.Add("gameId", gameId);
+        arguments.Add("vocab", vocab);
+        arguments.Add("userid", userid);
         SceneManager.LoadScene("guess", arguments);
     }
     private void GetPicture(IGraphResult result)
@@ -56,7 +58,7 @@ public class joinGame : MonoBehaviour {
             string path = evt.data["data"][0]["id"].ToString().Replace("\"","") + "/picture";
             FB.API(path, Facebook.Unity.HttpMethod.GET, GetPicture);
             friend[i] = Instantiate(friendItem);
-            friend[i].GetComponent<Button>().onClick.AddListener(delegate { onclick(evt.data["data"][i]["_id"].ToString().Replace("\"", "")); });
+            friend[i].GetComponent<Button>().onClick.AddListener(delegate { onclick(evt.data["data"][i]["_id"].ToString().Replace("\"", ""), evt.data["data"][i]["vocab"].ToString().Replace("\"", ""), evt.data["data"][i]["id"].ToString().Replace("\"", "")); });
             friend[i].transform.GetChild(0).GetComponentInChildren<Text>().text = "Name:"+ evt.data["data"][i]["name"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(1).GetComponentInChildren<Text>().text = "Type:"+ evt.data["data"][i]["category"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(2).GetComponentInChildren<Text>().text = "Difficulty:"+ evt.data["data"][i]["diff"].ToString().Replace("\"", "");

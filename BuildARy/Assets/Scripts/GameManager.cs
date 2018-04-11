@@ -856,7 +856,7 @@ public class GameManager : MonoBehaviour {
                 delegate (IAppRequestResult result)
                 {
                     Debug.Log(result.RawResult);
-                    finalData.AddField("invite", result.ResultDictionary["to"].ToString());
+                    finalData.AddField("notAnswered", result.ResultDictionary["to"].ToString());
                     socket.Emit("SHARE", finalData);
                     SceneManager.LoadScene("menu");
                 }
