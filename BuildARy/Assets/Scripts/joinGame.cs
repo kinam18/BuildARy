@@ -13,11 +13,13 @@ public class joinGame : MonoBehaviour {
     private Sprite[] pics = new Sprite[30];
     private int picCount = 0;
     public SocketIOComponent socket;
+	public Button back;
     // Use this for initialization
     void Start()
     {
         StartCoroutine(ConnectToServer());
         socket.On("FINDBYID", getUsers);
+		back.GetComponent<Button> ().onClick.AddListener (backMenu);
     }
 
     // Update is called once per frame
@@ -80,5 +82,9 @@ public class joinGame : MonoBehaviour {
         Debug.Log("wrong");
         
     }
+	void backMenu()
+	{
+		SceneManager.LoadScene ("menu");
+	}
 }
 

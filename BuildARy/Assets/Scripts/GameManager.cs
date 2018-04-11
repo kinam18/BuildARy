@@ -645,17 +645,27 @@ public class GameManager : MonoBehaviour {
     }
     void back()
     {
-        popupBack.gameObject.SetActive(true);
-        hidemenu.gameObject.SetActive(false);
-        menu.gameObject.SetActive(true);
-        scrollView.gameObject.SetActive(false);
-        btnro.gameObject.SetActive(true);
-        btnun.gameObject.SetActive(true);
-        scrollBar.gameObject.SetActive(false);
-        hideColour.gameObject.SetActive(false);
-        showColour.gameObject.SetActive(true);
-        colour.gameObject.SetActive(false);
-        save.interactable=false;
+		popupBack.gameObject.SetActive(true);
+		hidemenu.interactable = false;
+		//hidemenu.gameObject.SetActive(false);
+		menu.interactable = false;
+		//menu.gameObject.SetActive(true);
+		scrollView.gameObject.SetActive(false);
+		btnro.interactable = false;
+		//btnro.gameObject.SetActive(true);
+		btnun.interactable = false;
+		//btnun.gameObject.SetActive(true);
+		hideC();
+		hidem ();
+		//scrollBar.gameObject.SetActive(false);
+		hideColour.interactable = false;
+		//hideColour.gameObject.SetActive(false);
+		showColour.interactable = false;
+		//showColour.gameObject.SetActive(true);
+		colour.gameObject.SetActive(false);
+		save.interactable=false;
+		rotate2.interactable = false;
+		btnbak.interactable = false;
     }
     void showmenu() {
         menu.gameObject.SetActive(false);
@@ -681,24 +691,39 @@ public class GameManager : MonoBehaviour {
         hideColour.gameObject.SetActive(true);
         showColour.gameObject.SetActive(false);
         colour.gameObject.SetActive(true);
+		save.gameObject.SetActive (false);
+
     }
     void hideC()
     {
         hideColour.gameObject.SetActive(false);
         showColour.gameObject.SetActive(true);
         colour.gameObject.SetActive(false);
+		save.gameObject.SetActive (true);
+
     }
     void saveGame() {
-        popupSave.gameObject.SetActive(true);
-        hidemenu.gameObject.SetActive(false);
-        menu.gameObject.SetActive(true);
-        scrollView.gameObject.SetActive(false);
-        btnro.gameObject.SetActive(true);
-        btnun.gameObject.SetActive(true);
-        scrollBar.gameObject.SetActive(false);
-        hideColour.gameObject.SetActive(false);
-        showColour.gameObject.SetActive(true);
-        colour.gameObject.SetActive(false);
+		popupSave.gameObject.SetActive(true);
+		rotate2.interactable = false;
+		hidemenu.interactable = false;
+		//hidemenu.gameObject.SetActive(false);
+		menu.interactable = false;
+		//menu.gameObject.SetActive(true);
+		hideC();
+		hidem ();
+		//scrollView.gameObject.SetActive(false);
+		btnro.interactable = false;
+		//btnro.gameObject.SetActive(true);
+		btnun.interactable = false;
+		//btnun.gameObject.SetActive(true);
+		btnbak.interactable = false;
+		save.interactable = false;
+		scrollBar.gameObject.SetActive(false);
+		hideColour.interactable = false;
+		//hideColour.gameObject.SetActive(false);
+		showColour.interactable = false;
+		//showColour.gameObject.SetActive(true);
+		colour.gameObject.SetActive(false);
     }
 	void loadGame(){
 		for (int i = 0; i < saveData2.Count;i++)
@@ -788,14 +813,32 @@ public class GameManager : MonoBehaviour {
     }
     void closeS()
     {
-        popupSave.gameObject.SetActive(false);
+		popupSave.gameObject.SetActive(false);
+		btnro.interactable = true;
+		btnun.interactable = true;
+		rotate2.interactable = true;
+		showColour.interactable = true;
+		hideColour.interactable = true;
+		hidemenu.interactable = true;
+		menu.interactable = true;
+		//scrollBar.gameObject.SetActive (true);
+		btnbak.interactable = true;
+		save.interactable = true;
         
     }
     void closeB()
     {
-        popupBack.gameObject.SetActive(false);
-        save.interactable = true;
-
+		popupBack.gameObject.SetActive(false);
+		save.interactable = true;
+		btnro.interactable = true;
+		btnun.interactable = true;
+		rotate2.interactable = true;
+		showColour.interactable = true;
+		hideColour.interactable = true;
+		hidemenu.interactable = true;
+		menu.interactable = true;
+		//scrollBar.gameObject.SetActive (true);
+		btnbak.interactable = true;
     }
     void send(bool check)
     {
