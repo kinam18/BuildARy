@@ -9,7 +9,7 @@ using System;
 
 public class guessWord : MonoBehaviour {
 
-    private string word = "strawberry";
+    private string word = "";
 	private string difficulty = "medium";
     public RectTransform guess;
 	public GameObject panel;
@@ -37,6 +37,7 @@ public class guessWord : MonoBehaviour {
     private Hashtable arguments = new Hashtable();
     public SocketIOComponent socket;
     private JSONObject saveData2;
+    private JSONObject finalData;
     private GameObject blockPrefab;
     public GameObject go;
     public Block[,,] blocks = new Block[20, 20, 20];
@@ -46,8 +47,9 @@ public class guessWord : MonoBehaviour {
         arguments = SceneManager.GetSceneArguments();
         Dictionary<string, string> data = new Dictionary<string, string>();
         data["_id"] = arguments["gameId"].ToString();
+        word = arguments["vocab"].ToString();
         gameId = new JSONObject(data);
-        Debug.Log(gameId);
+        Debug.Log("word:"+word);
         StartCoroutine(ConnectToServer());
         socket.On("GETWITHDATA", getGameData);
         submit.GetComponent<Button>().onClick.AddListener(popUp);
@@ -218,6 +220,18 @@ public class guessWord : MonoBehaviour {
     {
         if (checkedans)
         {
+            string ID = arguments["userId"].ToString();
+            if (finalData["Answered"] == null)
+            {
+                finalData.AddField("Answered", ID);
+            }
+            else
+            {
+                finalData.AddField("Answered", finalData["Answered"].ToString().Replace("\"","")+","+ ID);
+            }
+            string finalNotAnswered = finalData["notAnswered"].ToString().Replace("," + (ID), "").Replace((ID), "");
+            finalData.AddField("notAnswered", finalNotAnswered);
+            socket.Emit("SHARE", finalData);
             SceneManager.LoadScene("menu");
         }
         else
@@ -234,6 +248,7 @@ public class guessWord : MonoBehaviour {
         //saveData2 = new JSONObject(JSONObject.Type.ARRAY);
         //saveData2.Add(evt.data["block"]);
         saveData2 = evt.data["block"];
+        finalData = evt.data;
         Debug.Log("data2:" + saveData2.ToString());
         loadGame();
     }

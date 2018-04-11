@@ -145,6 +145,8 @@ MonoBehaviour:
   LogoutButton: {fileID: 205353519}
   rend: {fileID: 0}
   joinGame: {fileID: 1566184590}
+  revision: {fileID: 1079531335}
+  loadGame: {fileID: 1770873311}
   name: {fileID: 1639584229}
   propic: {fileID: 1024820681}
   scoreBar: {fileID: 2065801256}

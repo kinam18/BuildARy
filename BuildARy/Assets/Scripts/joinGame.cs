@@ -15,8 +15,11 @@ public class joinGame : MonoBehaviour {
     public SocketIOComponent socket;
 	public Button back;
     // Use this for initialization
+  
     void Start()
     {
+        arguments = SceneManager.GetSceneArguments();
+        friendItem = Resources.Load("JoinItem", typeof(RectTransform)) as RectTransform;
         StartCoroutine(ConnectToServer());
         socket.On("FINDBYID", getUsers);
 		back.GetComponent<Button> ().onClick.AddListener (backMenu);
@@ -27,11 +30,7 @@ public class joinGame : MonoBehaviour {
     {
         
     }
-    void onclick(string gameId)
-    {
-        arguments.Add("gameId", gameId);
-        SceneManager.LoadScene("guess", arguments);
-    }
+
     private void GetPicture(IGraphResult result)
     {
 
@@ -55,10 +54,12 @@ public class joinGame : MonoBehaviour {
         Debug.Log("test:" + encodingObject);
         for (int i = 0; i < evt.data["data"].Count; i++)
         {
-            string path = evt.data["data"][0]["id"].ToString().Replace("\"","") + "/picture";
+            string path = evt.data["data"][i]["id"].ToString().Replace("\"","") + "/picture";
             FB.API(path, Facebook.Unity.HttpMethod.GET, GetPicture);
             friend[i] = Instantiate(friendItem);
-            friend[i].GetComponent<Button>().onClick.AddListener(delegate { onclick(evt.data["data"][i]["_id"].ToString().Replace("\"", "")); });
+            string oid=evt.data["data"][i]["_id"].ToString().Replace("\"", "");
+            string vocab=evt.data["data"][i]["vocab"].ToString().Replace("\"", "");
+            friend[i].GetComponent<Button>().onClick.AddListener(delegate { onclick(oid,vocab); });
             friend[i].transform.GetChild(0).GetComponentInChildren<Text>().text = "Name:"+ evt.data["data"][i]["name"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(1).GetComponentInChildren<Text>().text = "Type:"+ evt.data["data"][i]["category"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(2).GetComponentInChildren<Text>().text = "Difficulty:"+ evt.data["data"][i]["diff"].ToString().Replace("\"", "");
@@ -72,19 +73,28 @@ public class joinGame : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         socket.Emit("USER_CONNECT");
         yield return new WaitForSeconds(1f);
-        arguments = SceneManager.GetSceneArguments();
         Dictionary<string, string> data = new Dictionary<string, string>();
         data["id"] = arguments["userId"].ToString();
         JSONObject userid = new JSONObject(data);
-        friendItem = Resources.Load("JoinItem", typeof(RectTransform)) as RectTransform;
         Debug.Log("test3:" + userid);
         socket.Emit("FINDBYID", userid);
         Debug.Log("wrong");
         
     }
+<<<<<<< HEAD
 	void backMenu()
 	{
 		SceneManager.LoadScene ("menu");
 	}
+=======
+    void onclick(string gameId, string vocab)
+    {
+        arguments.Add("gameId", gameId);
+        arguments.Add("vocab", vocab);
+        arguments.Add("userid", arguments["userId"].ToString());
+        Debug.Log(gameId + "," + vocab + "," + arguments["userId"]);
+        SceneManager.LoadScene("guess", arguments); 
+    }
+>>>>>>> 06aa3218297276bd58dce998855a79771e380685
 }
 

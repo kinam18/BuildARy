@@ -137,7 +137,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 125505558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbaca06d2fcc9574db95a84eff4ce45f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1be5511201f118f45ba6fe8cb8fdc331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   friendList: {fileID: 2014029890}
@@ -610,7 +610,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Revision
+  m_Text: Continue Game
 --- !u!222 &1483393859
 CanvasRenderer:
   m_ObjectHideFlags: 0

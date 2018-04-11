@@ -32,3 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/join.unity
     guid: 38e72ab8af6d43d409c6b19cf06eeb92
+  - enabled: 1
+    path: Assets/Scene/revision.unity
+    guid: 2e00309f0fa2afa48a3027d7f8199ec5
+  - enabled: 1
+    path: Assets/Scene/continueGame.unity
+    guid: a8d9edce8dfe5ed4e9484d3fc2089bea
