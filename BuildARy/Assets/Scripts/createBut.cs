@@ -77,6 +77,7 @@ public class createBut : MonoBehaviour
 
     void onclik()
     {
+        arguments.Add("checkNewGame", "false");
         SceneManager.LoadScene("category");
     }
         private void OnUserLogin(SocketIOEvent evt)

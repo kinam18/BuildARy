@@ -27,11 +27,14 @@ public class continueGame : MonoBehaviour {
     {
 
     }
-    void onclick(string gameId, string vocab)
+    void onclick(string gameId, string vocab,string diff,string category)
     {
         arguments.Add("gameId", gameId);
         arguments.Add("vocab", vocab);
-        SceneManager.LoadScene("load", arguments);
+        arguments.Add("diff", diff);
+        arguments.Add("category", category);
+        arguments.Add("checkNewGame", "false");
+        SceneManager.LoadScene("game", arguments);
     }
     IEnumerator ConnectToServer()
     {
@@ -54,7 +57,9 @@ public class continueGame : MonoBehaviour {
             friend[i] = Instantiate(friendItem);
             string oid = evt.data["data"][i]["_id"].ToString().Replace("\"", "");
             string vocab = evt.data["data"][i]["vocab"].ToString().Replace("\"", "");
-            friend[i].GetComponent<Button>().onClick.AddListener(delegate { onclick(oid, vocab); });
+            string diff = evt.data["data"][i]["diff"].ToString().Replace("\"", "");
+            string category = evt.data["data"][i]["category"].ToString().Replace("\"", "");
+            friend[i].GetComponent<Button>().onClick.AddListener(delegate { onclick(oid, vocab, diff, category); });
             friend[i].transform.GetChild(0).GetComponentInChildren<Text>().text = "Type:" + evt.data["data"][i]["category"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(1).GetComponentInChildren<Text>().text = "Difficulty:" + evt.data["data"][i]["diff"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(2).GetComponentInChildren<Text>().text = "Word:" + evt.data["data"][i]["vocab"].ToString().Replace("\"", "");

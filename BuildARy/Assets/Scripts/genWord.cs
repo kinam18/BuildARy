@@ -10,7 +10,12 @@ public class genWord : MonoBehaviour {
     public Button dif;
     public Button med;
     public Button eas;
+<<<<<<< HEAD
 	public Button back;
+=======
+    public Text userDefin;
+    public Button submit;
+>>>>>>> 95c8f69bf41d5f982f4cad5cddeabe7c23a5eb9d
     Hashtable arguments=new Hashtable();
       // Use this for initialization
     void Start() {
@@ -22,17 +27,26 @@ public class genWord : MonoBehaviour {
         dif.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["dif"],"difficult"); });
         med.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["med"], "medium"); });
         eas.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["easy"],"easy"); });
+<<<<<<< HEAD
 		back.GetComponent<Button> ().onClick.AddListener (backHome);
+=======
+        submit.GetComponent<Button>().onClick.AddListener(delegate { onclick(userDefin.text, "custom"); });
+        
+>>>>>>> 95c8f69bf41d5f982f4cad5cddeabe7c23a5eb9d
     }
     // Update is called once per frame
     void Update() {
 
     }
     void onclick(String word,String difty) {
-        arguments.Add("vocab", word);
-        arguments.Add("diff", difty);
-        SceneManager.LoadScene("game", arguments);
-        Debug.Log(word);
+        if(word != "") 
+        { 
+            arguments.Add("vocab", word);
+            arguments.Add("diff", difty);
+            arguments.Add("checkNewGame", "true");
+            SceneManager.LoadScene("game", arguments);
+            Debug.Log(word);
+        }
     }
     
 	void backHome()

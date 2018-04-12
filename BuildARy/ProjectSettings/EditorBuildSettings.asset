@@ -38,3 +38,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/continueGame.unity
     guid: a8d9edce8dfe5ed4e9484d3fc2089bea
+  - enabled: 1
+    path: Assets/Scene/revisionGame.unity
+    guid: 07e91abdeb5bd82419e4feffad314aa3
