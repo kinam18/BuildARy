@@ -10,6 +10,7 @@ public class continueGame : MonoBehaviour {
     public Hashtable arguments = new Hashtable();
     public SocketIOComponent socket;
     private RectTransform[] friend = new RectTransform[30];
+	public Button back;
 
     // Use this for initialization
     void Start()
@@ -18,7 +19,7 @@ public class continueGame : MonoBehaviour {
         arguments = SceneManager.GetSceneArguments();
         StartCoroutine(ConnectToServer());
         socket.On("LOADGAMELIST", getUsers);
-
+		back.GetComponent<Button> ().onClick.AddListener (backHome);
     }
 
     // Update is called once per frame
@@ -62,4 +63,8 @@ public class continueGame : MonoBehaviour {
             friend[i].transform.SetParent(friendList, false);
         }
     }
+	void backHome()
+	{
+		SceneManager.LoadScene ("menu");
+	}
 }

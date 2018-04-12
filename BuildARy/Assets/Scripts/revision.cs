@@ -10,6 +10,7 @@ public class revision : MonoBehaviour {
     public Hashtable arguments=new Hashtable();
     public SocketIOComponent socket;
     private RectTransform[] friend = new RectTransform[30];
+	public Button back;
 
     // Use this for initialization
     void Start () {
@@ -17,6 +18,7 @@ public class revision : MonoBehaviour {
         arguments = SceneManager.GetSceneArguments();
         StartCoroutine(ConnectToServer());
         socket.On("REVISION", getUsers);
+		back.GetComponent<Button> ().onClick.AddListener (backHome);
 
     }
 	
@@ -61,4 +63,8 @@ public class revision : MonoBehaviour {
             friend[i].transform.SetParent(friendList, false);
         }
     }
+	void backHome()
+	{
+		SceneManager.LoadScene ("menu");
+	}
 }

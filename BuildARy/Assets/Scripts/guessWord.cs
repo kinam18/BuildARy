@@ -10,7 +10,7 @@ using System;
 public class guessWord : MonoBehaviour {
 
     private string word = "";
-	private string difficulty = "medium";
+	private string difficulty;
     public RectTransform guess;
 	public GameObject panel;
     public GameObject guessSize;
@@ -26,10 +26,12 @@ public class guessWord : MonoBehaviour {
     private string guessAns;
     public Button check;
     private string answer = "";
+	private string friendID;
     private bool checkedans = false;
     public Text checkText;
     private int selectCount = 0;
-	private double score = 97;
+	private float score;
+	private float addscore;
 	public Slider scoreBar;
 	public Text scoreText;
 	public Text levelText;
@@ -38,22 +40,29 @@ public class guessWord : MonoBehaviour {
     public SocketIOComponent socket;
     private JSONObject saveData2;
     private JSONObject finalData;
+	private JSONObject userScore;
+	private JSONObject userID;
     private GameObject blockPrefab;
     public GameObject go;
     public Block[,,] blocks = new Block[20, 20, 20];
     private string blockColor = "White";
+	public Button back;
     // Use this for initialization
     void Start () {
         arguments = SceneManager.GetSceneArguments();
         Dictionary<string, string> data = new Dictionary<string, string>();
         data["_id"] = arguments["gameId"].ToString();
         word = arguments["vocab"].ToString();
+		difficulty = arguments ["diff"].ToString ();
         gameId = new JSONObject(data);
+		userID = new JSONObject (arguments ["userid"].ToString());
         Debug.Log("word:"+word);
         StartCoroutine(ConnectToServer());
         socket.On("GETWITHDATA", getGameData);
+		socket.On ("GETUSER", getUser);
         submit.GetComponent<Button>().onClick.AddListener(popUp);
         check.GetComponent<Button>().onClick.AddListener(checkAnswer);
+		back.GetComponent<Button> ().onClick.AddListener (backHome);
 		panel = GameObject.Find("guessPanel");
 
         for (int i = 0; i < 5; i++)
@@ -169,17 +178,23 @@ public class guessWord : MonoBehaviour {
 			switch (difficulty) {
 			case "medium":
 				score += 3;
+				addscore = 3;
 				ScoreCalculation ();
 				break;
 			case "difficult":
 				score += 5;
+				addscore = 5;
 				ScoreCalculation ();
 				break;
 			default:
 				score += 1;
+				addscore = 1;
 				ScoreCalculation ();
 				break;
 			}
+			userScore.AddField ("score", addscore);
+			userScore.AddField ("user1", arguments ["userid"].ToString());
+			userScore.AddField ("user2", friendID);
         }
         else
         {
@@ -232,6 +247,7 @@ public class guessWord : MonoBehaviour {
             string finalNotAnswered = finalData["notAnswered"].ToString().Replace("," + (ID), "").Replace((ID), "");
             finalData.AddField("notAnswered", finalNotAnswered);
             socket.Emit("SHARE", finalData);
+			socket.Emit ("ADDSCORE", userScore);
             SceneManager.LoadScene("menu");
         }
         else
@@ -248,15 +264,22 @@ public class guessWord : MonoBehaviour {
         //saveData2 = new JSONObject(JSONObject.Type.ARRAY);
         //saveData2.Add(evt.data["block"]);
         saveData2 = evt.data["block"];
+		friendID = evt.data ["id"].ToString ();
         finalData = evt.data;
         Debug.Log("data2:" + saveData2.ToString());
         loadGame();
     }
+	void getUser(SocketIOEvent evt)
+	{
+		Debug.Log ("get user success");
+		score = Convert.ToSingle(evt.data ["score"].ToString());
+	}
     IEnumerator ConnectToServer()
     {
         yield return new WaitForSeconds(0.5f);
         socket.Emit("GETWITHDATA", gameId);
-
+		yield return new WaitForSeconds (0.5f);
+		socket.Emit ("GETUSER", userID);
     }
     void loadGame()
     {
@@ -326,4 +349,8 @@ public class guessWord : MonoBehaviour {
         }
 
     }
+	void backHome()
+	{
+		SceneManager.LoadScene ("menu");
+	}
 }

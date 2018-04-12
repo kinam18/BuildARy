@@ -10,6 +10,7 @@ public class genWord : MonoBehaviour {
     public Button dif;
     public Button med;
     public Button eas;
+	public Button back;
     Hashtable arguments=new Hashtable();
       // Use this for initialization
     void Start() {
@@ -21,6 +22,7 @@ public class genWord : MonoBehaviour {
         dif.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["dif"],"difficult"); });
         med.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["med"], "medium"); });
         eas.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["easy"],"easy"); });
+		back.GetComponent<Button> ().onClick.AddListener (backHome);
     }
     // Update is called once per frame
     void Update() {
@@ -33,5 +35,9 @@ public class genWord : MonoBehaviour {
         Debug.Log(word);
     }
     
+	void backHome()
+	{
+		SceneManager.LoadScene ("menu");
+	}
 
 }

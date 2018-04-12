@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,11 +23,12 @@ public class createBut : MonoBehaviour
     private string fbName;
     private string id;
     private Texture2D profilePic;
-	private double score = 77;
+	private float score;
 	public Slider scoreBar;
 	public Text scoreText;
 	public Text levelText;
     public Hashtable arguments=new Hashtable();
+	private bool isDone = false;
     // Use this for inisstialization
     void Start()
     {
@@ -39,19 +41,15 @@ public class createBut : MonoBehaviour
         FB.API("me?fields=id", Facebook.Unity.HttpMethod.GET, GetId);
         FB.API("me/picture", Facebook.Unity.HttpMethod.GET, GetPicture);
         socket.On("LOGIN", OnUserLogin);
-		ScoreCalculation ();
-		//scoreBarLen = Screen.width / 2;
+		StartCoroutine(ConnectToServer());
+
     }
     void Update()
     {
-		//ScoreCalculation (0);
+		
     }
 
-	/*void OnGUI()
-	{
-		GUI.Box (new Rect (50, 50, scoreBarLen, 20),score + "/" + maxScore);
-	}*/
-	public void ScoreCalculation(){
+	void ScoreCalculation(){
 		if (score >= 10 && score < 30) {
 			levelText.text = "Level 2";
 			scoreBar.GetComponentInChildren<Text> ().text = score + "/" + "30";
@@ -84,6 +82,12 @@ public class createBut : MonoBehaviour
         private void OnUserLogin(SocketIOEvent evt)
     {
         Debug.Log("Get the message from server is :" + evt.data);
+		score = Convert.ToSingle(evt.data ["rank_score"].ToString());
+		Debug.Log ("score:" + score);
+		if (isDone) 
+		{
+			ScoreCalculation ();
+		}
     }
     void GetFacebookData(Facebook.Unity.IGraphResult result)
     {
@@ -139,4 +143,10 @@ public class createBut : MonoBehaviour
         arguments.Add("userId", id);
         SceneManager.LoadScene("continueGame", arguments);
     }
+	IEnumerator ConnectToServer()
+	{
+		yield return new WaitForSeconds(0.5f);
+		socket.Emit("USER_CONNECT");
+		isDone = true;
+	}
 }

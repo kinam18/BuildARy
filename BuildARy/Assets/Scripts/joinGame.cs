@@ -81,12 +81,10 @@ public class joinGame : MonoBehaviour {
         Debug.Log("wrong");
         
     }
-<<<<<<< HEAD
 	void backMenu()
 	{
 		SceneManager.LoadScene ("menu");
 	}
-=======
     void onclick(string gameId, string vocab)
     {
         arguments.Add("gameId", gameId);
@@ -95,6 +93,5 @@ public class joinGame : MonoBehaviour {
         Debug.Log(gameId + "," + vocab + "," + arguments["userId"]);
         SceneManager.LoadScene("guess", arguments); 
     }
->>>>>>> 06aa3218297276bd58dce998855a79771e380685
 }
 
