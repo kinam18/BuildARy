@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour {
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
-                if (!EventSystem.current.IsPointerOverGameObject(/*Input.GetTouch(0).fingerId*/)) {
+                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -776,11 +776,7 @@ public class GameManager : MonoBehaviour {
                     blockTransform = go.transform,
                     height = newheight,
                     rotate = true,
-<<<<<<< HEAD
                     color = saveData2[i].GetField("color").ToString().Replace("\"",""),
-=======
-					color = saveData2[i].GetField("color").ToString().Replace("\"",""),
->>>>>>> c6577f4b551b66fbee657620e51bf6157f8158c5
                     type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                 };
             }
@@ -943,7 +939,7 @@ public class GameManager : MonoBehaviour {
     }
     IEnumerator ConnectToServer()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         Dictionary<string, string> data = new Dictionary<string, string>();
         data["_id"] = arguments["gameId"].ToString();
         JSONObject gameId = new JSONObject(data);

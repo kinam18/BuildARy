@@ -281,9 +281,9 @@ public class guessWord : MonoBehaviour {
 	}
     IEnumerator ConnectToServer()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         socket.Emit("GETWITHDATA", gameId);
-		yield return new WaitForSeconds (0.5f);
+		yield return new WaitForSeconds (1f);
 		socket.Emit ("GETUSER", userID);
     }
     void loadGame()
@@ -295,7 +295,8 @@ public class guessWord : MonoBehaviour {
             string y = saveData2[i].GetField("position").GetField("y") + "";
             string z = saveData2[i].GetField("position").GetField("z") + "";
             Debug.Log("xyz:" + float.Parse(x) + y + z);
-            string arrayindex = saveData2[i].GetField("arrayindex").ToString();
+            string arrayindex = saveData2[i].GetField("arrayindex").ToString().Replace("\"", "");
+            string[] indexarray = arrayindex.Split(',');
             Vector3 index = new Vector3(float.Parse(x), float.Parse(y), float.Parse(z));
             string heightstring = saveData2[i].GetField("height").ToString().Replace("\"", "");
             Vector3 newheight = new Vector3(0, (float)Char.GetNumericValue(heightstring[0]), 0);
@@ -304,7 +305,7 @@ public class guessWord : MonoBehaviour {
             go = Instantiate(blockPrefab) as GameObject;
             go.GetComponent<Renderer>().material = Resources.Load((saveData2[i].GetField("color") + "").Substring(1, (saveData2[i].GetField("color") + "").Length - 2), typeof(Material)) as Material;
             go.AddComponent<BoxCollider>();
-            Vector3 blockIndex = new Vector3((float)Char.GetNumericValue(arrayindex[1]), (float)Char.GetNumericValue(arrayindex[2]), (float)Char.GetNumericValue(arrayindex[3]));
+            Vector3 blockIndex = new Vector3(Convert.ToSingle(indexarray[0]), Convert.ToSingle(indexarray[1]), Convert.ToSingle(indexarray[2]));
             Debug.Log("Array Index:" + blockIndex);
             BoxCollider collider = go.GetComponent<BoxCollider>();
             collider.size = new Vector3(0.5f, 0.5f, 0.5f);
