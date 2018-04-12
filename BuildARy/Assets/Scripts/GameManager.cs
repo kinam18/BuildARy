@@ -747,7 +747,7 @@ public class GameManager : MonoBehaviour {
                     blockTransform = go.transform,
                     height = newheight,
                     rotate = true,
-                    color = blockColor,
+                    color = saveData2[i].GetField("color").ToString().Replace("\"",""),
                     type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                 };
             }
