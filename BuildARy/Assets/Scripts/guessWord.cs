@@ -11,6 +11,7 @@ public class guessWord : MonoBehaviour {
 
     private string word = "";
 	private string difficulty = "medium";
+    public RectTransform tranlsteP;
     public RectTransform guess;
 	public GameObject panel;
     public GameObject guessSize;
@@ -42,9 +43,11 @@ public class guessWord : MonoBehaviour {
     public GameObject go;
     public Block[,,] blocks = new Block[20, 20, 20];
     private string blockColor = "White";
+    public Button showTran;
     // Use this for initialization
     void Start () {
         arguments = SceneManager.GetSceneArguments();
+        
         Dictionary<string, string> data = new Dictionary<string, string>();
         data["_id"] = arguments["gameId"].ToString();
         word = arguments["vocab"].ToString();
@@ -54,7 +57,8 @@ public class guessWord : MonoBehaviour {
         socket.On("GETWITHDATA", getGameData);
         submit.GetComponent<Button>().onClick.AddListener(popUp);
         check.GetComponent<Button>().onClick.AddListener(checkAnswer);
-		panel = GameObject.Find("guessPanel");
+        showTran.GetComponent<Button>().onClick.AddListener(showTranslateP);
+        panel = GameObject.Find("guessPanel");
 
         for (int i = 0; i < 5; i++)
         {
@@ -325,5 +329,9 @@ public class guessWord : MonoBehaviour {
             }
         }
 
+    }
+    void showTranslateP()
+    {
+        tranlsteP.gameObject.SetActive(true);
     }
 }

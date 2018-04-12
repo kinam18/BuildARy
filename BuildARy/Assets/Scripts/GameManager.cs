@@ -844,6 +844,10 @@ public class GameManager : MonoBehaviour {
         Debug.Log("array0:" + saveData2[1].GetField("position"));
         Debug.Log(saveData2);
         finalData = new JSONObject(JSONObject.Type.OBJECT);
+        if (arguments.ContainsKey("gameId"))
+        {
+            finalData.AddField("_id", arguments["gameId"].ToString());
+        }
         finalData.AddField("id", id);
         finalData.AddField("name", fbname);
         finalData.AddField("vocab", arguments["vocab"].ToString());
