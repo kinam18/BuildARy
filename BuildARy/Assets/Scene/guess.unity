@@ -1501,6 +1501,7 @@ MonoBehaviour:
   scoreText: {fileID: 847029243}
   levelText: {fileID: 16032052}
   socket: {fileID: 1212150159}
+  go: {fileID: 0}
 --- !u!4 &1262353008
 Transform:
   m_ObjectHideFlags: 0

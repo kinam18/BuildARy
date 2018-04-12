@@ -28,7 +28,7 @@ public class revision : MonoBehaviour {
     {
         arguments.Add("gameId", gameId);
         arguments.Add("vocab", vocab);
-        SceneManager.LoadScene("load", arguments);
+        SceneManager.LoadScene("revisionGame", arguments);
     }
     IEnumerator ConnectToServer()
     {

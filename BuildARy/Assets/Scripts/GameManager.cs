@@ -80,10 +80,18 @@ public class GameManager : MonoBehaviour {
     private Material mat;
     private string blockColor="White";
     private string[] inviteUsers = new string[30];
+    private JSONObject finalData;
     RectTransform rectTransform;
     Hashtable arguments;
 
     void Start () {
+        arguments = SceneManager.GetSceneArguments();
+        if (arguments["checkNewGame"].ToString() == "false")
+        {
+            StartCoroutine(ConnectToServer());
+            socket.On("GETWITHDATA", getGameData);
+        }
+
         Instance = this;
         blockPrefab = Resources.Load("Part_2X1", typeof(GameObject)) as GameObject;
         mat= Resources.Load("White", typeof(Material)) as Material;
@@ -129,7 +137,7 @@ public class GameManager : MonoBehaviour {
        
        
         FB.API("me?fields=id,name", Facebook.Unity.HttpMethod.GET, GetId);
-        arguments = SceneManager.GetSceneArguments();
+        
         Debug.Log("Arguments: " + arguments["vocab"] );
         
         /*button1 = new Button[numOfMenu];
@@ -835,7 +843,7 @@ public class GameManager : MonoBehaviour {
         }
         Debug.Log("array0:" + saveData2[1].GetField("position"));
         Debug.Log(saveData2);
-        JSONObject finalData = new JSONObject(JSONObject.Type.OBJECT);
+        finalData = new JSONObject(JSONObject.Type.OBJECT);
         finalData.AddField("id", id);
         finalData.AddField("name", fbname);
         finalData.AddField("vocab", arguments["vocab"].ToString());
@@ -877,5 +885,25 @@ public class GameManager : MonoBehaviour {
     void backmenu()
     {
         SceneManager.LoadScene("menu");
+    }
+    IEnumerator ConnectToServer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Dictionary<string, string> data = new Dictionary<string, string>();
+        data["_id"] = arguments["gameId"].ToString();
+        JSONObject gameId = new JSONObject(data);
+        socket.Emit("GETWITHDATA", gameId);
+
+    }
+    public void getGameData(SocketIOEvent evt)
+    {
+        Debug.Log("alan");
+        Debug.Log("json:" + evt.data);
+        //saveData2 = new JSONObject(JSONObject.Type.ARRAY);
+        //saveData2.Add(evt.data["block"]);
+        saveData2 = evt.data["block"];
+        finalData = evt.data;
+        Debug.Log("data2:" + saveData2.ToString());
+        loadGame();
     }
 }

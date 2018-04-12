@@ -29,6 +29,7 @@ public class genWord : MonoBehaviour {
     void onclick(String word,String difty) {
         arguments.Add("vocab", word);
         arguments.Add("diff", difty);
+        arguments.Add("checkNewGame", "true");
         SceneManager.LoadScene("game", arguments);
         Debug.Log(word);
     }
