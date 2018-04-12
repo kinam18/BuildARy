@@ -29,6 +29,7 @@ public class createBut : MonoBehaviour
 	public Text levelText;
     public Hashtable arguments=new Hashtable();
 	private bool isDone = false;
+	Dictionary<string, string> data = new Dictionary<string, string>();
     // Use this for inisstialization
     void Start()
     {
@@ -100,9 +101,9 @@ public class createBut : MonoBehaviour
     {
         id = result.ResultDictionary["id"].ToString();
         Debug.Log("email: " + id);
-        Dictionary<string, string> data = new Dictionary<string, string>();
+        
         data["id"] = id;
-        socket.Emit("LOGIN", new JSONObject(data));
+
     }
     private void GetPicture(IGraphResult result)
     {
@@ -148,6 +149,9 @@ public class createBut : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.5f);
 		socket.Emit("USER_CONNECT");
+
+		yield return new WaitForSeconds (0.5f);
+		socket.Emit("LOGIN", new JSONObject(data));
 		isDone = true;
 	}
 }

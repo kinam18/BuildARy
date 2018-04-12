@@ -81,15 +81,11 @@ public class joinGame : MonoBehaviour {
         Debug.Log("wrong");
         
     }
-<<<<<<< HEAD
 	void backMenu()
 	{
 		SceneManager.LoadScene ("menu");
 	}
-    void onclick(string gameId, string vocab)
-=======
     void onclick(string gameId, string vocab,string diff,string category)
->>>>>>> 95c8f69bf41d5f982f4cad5cddeabe7c23a5eb9d
     {
         arguments.Add("gameId", gameId);
         arguments.Add("vocab", vocab);
