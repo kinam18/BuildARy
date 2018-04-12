@@ -10,6 +10,7 @@ public class genWord : MonoBehaviour {
     public Button dif;
     public Button med;
     public Button eas;
+	public Button back;
     public Text userDefin;
     public Button submit;
     Hashtable arguments=new Hashtable();
@@ -23,6 +24,7 @@ public class genWord : MonoBehaviour {
         dif.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["dif"],"difficult"); });
         med.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["med"], "medium"); });
         eas.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["easy"],"easy"); });
+		//back.GetComponent<Button> ().onClick.AddListener (backHome);
         submit.GetComponent<Button>().onClick.AddListener(delegate { onclick(userDefin.text, "custom"); });
         
     }
@@ -41,5 +43,9 @@ public class genWord : MonoBehaviour {
         }
     }
     
+	void backHome()
+	{
+		SceneManager.LoadScene ("menu");
+	}
 
 }

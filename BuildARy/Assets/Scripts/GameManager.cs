@@ -653,17 +653,27 @@ public class GameManager : MonoBehaviour {
     }
     void back()
     {
-        popupBack.gameObject.SetActive(true);
-        hidemenu.gameObject.SetActive(false);
-        menu.gameObject.SetActive(true);
-        scrollView.gameObject.SetActive(false);
-        btnro.gameObject.SetActive(true);
-        btnun.gameObject.SetActive(true);
-        scrollBar.gameObject.SetActive(false);
-        hideColour.gameObject.SetActive(false);
-        showColour.gameObject.SetActive(true);
-        colour.gameObject.SetActive(false);
-        save.interactable=false;
+		popupBack.gameObject.SetActive(true);
+		hidemenu.interactable = false;
+		//hidemenu.gameObject.SetActive(false);
+		menu.interactable = false;
+		//menu.gameObject.SetActive(true);
+		scrollView.gameObject.SetActive(false);
+		btnro.interactable = false;
+		//btnro.gameObject.SetActive(true);
+		btnun.interactable = false;
+		//btnun.gameObject.SetActive(true);
+		hideC();
+		hidem ();
+		//scrollBar.gameObject.SetActive(false);
+		hideColour.interactable = false;
+		//hideColour.gameObject.SetActive(false);
+		showColour.interactable = false;
+		//showColour.gameObject.SetActive(true);
+		colour.gameObject.SetActive(false);
+		save.interactable=false;
+		rotate2.interactable = false;
+		btnbak.interactable = false;
     }
     void showmenu() {
         menu.gameObject.SetActive(false);
@@ -689,24 +699,39 @@ public class GameManager : MonoBehaviour {
         hideColour.gameObject.SetActive(true);
         showColour.gameObject.SetActive(false);
         colour.gameObject.SetActive(true);
+		save.gameObject.SetActive (false);
+
     }
     void hideC()
     {
         hideColour.gameObject.SetActive(false);
         showColour.gameObject.SetActive(true);
         colour.gameObject.SetActive(false);
+		save.gameObject.SetActive (true);
+
     }
     void saveGame() {
-        popupSave.gameObject.SetActive(true);
-        hidemenu.gameObject.SetActive(false);
-        menu.gameObject.SetActive(true);
-        scrollView.gameObject.SetActive(false);
-        btnro.gameObject.SetActive(true);
-        btnun.gameObject.SetActive(true);
-        scrollBar.gameObject.SetActive(false);
-        hideColour.gameObject.SetActive(false);
-        showColour.gameObject.SetActive(true);
-        colour.gameObject.SetActive(false);
+		popupSave.gameObject.SetActive(true);
+		rotate2.interactable = false;
+		hidemenu.interactable = false;
+		//hidemenu.gameObject.SetActive(false);
+		menu.interactable = false;
+		//menu.gameObject.SetActive(true);
+		hideC();
+		hidem ();
+		//scrollView.gameObject.SetActive(false);
+		btnro.interactable = false;
+		//btnro.gameObject.SetActive(true);
+		btnun.interactable = false;
+		//btnun.gameObject.SetActive(true);
+		btnbak.interactable = false;
+		save.interactable = false;
+		scrollBar.gameObject.SetActive(false);
+		hideColour.interactable = false;
+		//hideColour.gameObject.SetActive(false);
+		showColour.interactable = false;
+		//showColour.gameObject.SetActive(true);
+		colour.gameObject.SetActive(false);
     }
 	void loadGame(){
 		for (int i = 0; i < saveData2.Count;i++)
@@ -716,7 +741,8 @@ public class GameManager : MonoBehaviour {
 			string y = saveData2[i].GetField("position").GetField("y")+"";
 			string z = saveData2[i].GetField("position").GetField("z")+"";
 			Debug.Log ("xyz:"+float.Parse(x)+y+z);
-            string arrayindex=saveData2[i].GetField("arrayindex").ToString();
+			string arrayindex=saveData2[i].GetField("arrayindex").ToString().Replace("\"","");
+			string[] indexarray = arrayindex.Split (',');
 			Vector3 index =new Vector3(float.Parse(x),float.Parse(y),float.Parse(z));
             string heightstring = saveData2[i].GetField("height").ToString().Replace("\"", "");
             Vector3 newheight = new Vector3(0, (float)Char.GetNumericValue(heightstring[0]), 0);
@@ -725,7 +751,10 @@ public class GameManager : MonoBehaviour {
             go = Instantiate(blockPrefab) as GameObject;
             go.GetComponent<Renderer>().material = Resources.Load((saveData2[i].GetField("color") + "").Substring(1, (saveData2[i].GetField("color") + "").Length-2), typeof(Material)) as Material; 
             go.AddComponent<BoxCollider>();
-            Vector3 blockIndex = new Vector3((float)Char.GetNumericValue(arrayindex[1]), (float)Char.GetNumericValue(arrayindex[2]), (float)Char.GetNumericValue(arrayindex[3]));
+			Debug.Log ("go:"+go);
+			Debug.Log ("blockPrefab:" + blockPrefab);
+			Debug.Log ("index:" + indexarray[0]);
+			Vector3 blockIndex = new Vector3(Convert.ToSingle(indexarray[0]), Convert.ToSingle(indexarray[1]), Convert.ToSingle(indexarray[2]));
             Debug.Log("Array Index:" + blockIndex);
             BoxCollider collider = go.GetComponent<BoxCollider>();
             collider.size = new Vector3(0.5f, 0.5f, 0.5f);
@@ -747,7 +776,11 @@ public class GameManager : MonoBehaviour {
                     blockTransform = go.transform,
                     height = newheight,
                     rotate = true,
+<<<<<<< HEAD
                     color = saveData2[i].GetField("color").ToString().Replace("\"",""),
+=======
+					color = saveData2[i].GetField("color").ToString().Replace("\"",""),
+>>>>>>> c6577f4b551b66fbee657620e51bf6157f8158c5
                     type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                 };
             }
@@ -768,7 +801,7 @@ public class GameManager : MonoBehaviour {
                     blockTransform = go.transform,
                     height = newheight,
                     rotate = false,
-                    color = blockColor,
+					color = saveData2[i].GetField("color").ToString().Replace("\"",""),
                     type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                 };
             }
@@ -796,14 +829,32 @@ public class GameManager : MonoBehaviour {
     }
     void closeS()
     {
-        popupSave.gameObject.SetActive(false);
+		popupSave.gameObject.SetActive(false);
+		btnro.interactable = true;
+		btnun.interactable = true;
+		rotate2.interactable = true;
+		showColour.interactable = true;
+		hideColour.interactable = true;
+		hidemenu.interactable = true;
+		menu.interactable = true;
+		//scrollBar.gameObject.SetActive (true);
+		btnbak.interactable = true;
+		save.interactable = true;
         
     }
     void closeB()
     {
-        popupBack.gameObject.SetActive(false);
-        save.interactable = true;
-
+		popupBack.gameObject.SetActive(false);
+		save.interactable = true;
+		btnro.interactable = true;
+		btnun.interactable = true;
+		rotate2.interactable = true;
+		showColour.interactable = true;
+		hideColour.interactable = true;
+		hidemenu.interactable = true;
+		menu.interactable = true;
+		//scrollBar.gameObject.SetActive (true);
+		btnbak.interactable = true;
     }
     void send(bool check)
     {
@@ -831,7 +882,7 @@ public class GameManager : MonoBehaviour {
                     xyz.AddField("x", currentBlock.blockTransform.position.x);
                     xyz.AddField("y", currentBlock.blockTransform.position.y);
                     xyz.AddField("z", currentBlock.blockTransform.position.z);
-                    saveData1.AddField("arrayindex", x + "" + y + "" + z);
+                    saveData1.AddField("arrayindex", x + "," + y + "," + z);
                     saveData1.AddField("position", xyz);
                     saveData1.AddField("height", currentBlock.height.y);
                     saveData1.AddField("color", currentBlock.color);
