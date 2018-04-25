@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { set; get; }
     private GameObject blockPrefab;
     private bool isRotated = true;
+    private int degree = 0;
 	private bool isUndo = false;
     private GameObject foundationObject;
     public GameObject scrollView;
@@ -34,7 +35,6 @@ public class GameManager : MonoBehaviour {
     private Vector3 foundationCenter = new Vector3(0, 0, 0);
 	//public Button[] button1;
 	//public int numOfMenu = 3;
-	public Button btnro;
     public Button btnun;
     public Button btnbak;
     public Button menu;
@@ -43,11 +43,13 @@ public class GameManager : MonoBehaviour {
     public Button hideColour;
     public Button save;
 	public Button rotate2;
+    public Button twotwo2;
     public Button twoone;
     public Button twotwo;
     public Button twofour;
     public Button twosix;
     public Button twoeight;
+    public GameObject two22;
     public GameObject twot1;
     public GameObject twot2;
     public GameObject twot4;
@@ -101,6 +103,7 @@ public class GameManager : MonoBehaviour {
         scrollView.gameObject.SetActive(false);
         scrollBar.gameObject.SetActive(false);
         hidemenu.gameObject.SetActive(false);
+        twotwo2.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_roof_2X2"); });
         twoone.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X1"); });
         twotwo.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X2"); });
         twofour.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X4"); });
@@ -128,7 +131,6 @@ public class GameManager : MonoBehaviour {
         hideColour.gameObject.SetActive(false);
         showColour.GetComponent<Button>().onClick.AddListener(showC); 
         foundationObject = GameObject.Find("Foundation");
-		btnro.GetComponent<Button> ().onClick.AddListener(rotate);
         btnun.GetComponent<Button>().onClick.AddListener(undo); ;
         btnbak.GetComponent<Button>().onClick.AddListener(back);
         menu.GetComponent<Button>().onClick.AddListener(showmenu);
@@ -165,7 +167,7 @@ public class GameManager : MonoBehaviour {
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
-                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
+                if (!EventSystem.current.IsPointerOverGameObject(/*Input.GetTouch(0).fingerId*/)) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -587,10 +589,18 @@ public class GameManager : MonoBehaviour {
             twot1.transform.Rotate(0, 0, 270.0f);
         }
         twot2.transform.Rotate(0, 0, 90.0f);
+        two22.transform.Rotate(0, 0, 90.0f);
         twot6.transform.Rotate(0, 0, 90.0f);
         twot4.transform.Rotate(0, 0, 90.0f);
         twot8.transform.Rotate(0, 0, 90.0f);
 
+        if (degree != 3)
+        {
+            degree++;
+        }
+        else {
+            degree = 0;
+        }
         /*count++;
 		if (count % 2 == 0) {
 			isRotated = true;
@@ -659,8 +669,7 @@ public class GameManager : MonoBehaviour {
 		menu.interactable = false;
 		//menu.gameObject.SetActive(true);
 		scrollView.gameObject.SetActive(false);
-		btnro.interactable = false;
-		//btnro.gameObject.SetActive(true);
+		
 		btnun.interactable = false;
 		//btnun.gameObject.SetActive(true);
 		hideC();
@@ -678,7 +687,7 @@ public class GameManager : MonoBehaviour {
     void showmenu() {
         menu.gameObject.SetActive(false);
         scrollView.gameObject.SetActive(true);
-        btnro.gameObject.SetActive(false);
+     
         btnun.gameObject.SetActive(false);
         hidemenu.gameObject.SetActive(true);
         scrollBar.gameObject.SetActive(true);
@@ -689,7 +698,7 @@ public class GameManager : MonoBehaviour {
         hidemenu.gameObject.SetActive(false);
         menu.gameObject.SetActive(true);
         scrollView.gameObject.SetActive(false);
-        btnro.gameObject.SetActive(true);
+      
         btnun.gameObject.SetActive(true);
         scrollBar.gameObject.SetActive(false);
 
@@ -720,8 +729,7 @@ public class GameManager : MonoBehaviour {
 		hideC();
 		hidem ();
 		//scrollView.gameObject.SetActive(false);
-		btnro.interactable = false;
-		//btnro.gameObject.SetActive(true);
+		
 		btnun.interactable = false;
 		//btnun.gameObject.SetActive(true);
 		btnbak.interactable = false;
@@ -816,6 +824,7 @@ public class GameManager : MonoBehaviour {
     void setColor(string color)
     {
         mat = Resources.Load(color, typeof(Material)) as Material;
+        two22.GetComponent<Renderer>().material = mat;
         twot1.GetComponent<Renderer>().material = mat; 
         twot2.GetComponent<Renderer>().material = mat;
         twot4.GetComponent<Renderer>().material = mat;
@@ -826,7 +835,7 @@ public class GameManager : MonoBehaviour {
     void closeS()
     {
 		popupSave.gameObject.SetActive(false);
-		btnro.interactable = true;
+		
 		btnun.interactable = true;
 		rotate2.interactable = true;
 		showColour.interactable = true;
@@ -842,7 +851,7 @@ public class GameManager : MonoBehaviour {
     {
 		popupBack.gameObject.SetActive(false);
 		save.interactable = true;
-		btnro.interactable = true;
+	
 		btnun.interactable = true;
 		rotate2.interactable = true;
 		showColour.interactable = true;
@@ -911,7 +920,7 @@ public class GameManager : MonoBehaviour {
                 "ALan,Here is a free gift!",
                 null,
                 new List<object>() { "app_users" },
-                null, null, null, "ALan title",
+                null, null, null, "Invite your friends",
                 delegate (IAppRequestResult result)
                 {
                     Debug.Log(result.RawResult);
