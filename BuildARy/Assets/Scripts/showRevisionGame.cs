@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class showRevisionGame : MonoBehaviour {
 
@@ -16,6 +17,7 @@ public class showRevisionGame : MonoBehaviour {
     public GameObject go;
     public Block[,,] blocks = new Block[20, 20, 20];
     private string blockColor = "White";
+    public Button back;
     
     // Use this for initialization
     void Start () {
@@ -28,7 +30,7 @@ public class showRevisionGame : MonoBehaviour {
         Debug.Log("word:" + word);
         StartCoroutine(ConnectToServer());
         socket.On("GETWITHDATA", getGameData);
-
+        back.GetComponent<Button>().onClick.AddListener(backHome);
     }
 	
 	// Update is called once per frame
@@ -129,5 +131,9 @@ public class showRevisionGame : MonoBehaviour {
             }
         }
 
+    }
+    void backHome()
+    {
+        SceneManager.LoadScene("menu");
     }
 }

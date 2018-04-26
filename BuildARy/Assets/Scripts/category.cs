@@ -12,7 +12,7 @@ public class category : MonoBehaviour {
     // Use this for initialization
     void Start () {
         cat1.GetComponent<Button>().onClick.AddListener(delegate { onclick("food"); });
-        cat2.GetComponent<Button>().onClick.AddListener(delegate { onclick("sports"); });
+        cat2.GetComponent<Button>().onClick.AddListener(delegate { onclick("animal"); });
         cat3.GetComponent<Button>().onClick.AddListener(delegate { onclick("place"); });
 		back.GetComponent<Button> ().onClick.AddListener (backHome);
     }

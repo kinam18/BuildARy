@@ -122,13 +122,12 @@ public class createBut : MonoBehaviour
     }
     private void CallFBLogout()
         {
-            FB.LogOut();
-        if (!FB.IsLoggedIn)
-        {
+           FB.LogOut();  
+        
             name.text = null;
             Debug.Log("logouted");
             SceneManager.LoadScene("login");
-        }
+        
         }
     void joinG()
     {

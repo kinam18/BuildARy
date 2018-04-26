@@ -1,70 +1,26 @@
 fileFormatVersion: 2
 guid: 8bfa929b611f8a941855ef1d3c19e6ac
-timeCreated: 1524547299
+timeCreated: 1524726041
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Camera
-    100002: Cube
-    100004: Cylinder
-    100006: Lamp
-    100008: //RootNode
-    100010: node_id4
-    100012: node_id5
-    100014: node_id6
-    100016: node_id9
-    400000: Camera
-    400002: Cube
-    400004: Cylinder
-    400006: Lamp
-    400008: //RootNode
-    400010: node_id4
-    400012: node_id5
-    400014: node_id6
-    400016: node_id9
-    2000000: Camera
-    2300000: Cube
-    2300002: Cylinder
-    2300004: //RootNode
-    2300006: node_id4
-    2300008: node_id6
-    3300000: Cube
-    3300002: Cylinder
-    3300004: //RootNode
-    3300006: node_id4
-    3300008: node_id6
-    4300000: Cube
+    100000: Cylinder
+    100002: //RootNode
+    400000: Cylinder
+    400002: //RootNode
+    2300000: Cylinder
+    2300002: //RootNode
+    3300000: Cylinder
+    3300002: //RootNode
+    4300000: Cube.001
     4300002: Cylinder
-    4300004: node_id4
-    4300006: node_id6
-    4300008: Cube.001
-    6400000: Cylinder
-    6400002: //RootNode
-    6400004: node_id4
-    6400006: node_id6
-    10800000: Lamp
   externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: dd27931880fd84d4086af92158deb288, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material.001
     second: {fileID: 2100000, guid: 2568956dbf14bbe4d8f5fb772de10be4, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material_34
-    second: {fileID: 2100000, guid: f96a1f01c85c4a246a6e12abbb6b0c97, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material_35
-    second: {fileID: 2100000, guid: 085c9ac0617ccfa4187c82e6b86e850f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -101,7 +57,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 1
+    addColliders: 0
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1

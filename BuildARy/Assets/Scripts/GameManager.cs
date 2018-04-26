@@ -44,12 +44,14 @@ public class GameManager : MonoBehaviour {
     public Button hideColour;
     public Button save;
 	public Button rotate2;
+    //public Button oneone;
     public Button twotwo2;
     public Button twoone;
     public Button twotwo;
     public Button twofour;
     public Button twosix;
     public Button twoeight;
+    //public GameObject one1;
     public GameObject two22;
     public GameObject twot1;
     public GameObject twot2;
@@ -105,6 +107,7 @@ public class GameManager : MonoBehaviour {
         scrollBar.gameObject.SetActive(false);
         hidemenu.gameObject.SetActive(false);
         twotwo2.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_roof_2X2"); });
+        //oneone.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_1X1"); });
         twoone.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X1"); });
         twotwo.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X2"); });
         twofour.GetComponent<Button>().onClick.AddListener(delegate { setBlockType("Part_2X4"); });
@@ -949,6 +952,7 @@ public class GameManager : MonoBehaviour {
         {
             twot1.transform.Rotate(0, 0, 270.0f);
         }
+
         twot2.transform.Rotate(0, 0, 90.0f);
         two22.transform.Rotate(0, 0, 90.0f);
         twot6.transform.Rotate(0, 0, 90.0f);
@@ -1190,6 +1194,7 @@ public class GameManager : MonoBehaviour {
     void setColor(string color)
     {
         mat = Resources.Load(color, typeof(Material)) as Material;
+        //one1.GetComponent<Renderer>().material = mat;
         two22.GetComponent<Renderer>().material = mat;
         twot1.GetComponent<Renderer>().material = mat; 
         twot2.GetComponent<Renderer>().material = mat;
