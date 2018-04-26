@@ -353,7 +353,7 @@ MonoBehaviour:
   mPreserveChildSize: 0
   mInitializedInEditor: 1
   mDataSetPath: Vuforia/BuildARy_Database.xml
-  mExtendedTracking: 0
+  mExtendedTracking: 1
   mInitializeSmartTerrain: 0
   mReconstructionToInitialize: {fileID: 0}
   mSmartTerrainOccluderBoundsMin: {x: 0, y: 0, z: 0}
@@ -1797,6 +1797,7 @@ MonoBehaviour:
   levelText: {fileID: 16032052}
   socket: {fileID: 1212150159}
   go: {fileID: 0}
+  back: {fileID: 0}
   showTran: {fileID: 920209547}
 --- !u!4 &1262353008
 Transform:
