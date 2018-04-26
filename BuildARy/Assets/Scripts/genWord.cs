@@ -13,6 +13,8 @@ public class genWord : MonoBehaviour {
 	public Button back;
     public Text userDefin;
     public Button submit;
+    public RectTransform tranlsteP;
+    public Button showTran;
     Hashtable arguments=new Hashtable();
       // Use this for initialization
     void Start() {
@@ -26,7 +28,8 @@ public class genWord : MonoBehaviour {
         eas.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["easy"],"easy"); });
 		//back.GetComponent<Button> ().onClick.AddListener (backHome);
         submit.GetComponent<Button>().onClick.AddListener(delegate { onclick(userDefin.text, "custom"); });
-        
+        showTran.GetComponent<Button>().onClick.AddListener(showTranslateP);
+
     }
     // Update is called once per frame
     void Update() {
@@ -47,5 +50,8 @@ public class genWord : MonoBehaviour {
 	{
 		SceneManager.LoadScene ("menu");
 	}
-
+    void showTranslateP()
+    {
+        tranlsteP.gameObject.SetActive(true);
+    }
 }
