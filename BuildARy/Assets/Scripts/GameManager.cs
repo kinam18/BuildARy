@@ -12,7 +12,7 @@ public class Block{
     public Vector3 height = new Vector3(0,1,0);
     public string color;
     public string type;
-    public bool rotate;
+    public int rotate;
     public bool disable;
 }
 
@@ -261,47 +261,13 @@ public class GameManager : MonoBehaviour {
                                         {
                                             for (int j = 0; j < width; j++)
                                             {
-                                                if (z + i == z)
-                                                {
-                                                    blocks[x + j, y, z + i] = new Block
-                                                    {
-                                                        blockTransform = go.transform,
-                                                        height = new Vector3(0, 1, 0),
-                                                        rotate = true,
-                                                        disable = true,
-                                                        color = blockColor,
-                                                        type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
-                                                    };
-                                                }
-                                                else
-                                                {
-                                                    blocks[x + j, y, z + i] = new Block
-                                                    {
-                                                        blockTransform = go.transform,
-                                                        height = new Vector3(0, 1, 0),
-                                                        rotate = true,
-                                                        disable = false,
-                                                        color = blockColor,
-                                                        type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
-                                                    };
-                                                }
-                                                blockPosition.Add(new Vector3(x + j, y, z + i));
-                                            }
-                                        }
-                                    }
-                                    if (degree == 1)
-                                    {
-                                        for (int i = 0; i < length; i++)
-                                        {
-                                            for (int j = 0; j < width; j++)
-                                            {
                                                 if (x + j == x)
                                                 {
                                                     blocks[x + j, y, z + i] = new Block
                                                     {
                                                         blockTransform = go.transform,
                                                         height = new Vector3(0, 1, 0),
-                                                        rotate = true,
+                                                        rotate = 90*degree,
                                                         disable = true,
                                                         color = blockColor,
                                                         type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
@@ -313,7 +279,7 @@ public class GameManager : MonoBehaviour {
                                                     {
                                                         blockTransform = go.transform,
                                                         height = new Vector3(0, 1, 0),
-                                                        rotate = true,
+                                                        rotate = 90 * degree,
                                                         disable = false,
                                                         color = blockColor,
                                                         type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
@@ -323,41 +289,7 @@ public class GameManager : MonoBehaviour {
                                             }
                                         }
                                     }
-                                    if (degree == 2)
-                                    {
-                                        for (int i = 0; i < length; i++)
-                                        {
-                                            for (int j = 0; j < width; j++)
-                                            {
-                                                if (z + i == z + 1)
-                                                {
-                                                    blocks[x + j, y, z + i] = new Block
-                                                    {
-                                                        blockTransform = go.transform,
-                                                        height = new Vector3(0, 1, 0),
-                                                        rotate = true,
-                                                        disable = true,
-                                                        color = blockColor,
-                                                        type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
-                                                    };
-                                                }
-                                                else
-                                                {
-                                                    blocks[x + j, y, z + i] = new Block
-                                                    {
-                                                        blockTransform = go.transform,
-                                                        height = new Vector3(0, 1, 0),
-                                                        rotate = true,
-                                                        disable = false,
-                                                        color = blockColor,
-                                                        type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
-                                                    };
-                                                }
-                                                blockPosition.Add(new Vector3(x + j, y, z + i));
-                                            }
-                                        }
-                                    }
-                                    if (degree == 3)
+                                    else if (degree == 2)
                                     {
                                         for (int i = 0; i < length; i++)
                                         {
@@ -369,7 +301,7 @@ public class GameManager : MonoBehaviour {
                                                     {
                                                         blockTransform = go.transform,
                                                         height = new Vector3(0, 1, 0),
-                                                        rotate = true,
+                                                        rotate = 90 * degree,
                                                         disable = true,
                                                         color = blockColor,
                                                         type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
@@ -381,7 +313,7 @@ public class GameManager : MonoBehaviour {
                                                     {
                                                         blockTransform = go.transform,
                                                         height = new Vector3(0, 1, 0),
-                                                        rotate = true,
+                                                        rotate = 90 * degree,
                                                         disable = false,
                                                         color = blockColor,
                                                         type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
@@ -391,6 +323,7 @@ public class GameManager : MonoBehaviour {
                                             }
                                         }
                                     }
+                                    
                                 }
                                 else
                                 {
@@ -402,7 +335,7 @@ public class GameManager : MonoBehaviour {
                                             {
                                                 blockTransform = go.transform,
                                                 height = new Vector3(0, 1, 0),
-                                                rotate = true,
+                                                rotate = 0,
                                                 disable = false,
                                                 color = blockColor,
                                                 type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
@@ -473,6 +406,7 @@ public class GameManager : MonoBehaviour {
                                     }
                                     Debug.Log("Outside loop");
                                     if (!canBuild) {
+                                        Debug.Log("Can not build on this position");
                                             return;
                                         }
                                             go = Instantiate(blockPrefab) as GameObject;
@@ -536,22 +470,84 @@ public class GameManager : MonoBehaviour {
                                         {
                                             if (blocks[x + j, 0, z + i] == null)
                                             {
-                                                blocks[x + j, 0, z + i] = new Block { blockTransform = null, height = newHeight + new Vector3(0, 1, 0), rotate = true, color = go.transform.GetComponent<Renderer>().material.color.ToString() };
+                                                blocks[x + j, 0, z + i] = new Block { blockTransform = null, height = newHeight + new Vector3(0, 1, 0), rotate = 0, color = go.transform.GetComponent<Renderer>().material.color.ToString() };
                                             }
                                             else
                                             {
                                                 blocks[x + j, 0, z + i].height = newHeight + new Vector3(0, 1, 0);
                                             }
-                                            blocks[x + j,(int) newIndex.y, z + i] = new Block
+                                            if (roof)
                                             {
-                                                blockTransform = go.transform,
-                                                height = blocks[x + j, 0, z + i].height,
-                                                rotate = true,
-                                                disable = false,
-                                                color = blockColor,
-                                                type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
-                                            };
-                                            blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
+                                                if (degree == 0)
+                                                {
+                                                            if (x + j == x)
+                                                            {
+                                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                                {
+                                                                    blockTransform = go.transform,
+                                                                    height = new Vector3(0, 1, 0),
+                                                                    rotate = 90 * degree,
+                                                                    disable = true,
+                                                                    color = blockColor,
+                                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                                };
+                                                            }
+                                                            else
+                                                            {
+                                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                                {
+                                                                    blockTransform = go.transform,
+                                                                    height = new Vector3(0, 1, 0),
+                                                                    rotate = 90 * degree,
+                                                                    disable = false,
+                                                                    color = blockColor,
+                                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                                };
+                                                            }
+                                                            blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
+                                                }
+                                                else if (degree == 2)
+                                                {
+                                                            if (x + j == x + 1)
+                                                            {
+                                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                                {
+                                                                    blockTransform = go.transform,
+                                                                    height = new Vector3(0, 1, 0),
+                                                                    rotate = 90 * degree,
+                                                                    disable = true,
+                                                                    color = blockColor,
+                                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                                };
+                                                            }
+                                                            else
+                                                            {
+                                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                                {
+                                                                    blockTransform = go.transform,
+                                                                    height = new Vector3(0, 1, 0),
+                                                                    rotate = 90 * degree,
+                                                                    disable = false,
+                                                                    color = blockColor,
+                                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                                };
+                                                            }
+                                                            blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
+                                                        }
+                                            }
+                                            else
+                                            {
+                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                {
+                                                    blockTransform = go.transform,
+                                                    height = blocks[x + j, 0, z + i].height,
+                                                    rotate = 0,
+                                                    disable = false,
+                                                    color = blockColor,
+                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                };
+                                                blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
+                                            }
                                         }
                                     }
                                 }
@@ -630,21 +626,96 @@ public class GameManager : MonoBehaviour {
                             };
                                 blockPosition.Add(new Vector3(x, y, z));
                                 blockPosition.Add(new Vector3(x+1, y, z));*/
-                                for (int i = 0; i < length; i++) {
-                                    for (int j = 0; j < width; j++) {
-                                        blocks[x + j, y, z+i] = new Block
+                                if (roof)
+                                {
+                                    if (degree == 1)
+                                    {
+                                        for (int i = 0; i < length; i++)
                                         {
-                                            blockTransform = go.transform,
-                                            height = new Vector3(0, 1, 0),
-                                            rotate = false,
-                                            disable = false,
-                                            color = blockColor,
-                                            type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
-                                        };
-                                        blockPosition.Add(new Vector3(x+j, y, z+i));
+                                            for (int j = 0; j < width; j++)
+                                            {
+                                                if (z + i == z + 1)
+                                                {
+                                                    blocks[x + j, y, z + i] = new Block
+                                                    {
+                                                        blockTransform = go.transform,
+                                                        height = new Vector3(0, 1, 0),
+                                                        rotate = 90 * degree,
+                                                        disable = true,
+                                                        color = blockColor,
+                                                        type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                    };
+                                                }
+                                                else
+                                                {
+                                                    blocks[x + j, y, z + i] = new Block
+                                                    {
+                                                        blockTransform = go.transform,
+                                                        height = new Vector3(0, 1, 0),
+                                                        rotate = 90 * degree,
+                                                        disable = false,
+                                                        color = blockColor,
+                                                        type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                    };
+                                                }
+                                                blockPosition.Add(new Vector3(x + j, y, z + i));
+                                            }
+                                        }
+                                    }
+                                    else if (degree == 3)
+                                    {
+                                        for (int i = 0; i < length; i++)
+                                        {
+                                            for (int j = 0; j < width; j++)
+                                            {
+                                                if (z + i == z)
+                                                {
+                                                    blocks[x + j, y, z + i] = new Block
+                                                    {
+                                                        blockTransform = go.transform,
+                                                        height = new Vector3(0, 1, 0),
+                                                        rotate = 90 * degree,
+                                                        disable = true,
+                                                        color = blockColor,
+                                                        type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                    };
+                                                }
+                                                else
+                                                {
+                                                    blocks[x + j, y, z + i] = new Block
+                                                    {
+                                                        blockTransform = go.transform,
+                                                        height = new Vector3(0, 1, 0),
+                                                        rotate = 90 * degree,
+                                                        disable = false,
+                                                        color = blockColor,
+                                                        type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                    };
+                                                }
+                                                blockPosition.Add(new Vector3(x + j, y, z + i));
+                                            }
+                                        }
                                     }
                                 }
-                                
+                                else
+                                {
+                                    for (int i = 0; i < length; i++)
+                                    {
+                                        for (int j = 0; j < width; j++)
+                                        {
+                                            blocks[x + j, y, z + i] = new Block
+                                            {
+                                                blockTransform = go.transform,
+                                                height = new Vector3(0, 1, 0),
+                                                rotate = 90,
+                                                disable = false,
+                                                color = blockColor,
+                                                type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                            };
+                                            blockPosition.Add(new Vector3(x + j, y, z + i));
+                                        }
+                                    }
+                                }
                         }
                     }
                     else
@@ -724,7 +795,7 @@ public class GameManager : MonoBehaviour {
                                     go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
                                 PositionBlock(go.transform, newIndex);
                                     undoGo.Add(go);
-                                    
+
                                     /*if (blocks[x, 0, z] == null)
                                 {
                                     blocks[x, 0, z] = new Block { blockTransform = null, height = newHeight + new Vector3(0, 1, 0), rotate = true, color = go.transform.GetComponent<Renderer>().material.color.ToString() };
@@ -761,24 +832,86 @@ public class GameManager : MonoBehaviour {
                                     {
                                         for (int j = 0; j < width; j++)
                                         {
-                                            if (blocks[x+j, 0, z+i] == null)
+                                            if (blocks[x + j, 0, z + i] == null)
                                             {
-                                                blocks[x + j, 0, z + i] = new Block { blockTransform = null, height = newHeight + new Vector3(0, 1, 0), rotate = true, color = go.transform.GetComponent<Renderer>().material.color.ToString() };
+                                                blocks[x + j, 0, z + i] = new Block { blockTransform = null, height = newHeight + new Vector3(0, 1, 0), rotate = 0, color = go.transform.GetComponent<Renderer>().material.color.ToString() };
                                             }
                                             else
                                             {
                                                 blocks[x + j, 0, z + i].height = newHeight + new Vector3(0, 1, 0);
                                             }
-                                            blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                            if (roof)
                                             {
-                                                blockTransform = go.transform,
-                                                height = blocks[x + j, 0, z + i].height,
-                                                rotate = false,
-                                                disable = false,
-                                                color = blockColor,
-                                                type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
-                                            };
-                                            blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
+                                                if (degree == 1)
+                                                {
+                                                            if (z + i == z + 1)
+                                                            {
+                                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                                {
+                                                                    blockTransform = go.transform,
+                                                                    height = new Vector3(0, 1, 0),
+                                                                    rotate = 90 * degree,
+                                                                    disable = true,
+                                                                    color = blockColor,
+                                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                                };
+                                                            }
+                                                            else
+                                                            {
+                                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                                {
+                                                                    blockTransform = go.transform,
+                                                                    height = new Vector3(0, 1, 0),
+                                                                    rotate = 90 * degree,
+                                                                    disable = false,
+                                                                    color = blockColor,
+                                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                                };
+                                                            }
+                                                            blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
+                                                }
+                                                else if (degree == 3)
+                                                {
+                                                            if (z + i == z)
+                                                            {
+                                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                                {
+                                                                    blockTransform = go.transform,
+                                                                    height = new Vector3(0, 1, 0),
+                                                                    rotate = 90 * degree,
+                                                                    disable = true,
+                                                                    color = blockColor,
+                                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                                };
+                                                            }
+                                                            else
+                                                            {
+                                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                                {
+                                                                    blockTransform = go.transform,
+                                                                    height = new Vector3(0, 1, 0),
+                                                                    rotate = 90 * degree,
+                                                                    disable = false,
+                                                                    color = blockColor,
+                                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                                };
+                                                            }
+                                                            blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
+                                                        }
+                                            }
+                                            else
+                                            {
+                                                blocks[x + j, (int)newIndex.y, z + i] = new Block
+                                                {
+                                                    blockTransform = go.transform,
+                                                    height = blocks[x + j, 0, z + i].height,
+                                                    rotate = 90,
+                                                    disable = false,
+                                                    color = blockColor,
+                                                    type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
+                                                };
+                                                blockPosition.Add(new Vector3(x + j, (int)newIndex.y, z + i));
+                                            }
                                         }
                                     }
                                     Debug.Log("put1:" + (int)newIndex.x + " " + (int)newIndex.y + " " + (int)newIndex.z);
@@ -981,6 +1114,7 @@ public class GameManager : MonoBehaviour {
 			string[] indexarray = arrayindex.Split (',');
 			Vector3 index =new Vector3(float.Parse(x),float.Parse(y),float.Parse(z));
             string heightstring = saveData2[i].GetField("height").ToString().Replace("\"", "");
+            int rotate = System.Int32.Parse(saveData2[i].GetField("rotate").ToString());
             Vector3 newheight = new Vector3(0, (float)Char.GetNumericValue(heightstring[0]), 0);
             Debug.Log("height:" + newheight);
             blockPrefab = Resources.Load((saveData2[i].GetField("type")+"").Replace("\"",""), typeof(GameObject)) as GameObject;
@@ -996,22 +1130,25 @@ public class GameManager : MonoBehaviour {
             collider.size = new Vector3(0.5f, 0.5f, 0.5f);
             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
             go.transform.position = index;
-            if (saveData2[i].GetField("rotate").ToString().Equals("true"))
+            if (rotate==0||rotate==180)
             {
                 int stringIndex = blockPrefab.transform.name.ToString().IndexOf('X');
                 int length = (int)System.Char.GetNumericValue(blockPrefab.transform.name.ToString()[stringIndex - 1]);
                 int width = (int)System.Char.GetNumericValue(blockPrefab.transform.name.ToString()[stringIndex + 1]);
+                bool roof = blockPrefab.transform.name.ToString().Contains("roof");
                 if (length == 2 && width == 1)
                 {
                     width = 2;
                     length = 1;
                 }
+                go.transform.Rotate(0, 0, rotate);
                 if (length == 1 && width == 2) { go.transform.Rotate(0, 0, 90.0f); }
                 blocks[(int)blockIndex.x, (int)blockIndex.y, (int)blockIndex.z] = new Block
                 {
                     blockTransform = go.transform,
                     height = newheight,
-                    rotate = true,
+                    rotate = rotate,
+                    disable = saveData2[i].GetField("disable").ToString().Equals("true"),
                     color = saveData2[i].GetField("color").ToString().Replace("\"",""),
                     type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                 };
@@ -1026,14 +1163,15 @@ public class GameManager : MonoBehaviour {
                     width = 1;
                     length = 2;
                 }
-                go.transform.Rotate(0, 0, 90.0f);
+                go.transform.Rotate(0, 0, rotate);
                 if (length == 2 && width == 1) { go.transform.Rotate(0, 0, 270.0f); }
                 blocks[(int)blockIndex.x, (int)blockIndex.y, (int)blockIndex.z] = new Block
                 {
                     blockTransform = go.transform,
                     height = newheight,
-                    rotate = false,
-					color = saveData2[i].GetField("color").ToString().Replace("\"",""),
+                    rotate = rotate,
+                    disable = saveData2[i].GetField("disable").ToString().Equals("true"),
+                    color = saveData2[i].GetField("color").ToString().Replace("\"",""),
                     type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                 };
             }
@@ -1121,6 +1259,7 @@ public class GameManager : MonoBehaviour {
                     saveData1.AddField("color", currentBlock.color);
                     saveData1.AddField("type", currentBlock.type);
                     saveData1.AddField("rotate", currentBlock.rotate);
+                    saveData1.AddField("disable", currentBlock.disable);
                     saveData2.Add(saveData1);
                 }
             }

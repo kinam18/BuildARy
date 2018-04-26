@@ -66,35 +66,42 @@ public class showRevisionGame : MonoBehaviour {
             string[] indexarray = arrayindex.Split(',');
             Vector3 index = new Vector3(float.Parse(x), float.Parse(y), float.Parse(z));
             string heightstring = saveData2[i].GetField("height").ToString().Replace("\"", "");
+            int rotate = System.Int32.Parse(saveData2[i].GetField("rotate").ToString());
             Vector3 newheight = new Vector3(0, (float)Char.GetNumericValue(heightstring[0]), 0);
             Debug.Log("height:" + newheight);
             blockPrefab = Resources.Load((saveData2[i].GetField("type") + "").Replace("\"", ""), typeof(GameObject)) as GameObject;
             go = Instantiate(blockPrefab) as GameObject;
             go.GetComponent<Renderer>().material = Resources.Load((saveData2[i].GetField("color") + "").Substring(1, (saveData2[i].GetField("color") + "").Length - 2), typeof(Material)) as Material;
             go.AddComponent<BoxCollider>();
+            Debug.Log("go:" + go);
+            Debug.Log("blockPrefab:" + blockPrefab);
+            Debug.Log("index:" + indexarray[0]);
             Vector3 blockIndex = new Vector3(Convert.ToSingle(indexarray[0]), Convert.ToSingle(indexarray[1]), Convert.ToSingle(indexarray[2]));
             Debug.Log("Array Index:" + blockIndex);
             BoxCollider collider = go.GetComponent<BoxCollider>();
             collider.size = new Vector3(0.5f, 0.5f, 0.5f);
             go.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
             go.transform.position = index;
-            if (saveData2[i].GetField("rotate").ToString().Equals("true"))
+            if (rotate == 0 || rotate == 180)
             {
                 int stringIndex = blockPrefab.transform.name.ToString().IndexOf('X');
                 int length = (int)System.Char.GetNumericValue(blockPrefab.transform.name.ToString()[stringIndex - 1]);
                 int width = (int)System.Char.GetNumericValue(blockPrefab.transform.name.ToString()[stringIndex + 1]);
+                bool roof = blockPrefab.transform.name.ToString().Contains("roof");
                 if (length == 2 && width == 1)
                 {
                     width = 2;
                     length = 1;
                 }
+                go.transform.Rotate(0, 0, rotate);
                 if (length == 1 && width == 2) { go.transform.Rotate(0, 0, 90.0f); }
                 blocks[(int)blockIndex.x, (int)blockIndex.y, (int)blockIndex.z] = new Block
                 {
                     blockTransform = go.transform,
                     height = newheight,
-                    rotate = true,
-                    color = blockColor,
+                    rotate = rotate,
+                    disable = saveData2[i].GetField("disable").ToString().Equals("true"),
+                    color = saveData2[i].GetField("color").ToString().Replace("\"", ""),
                     type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                 };
             }
@@ -108,14 +115,15 @@ public class showRevisionGame : MonoBehaviour {
                     width = 1;
                     length = 2;
                 }
-                go.transform.Rotate(0, 0, 90.0f);
+                go.transform.Rotate(0, 0, rotate);
                 if (length == 2 && width == 1) { go.transform.Rotate(0, 0, 270.0f); }
                 blocks[(int)blockIndex.x, (int)blockIndex.y, (int)blockIndex.z] = new Block
                 {
                     blockTransform = go.transform,
                     height = newheight,
-                    rotate = false,
-                    color = blockColor,
+                    rotate = rotate,
+                    disable = saveData2[i].GetField("disable").ToString().Equals("true"),
+                    color = saveData2[i].GetField("color").ToString().Replace("\"", ""),
                     type = blockPrefab.transform.name.ToString().Replace("(Clone)", "")
                 };
             }
