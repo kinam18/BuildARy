@@ -29,6 +29,7 @@ public class genWord : MonoBehaviour {
 		//back.GetComponent<Button> ().onClick.AddListener (backHome);
         submit.GetComponent<Button>().onClick.AddListener(delegate { onclick(userDefin.text, "custom"); });
         showTran.GetComponent<Button>().onClick.AddListener(showTranslateP);
+        back.GetComponent<Button>().onClick.AddListener(backHome);
 
     }
     // Update is called once per frame
