@@ -23,7 +23,7 @@ public class genWord : MonoBehaviour {
         GameObject.Find("difButton").GetComponentInChildren<Text>().text = ((String)arguments["dif"]);
         GameObject.Find("medButton").GetComponentInChildren<Text>().text = ((String)arguments["med"]);
         GameObject.Find("easButton").GetComponentInChildren<Text>().text = ((String)arguments["easy"]);
-        dif.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["dif"],"difficult"); });
+        dif.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["dif"], "difficult"); });
         med.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["med"], "medium"); });
         eas.GetComponent<Button>().onClick.AddListener(delegate { onclick((String)arguments["easy"],"easy"); });
 		//back.GetComponent<Button> ().onClick.AddListener (backHome);

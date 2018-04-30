@@ -10,12 +10,12 @@ public class joinGame : MonoBehaviour {
     private RectTransform friendItem;
     public Hashtable arguments=new Hashtable();
     private RectTransform[] friend = new RectTransform[30];
-    private Sprite[] pics = new Sprite[30];
     private int picCount = 0;
     public SocketIOComponent socket;
 	public Button back;
+    private int countFd;
     // Use this for initialization
-  
+
     void Start()
     {
         arguments = SceneManager.GetSceneArguments();
@@ -31,42 +31,28 @@ public class joinGame : MonoBehaviour {
         
     }
 
-    private void GetPicture(IGraphResult result)
-    {
-
-        if (result.Texture != null)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                friend[i].transform.GetChild(4).GetComponentInChildren<Image>().sprite = Sprite.Create(result.Texture, new Rect(0, 0, 50, 50), new Vector2());
-                Debug.Log("success:" + picCount + result.Texture);
-            }
-        }
-        else
-        {
-            Debug.Log("error:" + result.Error);
-        }
-    }
+    
     public void getUsers(SocketIOEvent evt)
     {
         Debug.Log("test321:");
         JSONObject encodingObject = evt.data["data"][0]["id"];
         Debug.Log("test:" + encodingObject);
+        countFd=evt.data["data"].Count;
+        Debug.Log("user:" + countFd);
         for (int i = 0; i < evt.data["data"].Count; i++)
         {
             string path = evt.data["data"][i]["id"].ToString().Replace("\"","") + "/picture";
-            FB.API(path, Facebook.Unity.HttpMethod.GET, GetPicture);
             friend[i] = Instantiate(friendItem);
             string oid=evt.data["data"][i]["_id"].ToString().Replace("\"", "");
             string vocab=evt.data["data"][i]["vocab"].ToString().Replace("\"", "");
             string diff = evt.data["data"][i]["diff"].ToString().Replace("\"", "");
             string category = evt.data["data"][i]["category"].ToString().Replace("\"", "");
             friend[i].GetComponent<Button>().onClick.AddListener(delegate { onclick(oid,vocab,diff,category); });
-            friend[i].transform.GetChild(0).GetComponentInChildren<Text>().text = "Name:"+ evt.data["data"][i]["name"].ToString().Replace("\"", "");
+            friend[i].transform.GetChild(0).GetComponentInChildren<Text>().text = "From:"+ evt.data["data"][i]["name"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(1).GetComponentInChildren<Text>().text = "Type:"+ evt.data["data"][i]["category"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(2).GetComponentInChildren<Text>().text = "Difficulty:"+ evt.data["data"][i]["diff"].ToString().Replace("\"", "");
-            friend[i].transform.GetChild(3).GetComponentInChildren<Text>().text = "date:"+ evt.data["data"][i]["createtime"].ToString().Replace("\"", ""); 
-
+            friend[i].transform.GetChild(3).GetComponentInChildren<Text>().text = evt.data["data"][i]["createtime"].ToString().Replace("\"", "");
+           
             friend[i].transform.SetParent(friendList, false);
         }
     }

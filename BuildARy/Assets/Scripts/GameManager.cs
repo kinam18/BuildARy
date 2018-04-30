@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour {
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 30.0f))
             {
-                if (!EventSystem.current.IsPointerOverGameObject(/*Input.GetTouch(0).fingerId*/)) {
+                if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) {
                 Vector3 index = BlockPosition(hit.point);
                 Debug.Log(index.ToString());
                 Debug.Log("object:"+hit.transform.gameObject);
@@ -1053,7 +1053,7 @@ public class GameManager : MonoBehaviour {
         menu.gameObject.SetActive(false);
         scrollView.gameObject.SetActive(true);
      
-        btnun.gameObject.SetActive(false);
+        
         hidemenu.gameObject.SetActive(true);
         scrollBar.gameObject.SetActive(true);
         
@@ -1064,7 +1064,7 @@ public class GameManager : MonoBehaviour {
         menu.gameObject.SetActive(true);
         scrollView.gameObject.SetActive(false);
       
-        btnun.gameObject.SetActive(true);
+       
         scrollBar.gameObject.SetActive(false);
 
     }
@@ -1298,7 +1298,7 @@ public class GameManager : MonoBehaviour {
                     Debug.Log(result.RawResult);
                     finalData.AddField("notAnswered", result.ResultDictionary["to"].ToString());
                     socket.Emit("SHARE", finalData);
-                    SceneManager.LoadScene("menu");
+                    
                 }
             );
             }
@@ -1306,6 +1306,7 @@ public class GameManager : MonoBehaviour {
             {
                 socket.Emit("SAVE", finalData);
             }
+            SceneManager.LoadScene("menu");
         }
         
         

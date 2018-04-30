@@ -63,7 +63,7 @@ public class continueGame : MonoBehaviour {
             friend[i].transform.GetChild(0).GetComponentInChildren<Text>().text = "Type:" + evt.data["data"][i]["category"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(1).GetComponentInChildren<Text>().text = "Difficulty:" + evt.data["data"][i]["diff"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(2).GetComponentInChildren<Text>().text = "Word:" + evt.data["data"][i]["vocab"].ToString().Replace("\"", "");
-            friend[i].transform.GetChild(3).GetComponentInChildren<Text>().text = "date:" + evt.data["data"][i]["createtime"].ToString().Replace("\"", "");
+            friend[i].transform.GetChild(3).GetComponentInChildren<Text>().text =   evt.data["data"][i]["createtime"].ToString().Replace("\"", "");
 
             friend[i].transform.SetParent(friendList, false);
         }

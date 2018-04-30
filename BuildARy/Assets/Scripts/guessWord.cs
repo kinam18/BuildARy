@@ -66,7 +66,7 @@ public class guessWord : MonoBehaviour {
 		socket.On ("GETUSER", getUser);
         submit.GetComponent<Button>().onClick.AddListener(popUp);
         check.GetComponent<Button>().onClick.AddListener(checkAnswer);
-		//back.GetComponent<Button> ().onClick.AddListener (backHome);
+		back.GetComponent<Button> ().onClick.AddListener (backHome);
 		panel = GameObject.Find("guessPanel");
         showTran.GetComponent<Button>().onClick.AddListener(showTranslateP);
         panel = GameObject.Find("guessPanel");
@@ -142,9 +142,18 @@ public class guessWord : MonoBehaviour {
 
         if (wordSelected != null)
         {
+            if (change.GetComponentInChildren<Text>().text != "")
+            {
+                Button goButton = Instantiate(guessB);
+                goButton.transform.SetParent(random, false);
+                goButton.onClick.AddListener(delegate { selectWord(goButton); });
+                goButton.GetComponentInChildren<Text>().text = change.GetComponentInChildren<Text>().text;
+                change.GetComponentInChildren<Text>().text = "";
+            }
             change.GetComponentInChildren<Text>().text = wordSelected;
             wordSelected = null;
             selectCount = 0;
+            
         }
         else if (change.GetComponentInChildren<Text>().text !="")
         {
@@ -185,17 +194,17 @@ public class guessWord : MonoBehaviour {
 			case "medium":
 				score += 3;
 				addscore = 3;
-				ScoreCalculation ();
+				//ScoreCalculation ();
 				break;
 			case "difficult":
 				score += 5;
 				addscore = 5;
-				ScoreCalculation ();
+				//ScoreCalculation ();
 				break;
 			default:
 				score += 1;
 				addscore = 1;
-				ScoreCalculation ();
+				//ScoreCalculation ();
 				break;
 			}
             Debug.Log("score:" + addscore);
@@ -209,8 +218,9 @@ public class guessWord : MonoBehaviour {
         else
         {
             checkText.text = "Wrong answer";
-			scoreBar.gameObject.SetActive(false);
-			levelText.enabled = false;
+            answer = "";
+			//scoreBar.gameObject.SetActive(false);
+			//levelText.enabled = false;
         }
 
     }

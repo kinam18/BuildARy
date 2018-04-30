@@ -11,6 +11,9 @@ public class revision : MonoBehaviour {
     public SocketIOComponent socket;
     private RectTransform[] friend = new RectTransform[30];
 	public Button back;
+    public RectTransform tranlsteP;
+    public Button showTran;
+
 
     // Use this for initialization
     void Start () {
@@ -19,6 +22,7 @@ public class revision : MonoBehaviour {
         StartCoroutine(ConnectToServer());
         socket.On("REVISION", getUsers);
 		back.GetComponent<Button> ().onClick.AddListener (backHome);
+        showTran.GetComponent<Button>().onClick.AddListener(showTranslateP);
 
     }
 	
@@ -31,6 +35,10 @@ public class revision : MonoBehaviour {
         arguments.Add("gameId", gameId);
         arguments.Add("vocab", vocab);
         SceneManager.LoadScene("revisionGame", arguments);
+    }
+    void showTranslateP()
+    {
+        tranlsteP.gameObject.SetActive(true);
     }
     IEnumerator ConnectToServer()
     {
@@ -54,11 +62,11 @@ public class revision : MonoBehaviour {
             string oid = evt.data["data"][i]["_id"].ToString().Replace("\"", "");
             string vocab = evt.data["data"][i]["vocab"].ToString().Replace("\"", "");
             friend[i].GetComponent<Button>().onClick.AddListener(delegate { onclick(oid, vocab); });
-            friend[i].transform.GetChild(0).GetComponentInChildren<Text>().text = "Name:" + evt.data["data"][i]["name"].ToString().Replace("\"", "");
+            friend[i].transform.GetChild(0).GetComponentInChildren<Text>().text = "From:" + evt.data["data"][i]["name"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(1).GetComponentInChildren<Text>().text = "Type:" + evt.data["data"][i]["category"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(2).GetComponentInChildren<Text>().text = "Difficulty:" + evt.data["data"][i]["diff"].ToString().Replace("\"", "");
             friend[i].transform.GetChild(3).GetComponentInChildren<Text>().text = "Word:" + evt.data["data"][i]["vocab"].ToString().Replace("\"", "");
-            friend[i].transform.GetChild(4).GetComponentInChildren<Text>().text = "date:" + evt.data["data"][i]["createtime"].ToString().Replace("\"", "");
+            friend[i].transform.GetChild(4).GetComponentInChildren<Text>().text = evt.data["data"][i]["createtime"].ToString().Replace("\"", "");
 
             friend[i].transform.SetParent(friendList, false);
         }
