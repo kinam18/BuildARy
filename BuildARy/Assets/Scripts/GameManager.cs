@@ -1289,7 +1289,7 @@ public class GameManager : MonoBehaviour {
             if (check)
             {
                 FB.AppRequest(
-                "ALan,Here is a free gift!",
+                "Game Invite",
                 null,
                 new List<object>() { "app_users" },
                 null, null, null, "Invite your friends",
